@@ -33,7 +33,9 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 [psi, E] = eigs(H, N_steps, 'smallestabs');
 
 % Normalise eigenvectors
-psi_norm = psi/sqrt(trapz(x, abs(psi).^2));
+for j = 1:N_eigenvectors
+    psi_norm(:, j) = psi(:, j)/sqrt(trapz(x, abs(psi(:, j)).^2));
+end
 
 %%%%% Generate a superposition of eigenstates %%%%%
 
