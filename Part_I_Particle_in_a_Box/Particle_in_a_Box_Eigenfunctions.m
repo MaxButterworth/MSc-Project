@@ -25,30 +25,33 @@ dx = x(2) - x(1); % Calculate the spatial step size
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N, N); % Define the Laplacian operator
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
+H = H(2:N-1, 2:N-1); % Impose boundary conditions: psi(0) = psi(L) = 0
 
 % Find the eigenvalues and eigenvectors of the Hamiltonian matrix
 [psi, E] = eigs(H, N_eigenvectors, 'smallestabs');
 
 % Normalise eigenvectors
+x_internal = x(2:N-1); % Exclude the boundaries from the normalisation process
+
 for j = 1:N_eigenvectors
-    psi_norm(:, j) = psi(:, j)/sqrt(trapz(x, abs(psi(:, j)).^2));
+    psi_norm(:, j) = psi(:, j)/sqrt(trapz(x_internal, abs(psi(:, j)).^2));
 end
 
 %%%%% Plot the first four eigenfunctions %%%%%
 figure % Generate a figure
 
 subplot(2, 2, 1) % Top left plot
-scatter(x, psi_norm(:,1)) % Plot the ground state wavefunction
+scatter(x_internal, psi_norm(:,1)) % Plot the ground state wavefunction
 title('Ground State Eigenfunction')
 
 subplot(2, 2, 2) % Top right plot
-scatter(x, psi_norm(:,2)) % Plot the first excited state wavefunction
+scatter(x_internal, psi_norm(:,2)) % Plot the first excited state wavefunction
 title('First Excited State Eigenfunction')
 
 subplot(2, 2, 3) % Bottom left plot
-scatter(x, psi_norm(:,3)) % Plot the second excited state wavefunction
+scatter(x_internal, psi_norm(:,3)) % Plot the second excited state wavefunction
 title('Second Excited State Eigenfunction')
 
 subplot(2, 2, 4) % Bottom right plot
-scatter(x, psi_norm(:,4)) % Plot the third excited state wavefunction
+scatter(x_internal, psi_norm(:,4)) % Plot the third excited state wavefunction
 title('Third Excited State Eigenfunction')
