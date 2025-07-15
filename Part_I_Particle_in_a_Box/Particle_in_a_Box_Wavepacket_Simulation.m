@@ -20,67 +20,83 @@ N_superposition = 100; % The number of basis functions in the wavepacket superpo
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-15; % Define the time step size
-N_t = 10000; % Define the number of time steps to simulate
+dt = 1e-18; % Define the time step size
+N_t = 1000; % Define the number of time steps to simulate
 
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
 
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
-H = H(2:N_steps-1, 2:N_steps-1); % Impose boundary conditions: psi(0) = psi(L) = 0
-H = sparse(H); % Make the Hamiltonian sparse to speed up the calculation
-
-x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
 %%%%%%%%%% Generate an initial wavepacket %%%%%%%%%%
 
-k = 5e20; % Set the wavenumber
+k = 5; % Set the wavenumber
 x0 = L/2; % Start evolving the wavepacket from the centre of the box at t = 0
-sigma = L/5; % Set the initial width of the wavepacket
-psi0 = exp(-(x_internal - x0).^2/(2 * sigma^2)) .* exp(1i * k * x_internal); % Define the initial Gaussian wavepacket
-psi0 = sparse(psi0); % Make psi0 sparse to speed up the calculation
-psi0_norm = psi0/sqrt(trapz(x_internal, abs(psi0).^2)); % Normalise the initial Gaussian wavepacket
+sigma = L/20; % Set the initial width of the wavepacket
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wavepacket
+psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wavepacket
+
+%%%%%%%%%% Impose boundary conditions %%%%%%%%%%
+
+% Set the wavefunction to zero at the boundaries
+psi0_norm(1) = 0;
+psi0_norm(N_steps) = 0;
+psi0_norm = sparse(psi0_norm); % Define the initial wavefunction as a sparse matrix to speed up the calculation
+
+H = H(2:N_steps-1, 2:N_steps-1); % Impose boundary conditions: psi(0) = psi(L) = 0
+H = sparse(H); % Define the Hamiltonian as a sparse matrix to speed up the calcualtion
+
+x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
 %%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction %%%%%%%%%%
 
-psi = psi0_norm'; % Set the initial value of the wavefunction
-psi_t = zeros(N_steps-2, N_t); % Initialise an array to store the wavefuncAre ytion as it evolves in time
-psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
+psi = psi0_norm(2:N_steps-1)'; % Set the initial value of the wavefunction
+psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
+psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 % Pre-compute matrices required for the Crank-Nicolson method
-A = speye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
-B = speye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
+A = eye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
+B = eye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
-    psi = A / (B * psi)'; % Update the wavefunction in time
-    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the updated wavefunction
-    psi_t(:, t) = psi; % Store the new wavefunction in the time evolution array
+    psi = A \ (B * psi); % Evolve the wavefunction over time
+    %psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the updated wavefunction
+    psi_t(2:N_steps-1, t) = psi; % Store the new wavefunction in the time evolution array
 end
 
 %%%%%%%%%% Plot the time evolution of the wavepacket probability density %%%%%%%%%%
 
 figure; % Generate a figure
 
-subplot(1, 2, 1) % Left subfigure
-real_wavefunction = plot(x_internal, real(psi_t(:, 1))); % Plot the initial wavefunction
+subplot(1, 3, 1) % Left subfigure
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+%imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('x (m)'); % Label the x-axis
 ylabel('Re(\psi(x, t))'); % Label the y-axis
-title('Real Component of the Wavefunction')
+title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(1, 2, 2) % Right subfigure
-prob_density = plot(x_internal, abs(psi_t(:, 1)).^2); % Plot the initial probability density
+subplot(1, 3, 2) % Middle subfigure
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+xlabel('x (m)'); % Label the x-axis
+ylabel('Re(\psi(x, t))'); % Label the y-axis
+title('Imaginary Component of the Wavefunction') % Add a title
+grid on; % Add a grid to the plot
+
+subplot(1, 3, 3) % Right subfigure
+prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('x (m)'); % Label the x-axis
 ylabel('|\psi(x, t)|^2'); % Label the y-axis
-title('Probability Density')
+title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
-    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the wavefunction plot
+    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real wavefunction plot
+    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary wavefunction plot
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density plot
-    pause(0.001); % Pause to create an animation effect
+    pause(1); % Pause to create an animation effect
     drawnow;
 end
