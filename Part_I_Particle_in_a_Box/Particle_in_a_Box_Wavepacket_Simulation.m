@@ -20,7 +20,7 @@ N_superposition = 100; % The number of basis functions in the wavepacket superpo
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-15; % Define the time step size
+dt = 1e-18; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
@@ -34,9 +34,9 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 
 %%%%%%%%%% Generate an initial wavepacket %%%%%%%%%%
 
-k = 5e10; % Set the wavenumber
+k = 5e12; % Set the wavenumber
 x0 = L/2; % Start evolving the wavepacket from the centre of the box at t = 0
-sigma = L/10; % Set the initial width of the wavepacket
+sigma = L/5; % Set the initial width of the wavepacket
 psi0 = exp(-(x_internal - x0).^2/(2 * sigma^2)) .* exp(1i * k * x_internal); % Define the initial Gaussian wavepacket
 psi0_norm = psi0/sqrt(trapz(x_internal, abs(psi0).^2)); % Normalise the initial Gaussian wavepacket
 
@@ -48,22 +48,33 @@ psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 for t = 2:N_t % Loop over all time steps
     psi = ((speye(N_steps-2) + ((1i * dt)/(2 * hbar)) * H)) / (((speye(N_steps-2) - ((1i * dt)/(2 * hbar)) * H)) * psi)'; % Update the wavefunction in time
+    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the updated wavefunction
     psi_t(:, t) = psi; % Store the new wavefunction in the time evolution array
 end
 
 %%%%%%%%%% Plot the time evolution of the wavepacket probability density %%%%%%%%%%
 
 figure; % Generate a figure
-prob_density = plot(x_internal, real(psi_t(:, 1)));
 
-% prob_density = plot(x_internal, abs(psi_t(:, 1)).^2); % Plot the initial wavefunction
-% xlabel('x (m)');
-% ylabel('|\psi(x, t)|^2');
-% grid on;
-% 
-% Animate the figure
-for n = 1:N_t
-    set(prob_density, 'YData', real(psi_t(:, n))); % Update the probability density plot
+subplot(1, 2, 1) % Left subfigure
+real_wavefunction = plot(x_internal, real(psi_t(:, 1))); % Plot the initial wavefunction
+xlabel('x (m)'); % Label the x-axis
+ylabel('Re(\psi(x, t))'); % Label the y-axis
+title('Real Component of the Wavefunction')
+grid on; % Add a grid to the plot
+
+subplot(1, 2, 2) % Right subfigure
+prob_density = plot(x_internal, abs(psi_t(:, 1)).^2); % Plot the initial probability density
+xlabel('x (m)'); % Label the x-axis
+ylabel('|\psi(x, t)|^2'); % Label the y-axis
+title('Probability Density')
+grid on; % Add a grid to the plot
+
+% Animate the figures
+
+for n = 1:N_t % Loop over all timesteps
+    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the wavefunction plot
+    set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density plot
     pause(0.01); % Pause to create an animation effect
     drawnow;
 end
