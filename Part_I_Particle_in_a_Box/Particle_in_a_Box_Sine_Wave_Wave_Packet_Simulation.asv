@@ -51,8 +51,8 @@ basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB e
 psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
 % Generate the superposition of PIB basis functions
-for l = basis_funcs_indices
-    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, l));
+for l = 1:length(basis_funcs_indices)
+    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
 psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
@@ -90,6 +90,10 @@ for t = 2:N_t % Loop over all time steps
     psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
     J(t) = -((1i * hbar)/(2 * m)) * ((psi' * (first_deriv * psi)) -  ((first_deriv * conj(psi))' * psi)); % Calculate probability current
 end
+
+% 
+print('The flux at $x=L/2$ is:', 'Interpreter','latex')
+J(N_steps/2)
 
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 
