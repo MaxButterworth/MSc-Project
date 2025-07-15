@@ -61,8 +61,8 @@ B = eye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
-    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the updated wavefunction
-    psi_t(2:N_steps-1, t) = psi; % Store the new wavefunction in the time evolution array
+    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
+    psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
 end
 
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
