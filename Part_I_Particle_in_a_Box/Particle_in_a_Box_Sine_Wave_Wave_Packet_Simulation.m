@@ -21,7 +21,7 @@ N_PIB_eigenfuncs = 100; % The number of basis functions in the wave packet super
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-20; % Define the time step size
+dt = 1e-18; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
@@ -46,13 +46,16 @@ x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wave packet
 
 basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
+
+psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
 % Generate the superposition of PIB basis functions
-for l = basis_funcs_indices
-    psi0 = psi0 + PIB_eigenstates_norm(:, l);
+for l = 1:length(basis_funcs_indices)
+    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) * psi0; % Modulate the superposition by a Gaussian
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
@@ -73,7 +76,7 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 J = zeros(1, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2);
 
-psi = psi0_norm(2:N_steps-1).'; % Set the initial value of the wavefunction
+psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
 psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
@@ -98,6 +101,7 @@ subplot(1, 3, 1) % Left subfigure
 real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -105,6 +109,7 @@ subplot(1, 3, 2) % Middle subfigure
 imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits foe convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -112,6 +117,7 @@ subplot(1, 3, 3) % Right subfigure
 prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
+ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
@@ -121,6 +127,6 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    pause(0.1); % Pause to create an animation effect
+    pause(0.05); % Pause to create an animation effect
     drawnow; % Update the relevant figures
 end
