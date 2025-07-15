@@ -9,7 +9,7 @@
 %%%%%%%%%% Define constants %%%%%%%%%%
 
 L = 1e-10; % Length of the 1D box in m
-m = 9.11e-31; % Mass of electron in kg
+m = 9.110e-31; % Mass of electron in kg
 h = 6.626e-34; % Planck's constant in Js
 hbar = h/(2*pi); % Definition of h bar
 N_steps = 1000; % Number of discretisation points
