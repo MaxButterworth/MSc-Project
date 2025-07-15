@@ -21,7 +21,7 @@ x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dt = 1e-20; % Define the time step size
-N_t = 5000; % Define the number of time steps to simulate
+N_t = 1000; % Define the number of time steps to simulate
 
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
 
@@ -31,7 +31,7 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
 %%%%%%%%%% Generate an initial wavepacket %%%%%%%%%%
 
-k = 5; % Set the wavenumber
+k = (50 * pi)/L; % Set the wavenumber
 x0 = L/2; % Start evolving the wavepacket from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wavepacket
 psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wavepacket
@@ -98,6 +98,6 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    pause(0.01); % Pause to create an animation effect
+    pause(0.1); % Pause to create an animation effect
     drawnow;
 end
