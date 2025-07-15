@@ -1,5 +1,5 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
-% Part I - Particle in a Box Wavepacket Simulation
+% Part I - Particle in a Box Wave Packet Simulation
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
@@ -13,7 +13,7 @@ m = 9.11e-31; % Mass of electron in kg
 h = 6.626e-34; % Planck's constant in Js
 hbar = h/(2*pi); % Definition of h bar
 N_steps = 1000; % Number of discretisation points
-N_superposition = 100; % The number of basis functions in the wavepacket superposition
+N_superposition = 100; % The number of basis functions in the wave packet superposition
 
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 
@@ -29,13 +29,13 @@ N_t = 1000; % Define the number of time steps to simulate
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
-%%%%%%%%%% Generate an initial wavepacket %%%%%%%%%%
+%%%%%%%%%% Generate an initial wave packet %%%%%%%%%%
 
 k = (50 * pi)/L; % Set the wavenumber
-x0 = L/2; % Start evolving the wavepacket from the centre of the box at t = 0
-sigma = L/20; % Set the initial width of the wavepacket
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wavepacket
-psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wavepacket
+x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
+sigma = L/20; % Set the initial width of the wave packet
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wave packet
+psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
 %%%%%%%%%% Impose boundary conditions %%%%%%%%%%
 
@@ -65,7 +65,7 @@ for t = 2:N_t % Loop over all time steps
     psi_t(2:N_steps-1, t) = psi; % Store the new wavefunction in the time evolution array
 end
 
-%%%%%%%%%% Plot the time evolution of the wavepacket probability density %%%%%%%%%%
+%%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 
 x_ang = x * 1e10; % Generate an array of x-values in angstroms
 
@@ -73,22 +73,22 @@ figure; % Generate a figure
 
 subplot(1, 3, 1) % Left subfigure
 real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
-xlabel('x (\AA)'); % Label the x-axis
-ylabel('Re(\psi(x, t))'); % Label the y-axis
+xlabel('$x\ (Angstroms)$', 'Interpreter','latex'); % Label the x-axis
+ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(1, 3, 2) % Middle subfigure
 imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-xlabel('$x (\AA)$'); % Label the x-axis
-ylabel('Im(\psi(x, t))'); % Label the y-axis
+xlabel('$x\ (Angstroms)$', 'Interpreter','latex'); % Label the x-axis
+ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(1, 3, 3) % Right subfigure
 prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-xlabel('x (\AA)'); % Label the x-axis
-ylabel('|\psi(x, t)|^2'); % Label the y-axis
+xlabel('$x\ (Angstroms)$', 'Interpreter','latex'); % Label the x-axis
+ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
