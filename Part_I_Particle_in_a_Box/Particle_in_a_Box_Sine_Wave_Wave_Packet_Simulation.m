@@ -73,7 +73,7 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 
 %%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
 
-J = zeros(1, N_t); % Initialise an array to store probability currents
+J = zeros(N_steps, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2);
 
 psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
@@ -88,11 +88,9 @@ for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
     psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(t) = -((1i * hbar)/(2 * m)) * ((psi' * (first_deriv * psi)) -  ((first_deriv * conj(psi))' * psi)); % Calculate probability current
+    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) -  ((first_deriv .* conj(psi))' * psi)); % Calculate probability current
 end
 
-% Return the probability current/flux for x = L/2
-disp(['The flux at x=L/2 is:', J(N_steps/2)])
 
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 
