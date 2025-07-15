@@ -99,5 +99,5 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     pause(0.1); % Pause to create an animation effect
-    drawnow;
+    drawnow; % Updates the relevant figures
 end
