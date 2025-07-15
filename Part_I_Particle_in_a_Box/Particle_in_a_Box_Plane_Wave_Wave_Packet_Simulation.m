@@ -24,7 +24,7 @@ dx = x(2) - x(1); % Calculate the spatial step size
 dt = 1e-20; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
-%%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
+%%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
 
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
