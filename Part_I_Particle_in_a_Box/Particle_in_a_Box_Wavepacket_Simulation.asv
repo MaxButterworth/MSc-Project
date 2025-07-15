@@ -32,6 +32,16 @@ H = H(2:N_steps-1, 2:N_steps-1); % Impose boundary conditions: psi(0) = psi(L) =
 
 x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
+% % Find the eigenvalues and eigenvectors of the Hamiltonian matrix
+% [psi, E] = eigs(H, N_eigenvectors, 'smallestabs');
+% 
+% % Normalise eigenvectors
+% x_internal = x(2:N-1); % Exclude the boundaries from the normalisation process
+% 
+% for j = 1:N_eigenvectors
+%     psi_norm(:, j) = psi(:, j)/sqrt(trapz(x_internal, abs(psi(:, j)).^2));
+% end
+
 %%%%%%%%%% Generate an initial wavepacket %%%%%%%%%%
 
 x0 = L/2; % Start evolving the wavepacket from the centre of the box at t = 0
@@ -46,7 +56,9 @@ psi_t = zeros(N_steps - 2, N_t); % Initialise an array to store the wavefunction
 psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 for t = 2:N_t
-    psi = ((eye(N_steps-2) + ((1i * dt)/(2 * hbar)) * H)) / (((eye(N_steps-2) - ((1i * dt)/(2 * hbar)) * H)) * psi)'; % Update the wavefunction in time
+    % Compute the time evolution operator
+    evolution_operator = (((eye(N_steps-2) + ((1i * dt)/(2 * hbar)) * H)^(-1)) * ((eye(N_steps-2) - ((1i * dt)/(2 * hbar)) * H))); 
+    psi = evolution_operator * psi; % Update the wavefunction
     psi_t(:, t) = psi; % Store the new wavefunction in the time evolution array
 end
 
@@ -54,14 +66,5 @@ end
 
 figure; % Generate a figure
 
-prob_density = plot(x_internal, abs(psi_t(:, 1)).^2); % Plot the initial wavefunction
-xlabel('x (m)');
-ylabel('|\psi(x, t)|^2');
-grid on;
-
-% Animate the figure
-for n = 1:N_t
-    set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density plot
-    pause(0.5); % Pause to create an animation effect
-    drawnow;
-end
+prob_density = plot(x_internal, abs()); % Plot the ground state wavefunction
+title('Ground State Eigenfunction')
