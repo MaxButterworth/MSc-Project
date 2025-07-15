@@ -29,7 +29,7 @@ N_t = 1000; % Define the number of time steps to simulate
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
-%%%%%%%%%% Generate an initial wave packet %%%%%%%%%%
+%%%%%%%%%% Generate an initial wave packet composed of one plane wave modulated by a Gaussian %%%%%%%%%%
 
 k = (50 * pi)/L; % Set the wavenumber
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
