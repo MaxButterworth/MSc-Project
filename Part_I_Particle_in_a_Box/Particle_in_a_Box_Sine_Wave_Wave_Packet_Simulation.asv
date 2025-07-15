@@ -45,14 +45,14 @@ end
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wave packet
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of 
 
 % Generate the superposition of PIB basis functions
 for l = basis_funcs_indices
-    psi0 = psi0 + PIB_eigenstates_norm(:, l);
+    psi0 = psi0 + PIB_eigenstates_norm(:, l)
 end
 
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) * psi0; % Modulate the superposition by a Gaussian
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)) * psi0 % Modulate the superposition by a Gaussian
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
