@@ -81,7 +81,7 @@ grid on; % Add a grid to the plot
 subplot(1, 3, 2) % Middle subfigure
 imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x (\AA)$'); % Label the x-axis
-ylabel('Re(\psi(x, t))'); % Label the y-axis
+ylabel('Im(\psi(x, t))'); % Label the y-axis
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
