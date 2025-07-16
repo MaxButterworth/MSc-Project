@@ -1,6 +1,8 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % Part I - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
+% Time Propagation conducted with the split operator method with an approximated potential
+
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
@@ -17,7 +19,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -67,7 +69,7 @@ psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian 
 psi0_norm(1) = 0;
 psi0_norm(N_steps) = 0;
 
-x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
+%x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
 %%%%%%%%%% Propagate the wave packet through time using the split operator method %%%%%%%%%%
 
