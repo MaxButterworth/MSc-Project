@@ -89,7 +89,7 @@ for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
     psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) -  ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
+    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
 %%%%%%%%%% Plot the time evolution of the wave packet, probability density, and flux %%%%%%%%%%
