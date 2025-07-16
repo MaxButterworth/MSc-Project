@@ -7,14 +7,18 @@
 
 %%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%% Define constants %%%%%%%%%%
+%%%%%%%%%% Define constants and variables %%%%%%%%%%
 
 L = 1e-10; % Length of the 1D box in m
 m = 9.110e-31; % Mass of electron in kg
 h = 6.626e-34; % Planck's constant in Js
 hbar = h/(2*pi); % Definition of h bar
+
 N_steps = 1000; % Number of discretisation points
-N_PIB_eigenfuncs = 100; % The number of basis functions in the wave packet superposition
+
+basis_funcs_indices = [1, 2, 3, 58]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
+N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 
@@ -44,9 +48,6 @@ end
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wave packet
-
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
-basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 
 psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
@@ -91,7 +92,7 @@ for t = 2:N_t % Loop over all time steps
     J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) -  ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
-%%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
+%%%%%%%%%% Plot the time evolution of the wave packet, probability density, and flux %%%%%%%%%%
 
 x_ang = x * 1e10; % Generate an array of x-values in angstroms
 
@@ -137,5 +138,5 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     pause(0.05); % Pause to create an animation effect
-    drawnow; % Update the relevant figures
+    drawnow; % Update the figures
 end
