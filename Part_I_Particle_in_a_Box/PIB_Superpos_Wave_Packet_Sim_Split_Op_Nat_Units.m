@@ -88,7 +88,7 @@ psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as 
 psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 % Propagate the wave packet defined on the internal coordinates
-for t = 1:N_t
+for t = 2:N_t
     psi = V_op .* psi; % Operate a half time step in real space
     psi_k = fft(psi); % Fourier transform the wavefunction into k-space
     psi_k = T_op .* psi_k; % Operate a full time step in k-space
