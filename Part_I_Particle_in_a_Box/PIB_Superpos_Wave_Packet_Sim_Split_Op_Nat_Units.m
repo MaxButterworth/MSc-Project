@@ -2,6 +2,7 @@
 % Part I - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
 % Time Propagation conducted with the split operator method
+
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
