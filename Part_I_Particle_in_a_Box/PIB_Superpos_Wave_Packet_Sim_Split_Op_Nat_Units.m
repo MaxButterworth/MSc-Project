@@ -72,20 +72,20 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 %%%%%%%%%% Propagate the wave packet through time using the split operator method %%%%%%%%%%
 
 % Define kinetic and potential operators
-p = (2 * pi * (0:N_steps-3)/L); % Define the momentum space grid
-V = zeros(N_steps - 2, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
+p = (2 * pi * (0:N_steps-1)/L); % Define the momentum space grid
+V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
 
 T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)).'; % Kinetic energy operator (full time step)
 V_op = exp(-(1i * V * dt)/(2 * hbar)); % Potential energy operator (half time step)
 
 % Initialise arrays to store fluxes and a first derivativ operator to calculate the fluxes
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2)/dx; % Define a first derivative operator using the finite difference method
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Define a first derivative operator using the finite difference method
 
 % Set up the wave packet on the internal coordinates for propagation
-psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
+psi = psi0_norm(:); % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
-psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
+psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 % Propagate the wave packet defined on the internal coordinates
 for t = 2:N_t
@@ -94,10 +94,13 @@ for t = 2:N_t
     psi_k = T_op .* psi_k; % Operate a full time step in k-space
     psi = ifft(psi_k); % Inverse Fourier transform into real space
     psi = V_op .* psi; % Operate a half time step in real space
-    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
 
-    psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
+    psi(1, 1) = 0; % Impose boundary condition at x = 0
+    psi(N_steps, 1) = 0; % Impose boundary condition at x = L
+    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
+
+    psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
+    J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
 %%%%%%%%%% Plot the time evolution of the wave packet, probability density, and flux %%%%%%%%%%
