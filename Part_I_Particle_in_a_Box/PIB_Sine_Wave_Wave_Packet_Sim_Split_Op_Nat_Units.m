@@ -137,7 +137,6 @@ title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
-
 for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
