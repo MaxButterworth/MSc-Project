@@ -82,8 +82,8 @@ psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as 
 psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 % Pre-compute matrices required for the Crank-Nicolson method
-A = eye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
-B = eye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
+A = speye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
+B = speye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
