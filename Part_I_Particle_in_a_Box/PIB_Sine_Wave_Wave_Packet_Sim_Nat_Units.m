@@ -17,7 +17,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = [1, 2, 3, 54]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -76,9 +76,9 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 %%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2)/dx;
+first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2)/dx; % Define a first derivative operator using the finite difference method
 
-psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
+psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction defined on the internal coordinates
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
 psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
@@ -87,7 +87,7 @@ A = speye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
 B = speye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
-    psi = A \ (B * psi); % Evolve the wavefunction over time
+    psi = A \ (B * psi); % Evolve the wavefunction defined on the internal coordinates over time
     psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
     J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
