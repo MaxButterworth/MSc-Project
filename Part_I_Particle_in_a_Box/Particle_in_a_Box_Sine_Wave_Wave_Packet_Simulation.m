@@ -138,5 +138,5 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     pause(0.05); % Pause to create an animation effect
-    drawnow; % Update the figures
+    drawnow; % Update the figures and display immediately
 end
