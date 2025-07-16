@@ -9,10 +9,10 @@
 
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
 
-L = 1e-10; % Length of the 1D box in m
-m = 9.110e-31; % Mass of electron in kg
-h = 6.626e-34; % Planck's constant in J s
-hbar = h/(2*pi); % Definition of h bar
+L = 1;%1e-10; % Length of the 1D box in m
+m = 1;%9.110e-31; % Mass of electron in kg
+h = 1;%6.626e-34; % Planck's constant in J s
+hbar = 1;%h/(2*pi); % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
@@ -25,7 +25,7 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-18; % Define the time step size
+dt = 1e-4;%1e-18; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
@@ -138,5 +138,5 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     pause(0.05); % Pause to create an animation effect
-    drawnow; % Update the figures
+    drawnow; % Update the figures and display immediately
 end
