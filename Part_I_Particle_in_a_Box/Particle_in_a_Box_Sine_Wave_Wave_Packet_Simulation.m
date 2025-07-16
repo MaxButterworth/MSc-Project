@@ -102,7 +102,7 @@ subplot(2, 2, 1) % Top Left subfigure
 real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -110,7 +110,7 @@ subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits foe convenience
+ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -118,7 +118,7 @@ subplot(2, 2, 3) % Bottom Right subfigure
 prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
+ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
@@ -126,7 +126,7 @@ subplot(2, 2, 4) % Bottom left subfigure
 flux_plot = plot(x_ang, J(:, 1)); % Plot the initial probability density
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits foe convenience
+ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
@@ -137,6 +137,6 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
-    pause(0.05); % Pause to create an animation effect
+    pause(0.05); % Pause to create an animation
     drawnow; % Update the figures and display immediately
 end
