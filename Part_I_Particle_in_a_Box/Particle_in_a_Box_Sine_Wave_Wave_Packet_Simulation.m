@@ -74,7 +74,7 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 %%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2);
+first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2)/dx;
 
 psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
@@ -88,9 +88,8 @@ for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
     psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) -  ((first_deriv .* conj(psi))' * psi)); % Calculate probability current
+    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) -  ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
-
 
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 
@@ -98,7 +97,7 @@ x_ang = x * 1e10; % Generate an array of x-values in angstroms
 
 figure; % Generate a figure
 
-subplot(1, 3, 1) % Left subfigure
+subplot(2, 2, 1) % Top Left subfigure
 real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
@@ -106,7 +105,7 @@ ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenie
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(1, 3, 2) % Middle subfigure
+subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
@@ -114,12 +113,20 @@ ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits foe convenie
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(1, 3, 3) % Right subfigure
+subplot(2, 2, 3) % Bottom Right subfigure
 prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
 title('Probability Density') % Add a title
+grid on; % Add a grid to the plot
+
+subplot(2, 2, 4) % Bottom left subfigure
+flux_plot = plot(x_ang, J(:, 1)); % Plot the initial probability density
+xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
+ylim([min(J(:)) max(J(:))]); % Set the y-limits foe convenience
+title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
@@ -128,6 +135,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
+    set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     pause(0.05); % Pause to create an animation effect
     drawnow; % Update the relevant figures
 end
