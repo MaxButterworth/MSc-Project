@@ -60,50 +60,38 @@ end
 
 figure; % Generate a figure
 
-% Ground state comparison
+% Ground state
 subplot(2, 2, 1) % Top Left subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 1))); % Plot the numerically determined real wavefunction
-hold on
-plot(x, PIB_eigenstates_analytical(:, 1)); % Plot the analytical wavefunction
-hold off
+plot(x, real(PIB_eigenstates_norm(:, 1))); % Plot the numerically determined real wavefunction
+plot(x, PIB_eigenstates_analytical(:, 1)); % Plot the
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Ground State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
-% First excited state comparison
+% First excited state
 subplot(2, 2, 2) % Top Left subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 2))); % Plot the numerically determined real wavefunction
-hold on
-plot(x, PIB_eigenstates_analytical(:, 2)); % Plot the analytical wavefunction
-hold off
+plot(x, real(PIB_eigenstates_norm(:, 2))); % Plot the real wavefunction
+plot(x, PIB_eigenstates_analytical(:, 2));
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('First Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
-% Second excited state comparison
+% Second excited state
 subplot(2, 2, 3) % Bottom Right subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 3))); % Plot the numerically determined real wavefunction
-hold on
-plot(x, PIB_eigenstates_analytical(:, 3)); % Plot the analytical wavefunction
-hold off
+plot(x, real(PIB_eigenstates_norm(:, 3))); % Plot the real wavefunction
+plot(x, PIB_eigenstates_analytical(:, 3));
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Second Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
-% Third excited state comparison
+% Third excited state
 subplot(2, 2, 4) % Bottom left subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 4))); % Plot the numerically determined real wavefunction
-hold on
-plot(x, PIB_eigenstates_analytical(:, 4)); % Plot the analytical wavefunction
-hold off
+plot(x, real(PIB_eigenstates_norm(:, 4))); % Plot the real wavefunction
+plot(x, PIB_eigenstates_analytical(:, 4));
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Third Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
 grid on; % Add a grid to the plot
