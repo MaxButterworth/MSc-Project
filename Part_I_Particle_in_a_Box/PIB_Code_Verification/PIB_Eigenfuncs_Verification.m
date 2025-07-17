@@ -56,6 +56,14 @@ for n = 1:max(basis_funcs_indices)
     PIB_eigenstates_analytical(:, n) = sqrt(2/L) * sin((n * pi * x)/L).';
 end
 
+%%%%%%%%%% Calculate the absolute error of the numerical solutions %%%%%%%%%%
+
+absolute_error = zeros(length(x), max(basis_funcs_indices)); % Initialise an array to store the errors
+
+for j = 1:length(basis_funcs_indices)
+    absolute_error(:, j) = abs(PIB_eigenstates_norm(:, j)) - abs(PIB_eigenstates_analytical(:, j));
+end
+
 %%%%%%%%%% Plot the analytical and numerical eigenstates for comparison %%%%%%%%%%
 
 figure; % Generate a figure
@@ -65,45 +73,49 @@ subplot(2, 2, 1) % Top Left subfigure
 plot(x, -real(PIB_eigenstates_norm(:, 1))); % Plot the numerically determined real wavefunction
 hold on
 plot(x, PIB_eigenstates_analytical(:, 1)); % Plot the analytical wavefunction
+plot(x, absolute_error(:, 1)); % Plot the absolute error
 hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Ground State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
+legend('Numerical Solution', 'Analytical Solution', 'Absolute Error') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
 % First excited state comparison
 subplot(2, 2, 2) % Top Left subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 2))); % Plot the numerically determined real wavefunction
+plot(x, real(PIB_eigenstates_norm(:, 2))); % Plot the numerically determined real wavefunction
 hold on
 plot(x, PIB_eigenstates_analytical(:, 2)); % Plot the analytical wavefunction
+plot(x, absolute_error(:, 2)); % Plot the absolute error
 hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('First Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
+legend('Numerical Solution', 'Analytical Solution', 'Absolute Error') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
 % Second excited state comparison
 subplot(2, 2, 3) % Bottom Right subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 3))); % Plot the numerically determined real wavefunction
+plot(x, real(PIB_eigenstates_norm(:, 3))); % Plot the numerically determined real wavefunction
 hold on
 plot(x, PIB_eigenstates_analytical(:, 3)); % Plot the analytical wavefunction
+plot(x, absolute_error(:, 3)); % Plot the absolute error
 hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Second Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
+legend('Numerical Solution', 'Analytical Solution', 'Absolute Error') % Add a legend and label the data
 grid on; % Add a grid to the plot
 
 % Third excited state comparison
 subplot(2, 2, 4) % Bottom left subfigure
-plot(x, -real(PIB_eigenstates_norm(:, 4))); % Plot the numerically determined real wavefunction
+plot(x, real(PIB_eigenstates_norm(:, 4))); % Plot the numerically determined real wavefunction
 hold on
 plot(x, PIB_eigenstates_analytical(:, 4)); % Plot the analytical wavefunction
+plot(x, absolute_error(:, 4)); % Plot the absolute error
 hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 title('Third Excited State') % Add a title
-legend('Numerical Solution', 'Analytical Solution') % Add a legend and label the data
+legend('Numerical Solution', 'Analytical Solution', 'Absolute Error') % Add a legend and label the data
 grid on; % Add a grid to the plot
