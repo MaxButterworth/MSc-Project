@@ -1,4 +1,7 @@
+% ============================================================================================================================
 %%%%%%%%%% Preamble %%%%%%%%%%
+% ============================================================================================================================
+
 % Part I - Particle in a Box Wave Packet Simulation
 % Verification of the numerical calculation of particle in a box eigenstates
 
@@ -6,9 +9,9 @@
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
 
-%%%%%%%%%%%%%%%%%%%%
-
+% ============================================================================================================================
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
+% ============================================================================================================================
 
 % Natural units have been adopted throughout
 L = 1;% Length of the 1D box
@@ -22,12 +25,16 @@ basis_funcs_indices = [1, 2, 3, 4]; % Create an array of the indices of PIB_eige
 %basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
+% ============================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
+% ============================================================================================================================
 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
+% ============================================================================================================================
 %%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
+% ============================================================================================================================
 
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
@@ -47,7 +54,9 @@ for i = 1:N_PIB_eigenfuncs
     PIB_eigenstates_norm(N_steps, i) = 0;
 end
 
+% ============================================================================================================================
 %%%%%%%%%% Generate the analytical solutions to the Schrödinger equation for the PIB %%%%%%%%%%
+% ============================================================================================================================
 
 PIB_eigenstates_analytical = zeros(length(x), max(basis_funcs_indices)); % Define an array to store the analytical PIB eigenstates
 
@@ -56,7 +65,9 @@ for n = 1:max(basis_funcs_indices)
     PIB_eigenstates_analytical(:, n) = sqrt(2/L) * sin((n * pi * x)/L).';
 end
 
+% ============================================================================================================================
 %%%%%%%%%% Calculate the absolute error of the numerical solutions %%%%%%%%%%
+% ============================================================================================================================
 
 absolute_error = zeros(length(x), max(basis_funcs_indices)); % Initialise an array to store the errors
 
@@ -64,7 +75,9 @@ for j = 1:length(basis_funcs_indices)
     absolute_error(:, j) = abs(PIB_eigenstates_norm(:, j)) - abs(PIB_eigenstates_analytical(:, j));
 end
 
+% ============================================================================================================================
 %%%%%%%%%% Plot the analytical and numerical eigenstates for comparison %%%%%%%%%%
+% ============================================================================================================================
 
 figure; % Generate a figure
 
