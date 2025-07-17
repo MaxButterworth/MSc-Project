@@ -11,7 +11,7 @@
 
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
 
-% Natural units have been used throughout
+% Natural units have been adopted throughout
 L = 1;% Length of the 1D box
 m = 1; % Mass
 h = 1; % Planck's constant in J s
