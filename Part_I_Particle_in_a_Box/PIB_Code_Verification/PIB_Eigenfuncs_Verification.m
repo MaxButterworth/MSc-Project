@@ -1,6 +1,6 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % Part I - Particle in a Box Wave Packet Simulation
-% Verification that particle in a box eigenstates have been calculated correctly
+% Verification of the numerical calculation of particle in a box eigenstates
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
