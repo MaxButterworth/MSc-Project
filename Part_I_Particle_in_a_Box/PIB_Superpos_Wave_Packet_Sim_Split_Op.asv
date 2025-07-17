@@ -19,7 +19,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -74,9 +74,7 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 %%%%%%%%%% Propagate the wave packet through time using the split operator method %%%%%%%%%%
 
 % Define kinetic and potential operators
-dk = (2 * pi)/L; % Define spacing in k-space
-k = dk * (0:N_steps-1); % Define the k-space grid
-p = hbar * k; % Calcualte the momentum at each point in k-space
+p = (2 * pi * (0:N_steps-1)/L); % Define the momentum space grid
 V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
 
 T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)).'; % Kinetic energy operator (full time step)
