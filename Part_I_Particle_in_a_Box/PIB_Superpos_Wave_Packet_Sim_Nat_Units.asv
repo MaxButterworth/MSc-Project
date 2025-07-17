@@ -23,7 +23,6 @@ basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB e
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
 travelling_wavepacket = false; % Set whether the wavepacket should have the exp(1i * k * x) factor applied
-k = (50 * pi)/L; % Set the wavenumber if travelling_wavepacket is set to true
 
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 
@@ -62,11 +61,13 @@ for l = 1:length(basis_funcs_indices)
 end
 
 % Determine whether a travelling modulated Gaussian is required or not
-if travelling_wavepacket == true % Travelling Gaussian required
+if travelling_wavepacket == true % Travelling Gaussian re
+
+    k = (50 * pi)/L; % Set the wavenumber
 
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
 
-else % Travelling Gaussian not required
+else
 
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
 
