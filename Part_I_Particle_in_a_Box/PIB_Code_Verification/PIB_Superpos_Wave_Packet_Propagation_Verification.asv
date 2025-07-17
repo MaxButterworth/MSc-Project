@@ -137,10 +137,10 @@ end
 if travelling_wavepacket == true % Travelling Gaussian required
 
     % Modulate the analytical superposition by a travelling Gaussian
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* PIB_superpos_analytical_norm;
+    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(-1i * k * x) .* PIB_superpos_analytical_norm;
 
 else % Travelling Gaussian not required
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* PIB_superpos_analytical_norm; % Modulate the superposition by a Gaussian
+    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)) .* PIB_superpos_analytical_norm; % Modulate the superposition by a Gaussian
 
 end
 
@@ -201,10 +201,10 @@ title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 4) % Bottom left subfigure
-flux_plot = plot(x, J_numerical(:, 1)); % Plot the initial numerical probability density
+flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J_numerical(:)) max(J_numerical(:))]); % Set the y-limits for convenience
+ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
@@ -216,7 +216,7 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the imaginary part of the analytical wavefunction
     set(prob_density_numerical, 'YData', abs(psi_numerical_t(:, n)).^2); % Update the numerical probability density
     set(prob_density_analytical, 'YData', abs(psi_analytical_t(:, n)).^2); % Update the analyticalprobability density
-    set(flux_plot, 'YData', J_numerical(:, n)); % Update the numerical flux plot
+    set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     pause(0.05); % Pause to create an animation
     drawnow; % Update the figures and display immediately
 end
