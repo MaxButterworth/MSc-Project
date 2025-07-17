@@ -1,6 +1,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % Part I - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
+% Propagation of the wavefunction is performed using the Crank-Nicolson Method
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
