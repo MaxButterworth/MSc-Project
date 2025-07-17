@@ -77,6 +77,7 @@ psi0_norm(N_steps) = 0;
 dk = (2 * pi)/L; % Define spacing in k-space
 k = dk * (0:N_steps-1); % Define the k-space grid
 p = hbar * k; % Calcualte the momentum at each point in k-space
+
 V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
 V(1, 1) = 1e10; % Set the potential at the x = 0 to an arbitrary large value
 V(N_steps, 1) = 1e10; % Set the potential at the x = L to an arbitrary large value
