@@ -20,6 +20,9 @@ basis_funcs_indices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; % Create an array of the 
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
+travelling_wavepacket = false; % Set whether the wavepacket should have the exp(1i * k * x) factor applied
+k = (50 * pi)/L; % Set the wavenumber if travelling_wavepacket is set to true
+
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
@@ -56,7 +59,16 @@ for l = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
+% Determine whether a travelling modulated Gaussian is required or not
+if travelling_wavepacket == true % Travelling Gaussian required
+
+    psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
+
+else % Travelling Gaussian not required
+
+    psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
+
+end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
