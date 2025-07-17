@@ -64,13 +64,11 @@ end
 
 % Determine whether a travelling modulated Gaussian is required or not
 if travelling_wavepacket == true % Travelling Gaussian required
-
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
 
 else % Travelling Gaussian not required
-
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
-
+    
 end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
