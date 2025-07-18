@@ -73,7 +73,7 @@ end
 
 % Determine whether a travelling modulated Gaussian is required or not
 if travelling_wavepacket == true % Travelling Gaussian required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
+    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
 
 else % Travelling Gaussian not required
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
@@ -132,36 +132,40 @@ for l = 1:length(basis_funcs_indices)
     PIB_superpos_analytical = PIB_superpos_analytical + (basis_funcs_coeffs(l) * sqrt(2\L) * sin((basis_funcs_indices(l) * pi * x)/L).');
 end
 
-% Determine whether a travelling modulated Gaussian is required or not
-if travelling_wavepacket == true % Travelling Gaussian required
-
-    % Modulate the analytical superposition by a travelling Gaussian
-    psi0_analytical = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* PIB_superpos_analytical;
-
-else % Travelling Gaussian not required
-    psi0_analytical = exp(-(x - x0).^2/(2 * sigma^2)).' .* PIB_superpos_analytical; % Modulate the superposition by a Gaussian
-
-end
-
 % Normalise the superposition
 psi0_analytical_norm = psi0_analytical/sqrt(trapz(x, abs(psi0_analytical).^2));
-
-E_wavepacket_analytical = 0; % Initialise the energy of the analytical superposition
-
-% Calculate the total energy of the analytical superposition
-for q = 1:length(basis_funcs_indices)
-    E_wavepacket_analytical = E_wavepacket_analytical + (basis_funcs_coeffs(q) * ((basis_funcs_indices(q)^2 * pi^2 * hbar^2)/(2 * m * L^2)));
-end
 
 psi_analytical = psi0_analytical_norm; % Set the initial wave packet
 psi_analytical_t = zeros(N_steps, N_t); % Initialise an array to store the analytical wavefunction as it evolves in time
 psi_analytical_t(:, 1) = psi_analytical; % Store the initial wave packet in the time evolution array
 
+% Determine whether a travelling modulated Gaussian is required or not
+if travelling_wavepacket == true % Travelling Gaussian required
+    gaussian_factor = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).'; % Travelling Gaussian factor
+
+else % Travelling Gaussian not required
+    gaussian_factor = exp(-(x - x0).^2/(2 * sigma^2)).'; % Stationary Gaussian factor
+
+end
+
 % Propagate the analytical wavefunction through time
 for r = 2:N_t
-    psi_analytical = psi_analytical * exp(-1i * E_wavepacket_analytical * (r-1) * dt / hbar); % Evolve the analytical wavefunction in time
-    psi_analytical = psi0_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the time-evolved wave packet
+    psi_analytical = zeros(N_steps, 1); % Reset the psi_analytical array to zero for the next time step
+
+    for s = 1:length(basis_funcs_indices)
+
+        % Propagate the wavefunction through time
+        E_n_analytical = (basis_funcs_indices(s)^2 * pi^2 * hbar^2)/(2 * m * L^2); % Find the analytical energy expression for a given eigenstate, n
+
+        % Calculate the time-evolved wavefunction
+        psi_analytical = psi_analytical + (gaussian_factor .* sin((basis_funcs_indices(s) * pi * x)/L).' * ...
+                         basis_funcs_coeffs(s) * sqrt(2\L) * exp(-1i * E_n_analytical * (r-1) * dt / hbar));
+        
+    end
+
+    psi_analytical = psi_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the time-evolved wave packet
     psi_analytical_t(:, r) = psi_analytical; % Store the time-evolved wave packet in the time evolution array
+
 end
 
 % ============================================================================================================================
