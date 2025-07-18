@@ -62,7 +62,7 @@ end
 % ============================================================================================================================
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-sigma = L/20; % Set the initial width of the wave packet
+sigma = L/5; % Set the initial width of the wave packet
 
 psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
@@ -73,10 +73,10 @@ end
 
 % Determine whether a travelling modulated Gaussian is required or not
 if travelling_wavepacket == true % Travelling Gaussian required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(-1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
+    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* psi0; % Modulate the superposition by a travelling Gaussian
 
 else % Travelling Gaussian not required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
+    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
 
 end
 
@@ -129,20 +129,22 @@ PIB_superpos_analytical = zeros(length(x), 1); % Define an array to store the th
 
 % Create an array of a superposition of analytical PIB eigenfunctions defined by basis_funcs_coeffs and basis_funcs_indices
 for l = 1:length(basis_funcs_indices)
-    PIB_superpos_analytical = PIB_superpos_analytical + (basis_funcs_coeffs(l) * sqrt(2/L) * sin((basis_funcs_indices(l) * pi * x)/L).');
-    PIB_superpos_analytical_norm = PIB_superpos_analytical/sqrt(trapz(x, abs(PIB_superpos_analytical).^2)); % Normalise the superposition
+    PIB_superpos_analytical = PIB_superpos_analytical + (basis_funcs_coeffs(l) * sqrt(2\L) * sin((basis_funcs_indices(l) * pi * x)/L).');
 end
 
 % Determine whether a travelling modulated Gaussian is required or not
 if travelling_wavepacket == true % Travelling Gaussian required
 
     % Modulate the analytical superposition by a travelling Gaussian
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* PIB_superpos_analytical_norm;
+    psi0_analytical = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* PIB_superpos_analytical;
 
 else % Travelling Gaussian not required
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* PIB_superpos_analytical_norm; % Modulate the superposition by a Gaussian
+    psi0_analytical = exp(-(x - x0).^2/(2 * sigma^2)).' .* PIB_superpos_analytical; % Modulate the superposition by a Gaussian
 
 end
+
+% Normalise the superposition
+psi0_analytical_norm = psi0_analytical/sqrt(trapz(x, abs(psi0_analytical).^2));
 
 E_eigenfunc_analytical = 0; % Initialise the energy of the analytical superposition
 
@@ -151,7 +153,7 @@ for q = 1:length(basis_funcs_indices)
     E_eigenfunc_analytical = E_eigenfunc_analytical + (basis_funcs_coeffs(q) * ((basis_funcs_indices(q)^2 * pi^2 * hbar^2)/(2 * m * L^2)));
 end
 
-psi_analytical = PIB_superpos_analytical_norm; % Set the initial wave packet
+psi_analytical = psi0_analytical_norm; % Set the initial wave packet
 psi_analytical_t = zeros(N_steps, N_t); % Initialise an array to store the analytical wavefunction as it evolves in time
 psi_analytical_t(:, 1) = psi_analytical; % Store the initial wave packet in the time evolution array
 

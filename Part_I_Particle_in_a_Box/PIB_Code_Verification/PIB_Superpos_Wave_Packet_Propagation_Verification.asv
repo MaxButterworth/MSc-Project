@@ -79,7 +79,7 @@ else % Travelling Gaussian not required
     psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
 
 end
-
+plot(x, psi0)
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
 % ============================================================================================================================
@@ -130,22 +130,24 @@ PIB_superpos_analytical = zeros(length(x), 1); % Define an array to store the th
 % Create an array of a superposition of analytical PIB eigenfunctions defined by basis_funcs_coeffs and basis_funcs_indices
 for l = 1:length(basis_funcs_indices)
     PIB_superpos_analytical = PIB_superpos_analytical + (basis_funcs_coeffs(l) * sqrt(2/L) * sin((basis_funcs_indices(l) * pi * x)/L).');
-    PIB_superpos_analytical_norm = PIB_superpos_analytical/sqrt(trapz(x, abs(PIB_superpos_analytical).^2)); % Normalise the superposition
 end
+plot(x, PIB_superpos_analytical)
+% Normalise the superposition
+PIB_superpos_analytical_norm = PIB_superpos_analytical/sqrt(trapz(x, abs(PIB_superpos_analytical).^2));
 
 % Determine whether a travelling modulated Gaussian is required or not
 if travelling_wavepacket == true % Travelling Gaussian required
 
     % Modulate the analytical superposition by a travelling Gaussian
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(-1i * k * x) .* PIB_superpos_analytical_norm;
+    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x) .* PIB_superpos_analytical_norm;
 
 else % Travelling Gaussian not required
-    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)) .* PIB_superpos_analytical_norm; % Modulate the superposition by a Gaussian
+    PIB_superpos_analytical_norm = exp(-(x - x0).^2/(2 * sigma^2)).' .* PIB_superpos_analytical_norm; % Modulate the superposition by a Gaussian
 
 end
 
 E_eigenfunc_analytical = 0; % Initialise the energy of the analytical superposition
-
+plot(x, PIB_superpos_analytical_norm)
 % Calculate the total energy of the analytical superposition
 for q = 1:length(basis_funcs_indices)
     E_eigenfunc_analytical = E_eigenfunc_analytical + (basis_funcs_coeffs(q) * ((basis_funcs_indices(q)^2 * pi^2 * hbar^2)/(2 * m * L^2)));
@@ -201,10 +203,10 @@ title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 4) % Bottom left subfigure
-flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
+flux_plot = plot(x, J_numerical(:, 1)); % Plot the initial numerical probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+ylim([min(J_numerical(:)) max(J_numerical(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
@@ -216,7 +218,7 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the imaginary part of the analytical wavefunction
     set(prob_density_numerical, 'YData', abs(psi_numerical_t(:, n)).^2); % Update the numerical probability density
     set(prob_density_analytical, 'YData', abs(psi_analytical_t(:, n)).^2); % Update the analyticalprobability density
-    set(flux_plot, 'YData', J(:, n)); % Update the flux plot
+    set(flux_plot, 'YData', J_numerical(:, n)); % Update the numerical flux plot
     pause(0.05); % Pause to create an animation
     drawnow; % Update the figures and display immediately
 end
