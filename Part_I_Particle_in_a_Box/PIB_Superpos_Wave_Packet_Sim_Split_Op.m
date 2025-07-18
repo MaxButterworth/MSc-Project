@@ -19,7 +19,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -43,8 +43,8 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 PIB_eigenstates_norm = zeros(N_steps, N_PIB_eigenfuncs); % Set up an array to store normalised PIB eigenfunctions
 
 % Normalise eigenvectors
-for m = 1:N_PIB_eigenfuncs
-    PIB_eigenstates_norm(:, m) = PIB_eigenstates(:, m)/sqrt(trapz(x, abs(PIB_eigenstates(:, m)).^2));
+for i = 1:N_PIB_eigenfuncs
+    PIB_eigenstates_norm(:, i) = PIB_eigenstates(:, i)/sqrt(trapz(x, abs(PIB_eigenstates(:, i)).^2));
 end
 
 %%%%%%%%%% Generate an initial wave packet composed of a superposition of PIB eigenfunctions modulated by a Gaussian %%%%%%%%%%

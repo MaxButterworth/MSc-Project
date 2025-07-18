@@ -46,8 +46,8 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 PIB_eigenstates_norm = zeros(N_steps, N_PIB_eigenfuncs); % Set up an array to store normalised PIB eigenfunctions
 
 % Normalise eigenvectors
-for m = 1:N_PIB_eigenfuncs
-    PIB_eigenstates_norm(:, m) = PIB_eigenstates(:, m)/sqrt(trapz(x, abs(PIB_eigenstates(:, m)).^2));
+for i = 1:N_PIB_eigenfuncs
+    PIB_eigenstates_norm(:, i) = PIB_eigenstates(:, i)/sqrt(trapz(x, abs(PIB_eigenstates(:, i)).^2));
 end
 
 %%%%%%%%%% Generate an initial wave packet composed of a superposition of PIB eigenfunctions modulated by a Gaussian %%%%%%%%%%
