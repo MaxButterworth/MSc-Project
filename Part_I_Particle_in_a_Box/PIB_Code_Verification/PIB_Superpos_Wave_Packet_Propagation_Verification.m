@@ -157,7 +157,7 @@ for r = 2:N_t
         % Propagate the wavefunction through time
         E_n_analytical = (basis_funcs_indices(s)^2 * pi^2 * hbar^2)/(2 * m * L^2); % Find the analytical energy expression for a given eigenstate, n
 
-        % Calculate the time-evolved wavefunction
+        % Calculate the time-evolved wave packet
         psi_analytical = psi_analytical + (gaussian_factor .* sin((basis_funcs_indices(s) * pi * x)/L).' * ...
                          basis_funcs_coeffs(s) * sqrt(2\L) * exp(-1i * E_n_analytical * (r-1) * dt / hbar));
         
