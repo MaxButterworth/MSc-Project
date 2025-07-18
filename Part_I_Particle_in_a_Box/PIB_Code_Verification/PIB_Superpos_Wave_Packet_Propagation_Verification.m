@@ -4,7 +4,7 @@
 
 % Part I - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
-% Verification of the time propagation of Gaussian wave packets using the Crank-Nicolson method
+% Verification of the time propagation of PIB eigenstates using the Crank-Nicolson method
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -71,14 +71,14 @@ for j = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(j) * PIB_eigenstates_norm(:, basis_funcs_indices(j)));
 end
 
-% Determine whether a travelling modulated Gaussian is required or not
-if travelling_wavepacket == true % Travelling Gaussian required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
-
-else % Travelling Gaussian not required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
-
-end
+% % Determine whether a travelling modulated Gaussian is required or not
+% if travelling_wavepacket == true % Travelling Gaussian required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
+% 
+% else % Travelling Gaussian not required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
+% 
+% end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
@@ -125,11 +125,11 @@ end
 % ============================================================================================================================
 
 % Generate the analytical solutions to the Schrödinger equation for the PIB
-PIB_superpos_analytical = zeros(length(x), 1); % Define an array to store the the superposition of analytical PIB eigenstates
+psi0_analytical = zeros(length(x), 1); % Define an array to store the the superposition of analytical PIB eigenstates
 
 % Create an array of a superposition of analytical PIB eigenfunctions defined by basis_funcs_coeffs and basis_funcs_indices
 for l = 1:length(basis_funcs_indices)
-    PIB_superpos_analytical = PIB_superpos_analytical + (basis_funcs_coeffs(l) * sqrt(2\L) * sin((basis_funcs_indices(l) * pi * x)/L).');
+    psi0_analytical = psi0_analytical + (basis_funcs_coeffs(l) * sqrt(2\L) * sin((basis_funcs_indices(l) * pi * x)/L).');
 end
 
 % Normalise the superposition
@@ -139,28 +139,20 @@ psi_analytical = psi0_analytical_norm; % Set the initial wave packet
 psi_analytical_t = zeros(N_steps, N_t); % Initialise an array to store the analytical wavefunction as it evolves in time
 psi_analytical_t(:, 1) = psi_analytical; % Store the initial wave packet in the time evolution array
 
-% Determine whether a travelling modulated Gaussian is required or not
-if travelling_wavepacket == true % Travelling Gaussian required
-    gaussian_factor = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).'; % Travelling Gaussian factor
-
-else % Travelling Gaussian not required
-    gaussian_factor = exp(-(x - x0).^2/(2 * sigma^2)).'; % Stationary Gaussian factor
-
-end
-
-% Propagate the analytical wavefunction through time
+%Propagate the analytical wavefunction through time
 for r = 2:N_t
     psi_analytical = zeros(N_steps, 1); % Reset the psi_analytical array to zero for the next time step
 
     for s = 1:length(basis_funcs_indices)
 
         % Propagate the wavefunction through time
-        E_n_analytical = (basis_funcs_indices(s)^2 * pi^2 * hbar^2)/(2 * m * L^2); % Find the analytical energy expression for a given eigenstate, n
+        phi_n = sqrt(2/L) .* sin((basis_funcs_indices(s) * pi * x)/L).'; % Define the nth eigenstate of the PIB Hamiltonian modulated by a Gaussian
+
+        E_analytical = trapz(x, (-(hbar^2/(2*m)) * (conj(phi_n) .* (laplacian * phi_n))));
 
         % Calculate the time-evolved wave packet
-        psi_analytical = psi_analytical + (gaussian_factor .* sin((basis_funcs_indices(s) * pi * x)/L).' * ...
-                         basis_funcs_coeffs(s) * sqrt(2\L) * exp(-1i * E_n_analytical * (r-1) * dt / hbar));
-        
+        psi_analytical = psi_analytical + (basis_funcs_coeffs(s) * exp(-1i * E_analytical * (r-1) * dt / hbar) * phi_n);
+
     end
 
     psi_analytical = psi_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the time-evolved wave packet
