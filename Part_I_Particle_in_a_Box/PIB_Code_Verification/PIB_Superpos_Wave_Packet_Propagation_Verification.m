@@ -160,6 +160,7 @@ psi_analytical_t(:, 1) = psi_analytical; % Store the initial wave packet in the 
 % Propagate the analytical wavefunction through time
 for r = 2:N_t
     psi_analytical = psi_analytical * exp(-1i * E_eigenfunc_analytical * (r-1) * dt / hbar); % Evolve the analytical wavefunction in time
+    psi_analytical = psi0_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the time-evolved wave packet
     psi_analytical_t(:, r) = psi_analytical; % Store the time-evolved wave packet in the time evolution array
 end
 
