@@ -1,4 +1,7 @@
+% ======================================================================================================================================
 %%%%%%%%%% Preamble %%%%%%%%%%
+% ======================================================================================================================================
+
 % Part I - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
 % Time Propagation conducted with the split operator method with an approximated potential
@@ -7,9 +10,9 @@
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
 
-%%%%%%%%%%%%%%%%%%%%
-
+% ======================================================================================================================================
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
+% ======================================================================================================================================
 
 % Natural units have been adopted throughout
 L = 1;% Length of the 1D box
@@ -23,7 +26,9 @@ basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenst
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
+% ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
+% ======================================================================================================================================
 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
@@ -31,7 +36,9 @@ dx = x(2) - x(1); % Calculate the spatial step size
 dt = 1e-3; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
+% ======================================================================================================================================
 %%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
+% ======================================================================================================================================
 
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
@@ -47,7 +54,9 @@ for i = 1:N_PIB_eigenfuncs
     PIB_eigenstates_norm(:, i) = PIB_eigenstates(:, i)/sqrt(trapz(x, abs(PIB_eigenstates(:, i)).^2));
 end
 
+% ======================================================================================================================================
 %%%%%%%%%% Generate an initial wave packet composed of a superposition of PIB eigenfunctions modulated by a Gaussian %%%%%%%%%%
+% ======================================================================================================================================
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wave packet
@@ -63,7 +72,9 @@ psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by 
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
+% ======================================================================================================================================
 %%%%%%%%%% Impose boundary conditions %%%%%%%%%%
+% ======================================================================================================================================
 
 % Set the wavefunction to zero at the boundaries
 psi0_norm(1) = 0;
@@ -71,7 +82,9 @@ psi0_norm(N_steps) = 0;
 
 %x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
+% ======================================================================================================================================
 %%%%%%%%%% Propagate the wave packet through time using the split operator method %%%%%%%%%%
+% ======================================================================================================================================
 
 % Define kinetic and potential operators
 dk = (2 * pi)/L; % Define spacing in k-space
@@ -110,7 +123,9 @@ for t = 2:N_t
     J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
+% ======================================================================================================================================
 %%%%%%%%%% Plot the time evolution of the wave packet, probability density, and flux %%%%%%%%%%
+% ======================================================================================================================================
 
 figure; % Generate a figure
 
