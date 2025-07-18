@@ -146,11 +146,11 @@ end
 % Normalise the superposition
 psi0_analytical_norm = psi0_analytical/sqrt(trapz(x, abs(psi0_analytical).^2));
 
-E_eigenfunc_analytical = 0; % Initialise the energy of the analytical superposition
+E_wavepacket_analytical = 0; % Initialise the energy of the analytical superposition
 
 % Calculate the total energy of the analytical superposition
 for q = 1:length(basis_funcs_indices)
-    E_eigenfunc_analytical = E_eigenfunc_analytical + (basis_funcs_coeffs(q) * ((basis_funcs_indices(q)^2 * pi^2 * hbar^2)/(2 * m * L^2)));
+    E_wavepacket_analytical = E_wavepacket_analytical + (basis_funcs_coeffs(q) * ((basis_funcs_indices(q)^2 * pi^2 * hbar^2)/(2 * m * L^2)));
 end
 
 psi_analytical = psi0_analytical_norm; % Set the initial wave packet
@@ -159,7 +159,7 @@ psi_analytical_t(:, 1) = psi_analytical; % Store the initial wave packet in the 
 
 % Propagate the analytical wavefunction through time
 for r = 2:N_t
-    psi_analytical = psi_analytical * exp(-1i * E_eigenfunc_analytical * (r-1) * dt / hbar); % Evolve the analytical wavefunction in time
+    psi_analytical = psi_analytical * exp(-1i * E_wavepacket_analytical * (r-1) * dt / hbar); % Evolve the analytical wavefunction in time
     psi_analytical = psi0_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the time-evolved wave packet
     psi_analytical_t(:, r) = psi_analytical; % Store the time-evolved wave packet in the time evolution array
 end
