@@ -2,8 +2,8 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part I - Particle in a Box Wave Packet Simulation
-% Superposition of particle in a box eigenstates modulated by a Gaussian
+% Part Ia - Quantum Harmonic Oscillator Wave Packet Simulation
+% Superposition of quantum harmonic oscillator eigenstates modulated by a Gaussian
 % Time Propagation conducted with the split operator method
 
 % Author: Max L Butterworth
@@ -42,7 +42,11 @@ N_t = 1000; % Define the number of time steps to simulate
 
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
-H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
+
+force_const = 1; % Define the force constant for the QHO
+V = 0.5 * force_const * x.^2; % Define the potential energy array for a QHO
+
+H = (-((hbar^2)/(2*m)) * laplacian) + V; % Define the Hamiltonian operator
 
 % Find the eigenvalues and eigenvectors of the Hamiltonian matrix
 [PIB_eigenstates, E_PIB] = eigs(H, N_PIB_eigenfuncs, 'smallestabs');
@@ -91,8 +95,6 @@ dk = pi/L; % Define spacing in k-space
 %k = dk * vertcat((0:(N_steps/2)-1).', (-(N_steps/2):(-1)).'); % Define the k-space grid
 k = dk * (0:N_steps-1).';
 p = hbar * k; % Calcualte the momentum at each point in k-space
-
-V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
 
 T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)); % Kinetic energy operator (full time step)
 V_op = exp(-(1i * V * dt)/(2 * hbar)); % Potential energy operator (half time step)
