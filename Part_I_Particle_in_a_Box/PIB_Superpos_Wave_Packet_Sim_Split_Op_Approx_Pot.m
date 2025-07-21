@@ -68,7 +68,7 @@ for l = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
@@ -92,7 +92,7 @@ k = dk * (0:N_steps-1); % Define the k-space grid
 p = hbar * k; % Calcualte the momentum at each point in k-space
 
 V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
-V(1, 1) = 1e10; % Set the potential at the x = 0 to an arbitrary large value
+V(1, 1) = 500; % Set the potential at the x = 0 to an arbitrary large value
 V(N_steps, 1) = 1e10; % Set the potential at the x = L to an arbitrary large value
 
 T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)).'; % Kinetic energy operator (full time step)
@@ -115,8 +115,8 @@ for t = 2:N_t
     psi = ifft(psi_k); % Inverse Fourier transform into real space
     psi = V_op .* psi; % Operate a half time step in real space
 
-    psi(1, 1) = 0; % Impose boundary condition at x = 0
-    psi(N_steps, 1) = 0; % Impose boundary condition at x = L
+    %psi(1, 1) = 0; % Impose boundary condition at x = 0
+    %psi(N_steps, 1) = 0; % Impose boundary condition at x = L
     psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
 
     psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
