@@ -22,7 +22,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -33,7 +33,7 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-3; % Define the time step size
+dt = 1e-2; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
@@ -59,7 +59,7 @@ end
 % ======================================================================================================================================
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-sigma = L/20; % Set the initial width of the wave packet
+sigma = L/5; % Set the initial width of the wave packet
 
 psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
@@ -68,7 +68,7 @@ for l = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
-psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* psi0; % Modulate the superposition by a Gaussian
+psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
@@ -87,14 +87,14 @@ x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary co
 % ======================================================================================================================================
 
 % Define kinetic and potential operators
-dk = (2 * pi)/L; % Define spacing in k-space
-k = dk * (0:N_steps-1); % Define the k-space grid
-%k = fftshift(-N_steps/2:N_steps/2-1) * dk; % Define the k-space grid
+dk = pi/N_steps; % Define spacing in k-space
+k = dk * vertcat((0:(N_steps/2)-1).', (-(N_steps/2):(-1)).'); % Define the k-space grid
+%k = dk * (0:N_steps-1).';
 p = hbar * k; % Calcualte the momentum at each point in k-space
 
 V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
 
-T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)).'; % Kinetic energy operator (full time step)
+T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)); % Kinetic energy operator (full time step)
 V_op = exp(-(1i * V * dt)/(2 * hbar)); % Potential energy operator (half time step)
 
 % Initialise arrays to store fluxes and a first derivativ operator to calculate the fluxes
@@ -102,20 +102,26 @@ J = zeros(N_steps, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Define a first derivative operator using the finite difference method
 
 % Set up the wave packet on the internal coordinates for propagation
-psi = psi0_norm(:); % Set the initial value of the wavefunction
+psi = psi0_norm; % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
 psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
-% Propagate the wave packet defined on the internal coordinates
+% Propagate the wave packet
 for t = 2:N_t
     psi = V_op .* psi; % Operate a half time step in real space
     psi_k = fft(psi); % Fourier transform the wavefunction into k-space
+    
+    %psi_k = 1/sqrt(2 * pi) * trapz(x, psi .* exp(-1i * k .* x.'));
+
     psi_k = T_op .* psi_k; % Operate a full time step in k-space
     psi = ifft(psi_k); % Inverse Fourier transform into real space
+
+    %psi = 1/sqrt(2 * pi) * trapz(k, psi_k .* exp(1i * k .* x.'));
+
     psi = V_op .* psi; % Operate a half time step in real space
 
-    psi(1, 1) = 0; % Impose boundary condition at x = 0
-    psi(N_steps, 1) = 0; % Impose boundary condition at x = L
+    %psi(1, 1) = 0; % Impose boundary condition at x = 0
+    %psi(N_steps, 1) = 0; % Impose boundary condition at x = L
     psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
 
     psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
