@@ -22,7 +22,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -94,7 +94,7 @@ p = hbar * k; % Calcualte the momentum at each point in k-space
 T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)); % Kinetic energy operator (full time step)
 V_op = exp(-(1i * V_vector * dt)/(2 * hbar)); % Potential energy operator (half time step)
 
-% Initialise arrays to store fluxes and a first derivativ operator to calculate the fluxes
+% Initialise arrays to store fluxes and a first derivative operator to calculate the fluxes
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Define a first derivative operator using the finite difference method
 
