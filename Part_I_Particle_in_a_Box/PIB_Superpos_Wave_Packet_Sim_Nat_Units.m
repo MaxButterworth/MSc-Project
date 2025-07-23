@@ -3,7 +3,7 @@
 % ======================================================================================================================================
 
 % Part I - Particle in a Box Wave Packet Simulation
-% Superposition of particle in a box eigenstates modulated by a Gaussian
+% Superposition of particle in a box eigenstates to generate a wave packet
 % Propagation of the wavefunction is performed using the Crank-Nicolson Method
 
 % Author: Max L Butterworth
@@ -22,7 +22,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -71,14 +71,14 @@ for l = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
-% Determine whether a travelling modulated Gaussian is required or not
-if travelling_wavepacket == true % Travelling Gaussian required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
-
-else % Travelling Gaussian not required
-    psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
-
-end
+% % Determine whether a travelling modulated Gaussian is required or not
+% if travelling_wavepacket == true % Travelling Gaussian required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
+% 
+% else % Travelling Gaussian not required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
+% 
+% end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
