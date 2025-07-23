@@ -20,7 +20,8 @@ hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points for the x-axis
 
 k = 10; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
-barrier_height = 30; % Set the magnitude of the potential step height
+barrier_height = 30; % Set the magnitude of the potential barrier height
+barrier_width = 51; % Set the barrier width in units of dx
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -39,7 +40,18 @@ N_t = 1000; % Define the number of time steps to simulate
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 
-V_vector = [zeros(N_steps/2, 1); repmat(barrier_height, (N_steps/2), 1)]; % Define the potential energy accross the x-domain; potential step at halfway accross domain
+if rem(barrier_width, 2) == 0 % If the barrier width is even
+
+    % Define the potential energy accross the x-domain; potential step at halfway accross domain
+    V_vector = [zeros((N_steps - barrier_width)/2, 1); repmat(barrier_height, barrier_width, 1); zeros((N_steps - barrier_width)/2, 1)];
+
+else
+
+    % Define the potential energy accross the x-domain; potential step at halfway accross domain
+    V_vector = [zeros((N_steps - barrier_width + 1)/2, 1); repmat(barrier_height, barrier_width, 1); zeros((N_steps - barrier_width - 1)/2, 1)];
+
+end
+
 V_matrix = diag(V_vector); % Define a diagonal potential matrix
 
 H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operator
@@ -93,7 +105,7 @@ grid on; % Add a grid to the plot
 
 subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-xline(x(N_steps/2), color='red', LineWidth=2) % Add a line to show the potential step location
+xline(x((N_steps/2)), color='red', LineWidth=2) % Add a line to show the potential step location
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
