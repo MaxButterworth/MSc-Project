@@ -2,10 +2,9 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part I - Particle in a Box Wave Packet Simulation
-% Superposition of particle in a box eigenstates modulated by a Gaussian
-% Time Propagation conducted with the split operator method with an approximated potential
-
+% Part Ia - Particle in a Box Wave Packet Simulation
+% Superposition of particle in a box eigenstates to generate a wave packet
+% Propagation of the wavefunction is performed using the Crank-Nicolson Method
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
@@ -14,17 +13,19 @@
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
 % ======================================================================================================================================
 
-% Natural units have been adopted throughout
-L = 1;% Length of the 1D box
-m = 1; % Mass
-h = 1; % Planck's constant in J s
-hbar = 1; % Definition of h bar
+L = 1e-10; % Length of the 1D box in m
+m = 9.110e-31; % Mass of electron in kg
+h = 6.626e-34; % Planck's constant in J s
+hbar = h/(2*pi); % Definition of h bar
 
-N_steps = 1000; % Number of discretisation points on the x-axis
+N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
+
+% travelling_wavepacket = false; % Set whether the wavepacket should have the exp(1i * k * x) factor applied
+% k = (50 * pi)/L; % Set the wavenumber if travelling_wavepacket is set to true
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -33,11 +34,11 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-3; % Define the time step size
+dt = 1e-18; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
-%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
+%%%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
 % ======================================================================================================================================
 
 % Construct the Hamiltonian inside the infinite potential well
@@ -50,8 +51,8 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 PIB_eigenstates_norm = zeros(N_steps, N_PIB_eigenfuncs); % Set up an array to store normalised PIB eigenfunctions
 
 % Normalise eigenvectors
-for i = 1:N_PIB_eigenfuncs
-    PIB_eigenstates_norm(:, i) = PIB_eigenstates(:, i)/sqrt(trapz(x, abs(PIB_eigenstates(:, i)).^2));
+for m = 1:N_PIB_eigenfuncs
+    PIB_eigenstates_norm(:, m) = PIB_eigenstates(:, m)/sqrt(trapz(x, abs(PIB_eigenstates(:, m)).^2));
 end
 
 % ======================================================================================================================================
@@ -68,6 +69,15 @@ for l = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
+% % Determine whether a travelling modulated Gaussian is required or not
+% if travelling_wavepacket == true % Travelling Gaussian required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
+% 
+% else % Travelling Gaussian not required
+%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
+% 
+% end
+
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
 % ======================================================================================================================================
@@ -77,89 +87,77 @@ psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian 
 % Set the wavefunction to zero at the boundaries
 psi0_norm(1) = 0;
 psi0_norm(N_steps) = 0;
+psi0_norm = sparse(psi0_norm); % Define the initial wavefunction as a sparse matrix to speed up the calculation
 
-%x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
+H = H(2:N_steps-1, 2:N_steps-1); % Impose boundary conditions: psi(0) = psi(L) = 0
+H = sparse(H); % Define the Hamiltonian as a sparse matrix to speed up the calcualtion
+
+x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
 % ======================================================================================================================================
-%%%%%%%%%% Propagate the wave packet through time using the split operator method %%%%%%%%%%
+%%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
 % ======================================================================================================================================
 
-% Define kinetic and potential operators
-dk = (2 * pi)/L; % Define spacing in k-space
-k = dk * (0:N_steps-1); % Define the k-space grid
-p = hbar * k; % Calcualte the momentum at each point in k-space
-
-V = zeros(N_steps, 1); % Define the potential energy array (zero for all 0 < x < L for particle in a box)
-V(1, 1) = 500; % Set the potential at the x = 0 to an arbitrary large value
-V(N_steps, 1) = 1e10; % Set the potential at the x = L to an arbitrary large value
-
-T_op = exp(-(1i * (p.^2) * dt)/(2 * m * hbar)).'; % Kinetic energy operator (full time step)
-V_op = exp(-(1i * V * dt)/(2 * hbar)); % Potential energy operator (half time step)
-
-% Initialise arrays to store fluxes and a first derivativ operator to calculate the fluxes
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Define a first derivative operator using the finite difference method
+first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2)/dx;
 
-% Set up the wave packet
-psi = psi0_norm(:, 1); % Set the initial value of the wavefunction
+psi = psi0_norm(2:N_steps-1); % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
-psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
+psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
 
-% Propagate the wave packet
-for t = 2:N_t
-    psi = V_op .* psi; % Operate a half time step in real space
-    psi_k = fft(psi); % Fourier transform the wavefunction into k-space
-    psi_k = T_op .* psi_k; % Operate a full time step in k-space
-    psi = ifft(psi_k); % Inverse Fourier transform into real space
-    psi = V_op .* psi; % Operate a half time step in real space
+% Pre-compute matrices required for the Crank-Nicolson method
+A = speye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
+B = speye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
 
-    %psi(1, 1) = 0; % Impose boundary condition at x = 0
-    %psi(N_steps, 1) = 0; % Impose boundary condition at x = L
-    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
-
-    psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
+for t = 2:N_t % Loop over all time steps
+    psi = A \ (B * psi); % Evolve the wavefunction over time
+    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
+    psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
+    J(2:N_steps - 1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
 % ======================================================================================================================================
 %%%%%%%%%% Plot the time evolution of the wave packet, probability density, and flux %%%%%%%%%%
 % ======================================================================================================================================
 
+x_ang = x * 1e10; % Generate an array of x-values in angstroms
+
 figure; % Generate a figure
 
 subplot(2, 2, 1) % Top Left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
+xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 3) % Bottom Right subfigure
-prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
+xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 4) % Bottom left subfigure
-flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+flux_plot = plot(x_ang, J(:, 1)); % Plot the initial probability density
+xlabel('$x\ (\AA)$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
+
 for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction

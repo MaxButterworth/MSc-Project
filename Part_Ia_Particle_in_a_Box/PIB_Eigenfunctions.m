@@ -2,7 +2,7 @@
 %%%%% Preamble %%%%%
 % ======================================================================================================================================
 
-% Part I - Particle in a Box Eigenfunction Determination
+% Part Ia - Particle in a Box Eigenfunction Determination
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
