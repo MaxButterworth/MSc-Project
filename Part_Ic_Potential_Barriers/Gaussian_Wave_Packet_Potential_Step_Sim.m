@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Free Particle Wave Packet Simulation
+% Part Ic - Free Particle Gaussian Wave Packet Simulation
 % Free particle Gaussian wave packet
 
 % Author: Max L Butterworth
@@ -10,16 +10,17 @@
 % University of Oxford
 
 % ======================================================================================================================================
-%%%%%%%%%% Define constants %%%%%%%%%%
+%%%%%%%%%% Define constants and variables %%%%%%%%%%
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 5; % Length of the 1D box in m
+L = 50; % Length of the 1D box in m
 m = 1; % Mass of electron in kg
 h = 1; % Planck's constant in Js
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
-% N_superposition = 100; % The number of basis functions in the wave packet superposition
+
+k = 0; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -39,50 +40,37 @@ N_t = 1000; % Define the number of time steps to simulate
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
+
+
 % ======================================================================================================================================
 %%%%%%%%%% Generate an initial wave packet composed of one plane wave modulated by a Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
-k = 0; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-sigma = L/20; % Set the initial width of the wave packet
+sigma = L/100; % Set the initial width of the wave packet
 psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wave packet
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
-
-% ======================================================================================================================================
-%%%%%%%%%% Impose boundary conditions %%%%%%%%%%
-% ======================================================================================================================================
-
-% Set the wavefunction to zero at the boundaries
-psi0_norm(1) = 0;
-psi0_norm(N_steps) = 0;
-psi0_norm = sparse(psi0_norm); % Define the initial wavefunction as a sparse matrix to speed up the calculation
-
-H = H(2:N_steps-1, 2:N_steps-1); % Impose boundary conditions: psi(0) = psi(L) = 0
-H = sparse(H); % Define the Hamiltonian as a sparse matrix to speed up the calcualtion
-
-x_internal = x(2:N_steps - 1); % Truncate the x array to account for boundary conditions
 
 % ======================================================================================================================================
 %%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
 % ======================================================================================================================================
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps-2, N_steps-2);
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps);
 
-psi = psi0_norm(2:N_steps-1).'; % Set the initial value of the wavefunction
+psi = psi0_norm(1:N_steps).'; % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
-psi_t(2:N_steps-1, 1) = psi; % Store the initial wavefunction in the time evolution array
+psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
 % Pre-compute matrices required for the Crank-Nicolson method
-A = eye(N_steps-2) + (((1i * dt)/(2 * hbar)) * H);
-B = eye(N_steps-2) - (((1i * dt)/(2 * hbar)) * H);
+A = eye(N_steps) + (((1i * dt)/(2 * hbar)) * H);
+B = eye(N_steps) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
     psi = A \ (B * psi); % Evolve the wavefunction over time
-    psi = psi/sqrt(trapz(x_internal, abs(psi).^2)); % Normalise the time-evolved wavefunction
-    psi_t(2:N_steps-1, t) = psi; % Store the time-evolved wavefunction in the time evolution array
-    J(2:N_steps-1, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
+    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
+    psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
+    J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
 % ======================================================================================================================================
@@ -122,7 +110,6 @@ subplot(2, 2, 4) % Bottom right subfigure
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
