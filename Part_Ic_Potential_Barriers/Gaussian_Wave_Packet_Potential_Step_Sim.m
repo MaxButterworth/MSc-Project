@@ -13,11 +13,11 @@
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 100; % Length of the 1D box in m
-m = 1; % Mass of electron in kg
-h = 1; % Planck's constant in Js
+L = 100; % Length of the 1D box
+m = 1; % Mass of electron
+h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 1000; % Number of discretisation points
+N_steps = 1000; % Number of discretisation points for the x-axis
 
 k = 10; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
 barrier_height = 30; % Set the magnitude of the potential step height
