@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ia - Quantum Harmonic Oscillator Wave Packet Simulation
+% Part Ib - Quantum Harmonic Oscillator Wave Packet Simulation
 % Superposition of quantum harmonic oscillator eigenstates
 % Time Propagation conducted with the split operator method
 
@@ -22,7 +22,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 10000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -125,6 +125,7 @@ subplot(2, 2, 1) % Top Left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
+xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -133,6 +134,7 @@ subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
+xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -141,6 +143,7 @@ subplot(2, 2, 3) % Bottom left subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
+xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
@@ -149,6 +152,7 @@ subplot(2, 2, 4) % Bottom right subfigure
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
+xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
