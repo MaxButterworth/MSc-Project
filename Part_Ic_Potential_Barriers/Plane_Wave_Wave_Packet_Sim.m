@@ -13,10 +13,11 @@
 %%%%%%%%%% Define constants %%%%%%%%%%
 % ======================================================================================================================================
 
-L = 1e-10; % Length of the 1D box in m
-m = 9.110e-31; % Mass of electron in kg
-h = 6.626e-34; % Planck's constant in Js
-hbar = h/(2*pi); % Definition of h bar
+% Natural units adopted throughout
+L = 5; % Length of the 1D box in m
+m = 1; % Mass of electron in kg
+h = 1; % Planck's constant in Js
+hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 % N_superposition = 100; % The number of basis functions in the wave packet superposition
 
@@ -27,7 +28,7 @@ N_steps = 1000; % Number of discretisation points
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-20; % Define the time step size
+dt = 1e-2; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
@@ -42,7 +43,7 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 %%%%%%%%%% Generate an initial wave packet composed of one plane wave modulated by a Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
-k = (50 * pi)/L; % Set the wavenumber
+k = 0; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/20; % Set the initial width of the wave packet
 psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wave packet
@@ -88,30 +89,31 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-x_ang = x * 1e10; % Generate an array of x-values in angstroms
-
 figure; % Generate a figure
 
 subplot(1, 3, 1) % Left subfigure
-real_wavefunction = plot(x_ang, real(psi_t(:, 1))); % Plot the real wavefunction
-xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(1, 3, 2) % Middle subfigure
-imag_wavefunction = plot(x_ang, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits foe convenience
+xlim([min(x) max(x)]) % Set the y-limits for convenience
+ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(1, 3, 3) % Right subfigure
-prob_density = plot(x_ang, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-xlabel('$x\ (\AA)$', 'Interpreter','latex'); % Label the x-axis
+prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
+xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
+xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
