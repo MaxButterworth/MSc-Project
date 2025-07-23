@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Free Particle Gaussian Wave Packet incident on a Potential step Simulation
+% Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Step Simulation
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
