@@ -13,14 +13,14 @@
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 100; % Length of the 1D box in m
+L = 50; % Length of the 1D box in m
 m = 1; % Mass of electron in kg
 h = 1; % Planck's constant in Js
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
 k = 10; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
-barrier_height = 30; % Set the magnitude of the potential step height
+barrier_height = 100; % Set the magnitude of the potential step height
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
