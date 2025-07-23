@@ -2,8 +2,9 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ia - Particle in a Box Wave Packet Simulation
-% Superposition of a free particle eigenstates modulated by a Gaussian
+% Part Ic - Particle in a Box Wave Packet Simulation
+% Free particle Gaussian wave packet
+
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
