@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Particle in a Box Wave Packet Simulation
+% Part Ic - Free Particle Wave Packet Simulation
 % Free particle Gaussian wave packet
 
 % Author: Max L Butterworth
@@ -18,7 +18,7 @@ m = 9.110e-31; % Mass of electron in kg
 h = 6.626e-34; % Planck's constant in Js
 hbar = h/(2*pi); % Definition of h bar
 N_steps = 1000; % Number of discretisation points
-N_superposition = 100; % The number of basis functions in the wave packet superposition
+% N_superposition = 100; % The number of basis functions in the wave packet superposition
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
