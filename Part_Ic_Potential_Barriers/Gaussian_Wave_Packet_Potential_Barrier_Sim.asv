@@ -101,9 +101,7 @@ figure; % Generate a figure
 
 subplot(2, 2, 1) % Top left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
-rectangle('Position', [x(lower_index), min(real(psi_t(:))), (barrier_width * dx), ...
-         (abs(min(real(psi_t(:)))) + max(real(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
+rectangle('Position', [x(lower_index), min(real(psi_t(:))), (barrier_width * dx), (2 max(real(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
@@ -113,8 +111,8 @@ grid on; % Add a grid to the plot
 
 subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-rectangle('Position', [x(lower_index), min(imag(psi_t(:))), (barrier_width * dx), ...
-         (abs(min(imag(psi_t(:)))) + max(imag(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
+rectangle('Position', [x(lower_index), min(imag(psi_t(:))), (barrier_width * dx),
+         (abs(min(imag(psi_t(:))) + max(imag(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
@@ -125,24 +123,20 @@ grid on; % Add a grid to the plot
 
 subplot(2, 2, 3) % Bottom left subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-rectangle('Position', [x(lower_index), min(abs(psi_t(:)).^2), (barrier_width * dx), ...
-         (abs(min(abs(psi_t(:)).^2)) + max(abs(psi_t(:)).^2))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
+rectangle('Position', [x(lower_index), min(abs(psi_t(:)).^2), (barrier_width * dx), max(abs(psi_t(:)).^2)], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits for convenience
+ylim('auto'); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 4) % Bottom right subfigure
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
-rectangle('Position', [x(lower_index), min(J(:)), (barrier_width * dx), ...
-         (abs(min(J(:))) + max(J(:)))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
+rectangle('Position', [x(lower_index), min(J(:)), (barrier_width * dx), (2 * max(J(:)))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+ylim('auto'); % Set the y-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
