@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Barrier Simulation
+% Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Step Simulation
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -84,6 +84,9 @@ figure; % Generate a figure
 subplot(2, 2, 1) % Top left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
 xline(x(N_steps/2), color='red', LineWidth=2) % Add a line to show the potential step location
+
+%rectangle('Position', [x((N_steps-barrier_width)/2)])
+
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
