@@ -19,9 +19,11 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points for the x-axis
 
-k = 10; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
-barrier_height = 10; % Set the magnitude of the potential barrier height
-barrier_width = 51; % Set the barrier width in units of dx
+wp_energy = 5; % Set the wave packet energy
+barrier_energy = 0.5; % Set the magnitude of the potential barrier height
+barrier_width = 20; % Set the barrier width in units of dx
+
+k = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -30,7 +32,7 @@ barrier_width = 51; % Set the barrier width in units of dx
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-2; % Define the time step size
+dt = 1e-1; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
