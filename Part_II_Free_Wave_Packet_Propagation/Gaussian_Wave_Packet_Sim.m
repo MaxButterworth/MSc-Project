@@ -14,9 +14,9 @@
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 50; % Length of the 1D box in m
-m = 1; % Mass of electron in kg
-h = 1; % Planck's constant in Js
+L = 50; % Length of the 1D box
+m = 1; % Mass of electron
+h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
