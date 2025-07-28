@@ -22,7 +22,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-k0 = -10; % Start evolving the wave packet from the centre of the box at t = 0
+k0 = -10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
 % ======================================================================================================================================
