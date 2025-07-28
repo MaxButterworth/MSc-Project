@@ -22,7 +22,6 @@ h = 1; % Planck's constant in Js
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
 k0 = -10; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/50; % Set the initial width of the wave packet
 
@@ -107,7 +106,7 @@ real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -125,7 +124,7 @@ prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability dens
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
+ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
