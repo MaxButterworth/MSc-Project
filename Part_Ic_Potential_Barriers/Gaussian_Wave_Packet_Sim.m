@@ -20,7 +20,8 @@ h = 1; % Planck's constant in Js
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-k = 0; % Set the wavenumber; k = 0 gives a stationary Gaussian wave packet
+wp_energy = 5; % Set the wave packet energy
+k = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
