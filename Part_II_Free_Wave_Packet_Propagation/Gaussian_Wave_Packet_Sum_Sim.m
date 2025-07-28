@@ -38,11 +38,11 @@ dk = (2 * pi)/L; % Define spacing in k-space
 
 if rem(N_steps, 2) == 0 % Define k-space grid if N_steps is even
     k = dk * (-(N_steps/2):((N_steps/2)-1)).';
-    k = ifftshift(k);
+    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the FFT
 
 else % Define k-space grid if N_steps is odd
     k = dk * (-((N_steps-1)/2):((N_steps-1)/2)).';
-    k = ifftshift(k);
+    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the FFT
 
 end
 
