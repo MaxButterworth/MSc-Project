@@ -5,7 +5,6 @@
 % Part Ic - Free Particle Gaussian Wave Packet Simulation
 % A single free particle Gaussian wave packet
 % The wave packet is formed by an integral over free particle eigenfunctions
-% Time propagation is performed using the Crank-Nicolson method
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -57,12 +56,12 @@ laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
 % ======================================================================================================================================
-%%%%%%%%%% Generate an initial wave packet by applying the forward Fourier transform to a Gaussian %%%%%%%%%%
+%%%%%%%%%% Generate an initial wave packet by Fourier transforming a Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
 a_0 = 1; % Prefactor for the Gaussian distribution
-phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = 0; % Define the coefficients of the components of the phase term
+phase = 0; % Phase term in the Gaussian distribution
+phase_coeff = 0; % Coefficients of the components of the Gaussian phase term
 
 % Construct the Gaussian phase term in k-space
 for index = 1:length(phase_coeff)
