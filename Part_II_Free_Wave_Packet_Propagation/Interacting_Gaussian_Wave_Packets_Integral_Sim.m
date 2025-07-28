@@ -22,10 +22,19 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-k0 = -10; % Set the expectation value for k for the wave packet
-sigma = L/50; % Set the initial width of the wave packet
+% Define variables for wave packet A
+x0_A = (3*L)/4; % Set the starting position of wave packet A on the x-axis
+k0_A = -10; % Set the expectation value for k for wave packet A
+sigma_A = L/50; % Set the initial width of wave packet A
 
-set_PBC = true; % Determine whether periodic boundary conditions are activated or not
+% Define variables for wave packet B
+x0_B = L/4; % Set the starting position of wave packet B on the x-axis
+k0_B = -10; % Set the expectation value for k for wave packet B
+sigma_B = L/50; % Set the initial width of wave packet B
+t_delay = 0; % Set the time delay from when wave packet B should be introduced into the system
+
+% Determine whether periodic boundary conditions are activated or not
+set_PBC = false;
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t; determine the k-space domain %%%%%%%%%%
@@ -72,31 +81,56 @@ end
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
 % ======================================================================================================================================
-%%%%%%%%%% Generate an initial wave packet by applying the forward Fourier transform to a Gaussian %%%%%%%%%%
+%%%%%%%%%% Generate initial wave packet A by applying the forward Fourier transform to a Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
-a_0 = 1; % Prefactor for the Gaussian distribution
-phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = 0; % Define the coefficients of the components of the phase term
+a_0_A = 1; % Prefactor for the Gaussian distribution
+phase_A = 0; % Define the phase term in the Gaussian distribution
+phase_coeff_A = 0; % Define the coefficients of the components of the phase term
 
 % Construct the Gaussian phase term in k-space
-for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * (k - k0).^(index - 1));
+for index_A = 1:length(phase_coeff_A)
+    phase_A = phase_A + (phase_coeff_A(index_A) * (k - k0_A).^(index_A - 1));
 end
 
-a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = fftshift(fft(a_k)); % Initial Gaussian wave packet in real space
+a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian distribution in k-space
+psi0_A = fftshift(fft(a_k_A .* exp(-1i * k * (x0_A - L/2)))); % Initial Gaussian wave packet in real space
 
-psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
+psi0_A_norm = psi0_A/sqrt(trapz(x, abs(psi0_A).^2)); % Normalise the initial Gaussian wave packet
 
 % ======================================================================================================================================
-%%%%%%%%%% Implement the Crank-Nicolson method to evolve the wavefunction and calculate probability current %%%%%%%%%%
+%%%%%%%%%% Generate initial wave packet B by applying the forward Fourier transform to a Gaussian %%%%%%%%%%
+% ======================================================================================================================================
+
+a_0_B = 1; % Prefactor for the Gaussian distribution
+phase_B = 0; % Define the phase term in the Gaussian distribution
+phase_coeff_B = 0; % Define the coefficients of the components of the phase term
+
+% Construct the Gaussian phase term in k-space
+for index_B = 1:length(phase_coeff_B)
+    phase_B = phase_B + (phase_coeff_B(index_B) * (k - k0_B).^(index_B - 1));
+end
+
+a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
+psi0_A = fftshift(fft(a_k_A .* exp(-1i * k * x0_B))); % Initial Gaussian wave packet in real space
+
+psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
+
+% ======================================================================================================================================
+%%%%%%%%%% Implement the Crank-Nicolson method to evolve wave packet A and calculate its probability current %%%%%%%%%%
 % ======================================================================================================================================
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps);
 
-psi = psi0_norm(1:N_steps); % Set the initial value of the wavefunction
+if t_delay == 0
+    psi = psi0_A_norm(1:N_steps) + psi0_B_norm(1:N_steps); % Set the initial value of the wavefunction
+
+else
+    psi = psi0_A_norm(1:N_steps); % Set the initial value of the wavefunction
+
+end
+
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
 psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
@@ -105,6 +139,10 @@ A = eye(N_steps) + (((1i * dt)/(2 * hbar)) * H);
 B = eye(N_steps) - (((1i * dt)/(2 * hbar)) * H);
 
 for t = 2:N_t % Loop over all time steps
+    if t == t_delay
+        psi = psi + psi0_B_norm;
+    end
+
     psi = A \ (B * psi); % Evolve the wavefunction over time
     psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
