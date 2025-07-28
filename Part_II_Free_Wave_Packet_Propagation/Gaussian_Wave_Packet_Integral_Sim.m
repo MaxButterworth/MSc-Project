@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Free Particle Gaussian Wave Packet Simulation
+% Part II - Free Particle Gaussian Wave Packet Simulations
 % A single free particle Gaussian wave packet
 % The wave packet is constructed by an integral over free particle eigenfunctions
 % Time propagation is performed using the Crank-Nicolson method

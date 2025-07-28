@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part Ic - Free Particle Gaussian Wave Packet Simulation
+% Part II - Free Particle Gaussian Wave Packet Simulations
 % A single free particle Gaussian wave packet
 
 % Author: Max L Butterworth
