@@ -4,7 +4,7 @@
 
 % Part Ic - Free Particle Gaussian Wave Packet Simulation
 % A single free particle Gaussian wave packet
-% The wave packet is formed by an integral over free particle eigenfunctions
+% The wave packet is constructed by an integral over free particle eigenfunctions
 % Time propagation is performed using the Crank-Nicolson method
 
 % Author: Max L Butterworth
