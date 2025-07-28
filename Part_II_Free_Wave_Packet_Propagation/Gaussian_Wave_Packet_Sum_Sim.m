@@ -4,6 +4,7 @@
 
 % Part Ic - Free Particle Gaussian Wave Packet Simulation
 % A single free particle Gaussian wave packet
+% The wave packet is formed by an integral over free particle eigenfunctions
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -21,7 +22,7 @@ hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-k0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
+k0 = 5; % Start evolving the wave packet from the centre of the box at t = 0
 sigma = L/50; % Set the initial width of the wave packet
 
 %wp_energy = 20; % Set the wave packet energy
@@ -34,13 +35,15 @@ sigma = L/50; % Set the initial width of the wave packet
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dk = pi/L; % Define spacing in k-space
+dk = (2 * pi)/L; % Define spacing in k-space
 
 if rem(N_steps, 2) == 0 % Define k-space grid if N_steps is even
     k = dk * (-(N_steps/2):((N_steps/2)-1)).';
+    k = ifftshift(k);
 
 else % Define k-space grid if N_steps is odd
     k = dk * (-((N_steps-1)/2):((N_steps-1)/2)).';
+    k = ifftshift(k);
 
 end
 
@@ -59,16 +62,17 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 %%%%%%%%%% Generate an initial wave packet composed of one plane wave modulated by a Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
-%psi0 = exp(-(x - x0).^2/(2 * sigma^2)) .* exp(1i * k * x); % Define the initial Gaussian wave packet
-a_0 = 1;
-phase = 0;
-phase_coeff = [1, 1, 1];
+a_0 = 1; % Prefactor for the Gaussian distribution
+phase = 0; % Phase term in the Gaussian distribution
+phase_coeff = 0; % Coefficients of the components of the Gaussian phase term
+
+% Construct the Gaussian phase term in k-space
 for index = 1:length(phase_coeff)
     phase = phase + (phase_coeff(index) * (k - k0).^(index - 1));
 end
 
-a_k = a_0 * exp((-(0.5/sigma^2) * (k - k0).^2) + (1i * phase));
-psi0 = ifft((a_k .* exp(1i * (k .* x.'))));
+a_k = a_0 * exp((-(0.5/sigma^2) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
+psi0 = fftshift(fft(a_k)); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
