@@ -35,7 +35,14 @@ x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dk = pi/L; % Define spacing in k-space
-k = dk * (0:N_steps); % Define the k-space array
+
+if rem(N_steps, 2) == 0 % Define k-space grid if N_steps is even
+    k = dk * (-(N_steps/2):((N_steps/2)-1)).';
+
+else % Define k-space grid if N_steps is odd
+    k = dk * (-((N_steps-1)/2):((N_steps-1)/2)).';
+
+end
 
 dt = 1e-2; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
@@ -61,7 +68,7 @@ for index = 1:length(phase_coeff)
 end
 
 a_k = a_0 * exp((-(0.5/sigma^2) * (k - k0).^2) + (1i * phase));
-psi0 = sqrt(1/(2 * pi)) * trapz(k, (a_k * exp(1i * k .* x)));
+psi0 = ifft((a_k .* exp(1i * (k .* x.'))));
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
@@ -72,7 +79,7 @@ psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps);
 
-psi = psi0_norm(1:N_steps).'; % Set the initial value of the wavefunction
+psi = psi0_norm(1:N_steps); % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
 psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
 
