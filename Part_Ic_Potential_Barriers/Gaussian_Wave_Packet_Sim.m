@@ -21,7 +21,7 @@ hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-sigma = L/100; % Set the initial width of the wave packet
+sigma = L/50; % Set the initial width of the wave packet
 
 wp_energy = 20; % Set the wave packet energy
 k = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
