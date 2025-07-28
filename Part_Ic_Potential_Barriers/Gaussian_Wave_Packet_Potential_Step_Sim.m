@@ -20,7 +20,7 @@ hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points for the x-axis
 
 wp_energy = 5; % Set the wave packet energy
-barrier_height = 30; % Set the magnitude of the potential step height
+barrier_height = 20; % Set the magnitude of the potential step height
 
 k = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
 
@@ -31,7 +31,7 @@ k = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energ
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-dt = 1e-2; % Define the time step size
+dt = 1e-1; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
