@@ -25,6 +25,8 @@ N_steps = 1000; % Number of discretisation points
 k0 = -10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
+set_PBC = true; % Determine whether periodic boundary conditions are activated or not
+
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t; determine the k-space domain %%%%%%%%%%
 % ======================================================================================================================================
@@ -52,7 +54,21 @@ N_t = 1000; % Define the number of time steps to simulate
 % ======================================================================================================================================
 
 % Construct the Hamiltonian inside the infinite potential well
-laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
+
+if set_PBC == false
+    laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
+
+else
+    laplacian = spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
+    
+    % Impose the periodic boundary conditions
+    laplacian(1, N_steps) = 1;
+    laplacian(N_steps, 1) = 1;
+    
+    laplacian = (1/dx^2) * laplacian; % Divide by dx^2; define the Laplacian for periodic boundaries
+
+end
+
 H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 
 % ======================================================================================================================================
