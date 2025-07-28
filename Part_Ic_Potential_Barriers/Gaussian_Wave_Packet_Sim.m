@@ -3,7 +3,7 @@
 % ======================================================================================================================================
 
 % Part Ic - Free Particle Gaussian Wave Packet Simulation
-% Free particle Gaussian wave packet
+% A single free particle Gaussian wave packet
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
