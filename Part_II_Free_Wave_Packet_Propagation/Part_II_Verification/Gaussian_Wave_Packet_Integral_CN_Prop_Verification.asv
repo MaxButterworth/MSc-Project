@@ -48,7 +48,7 @@ else % Define k-space grid if N_steps is odd
 
 end
 
-dt = 1e-2; % Define the time step size
+dt = 1e-3; % Define the time step size
 N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
@@ -138,8 +138,8 @@ end
 %%%%%%%%%% Calculate the error on the Crank-Nicolson propagation method %%%%%%%%%%
 % ======================================================================================================================================
 
-error_real = abs(real(psi_t) - real(psi_analytical_t)); % Absolute error on the value of the real part of the C-N propagated wave packet
-error_imag = abs(imag(psi_t) - imag(psi_analytical_t)); % Absolute error on the value of the imaginary part of the C-N propagated wave packet
+error_real = abs(real(psi_t) - real(psi_analytical_t)); % Absolute error on the real part of the C-N propagated wave packet
+error_imag = abs(imag(psi_t) - imag(psi_analytical_t)); % Absolute error on the imaginary part of the C-N propagated wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
@@ -158,7 +158,6 @@ xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
-legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
@@ -171,37 +170,35 @@ xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
-legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(2, 2, 3) % Bottom left subfigure
-error_real_plot = plot(x, error_real(:, 1)); % Plot the error on the real component of the wavefunction
+prob_density = plot(x, error_real(:, 1)); % Plot the initial probability density
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\Delta_\mathrm{Re}$', 'Interpreter','latex'); % Label the y-axis
+ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(error_real(:)) max(error_real(:))]); % Set the y-limits for convenience
-title('Error on the Real Component of the Wavefunction') % Add a title
+ylim([min(error_real) max(error_real)]); % Set the y-limits for convenience
+title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 4) % Bottom right subfigure
-error_imag_plot = plot(x, error_imag(:, 1)); % Plot the error on the imaginary component of the wavefunction
+flux_plot = plot(x, error_imag(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\Delta_\mathrm{Im}$', 'Interpreter', 'latex'); % Label the y-axis
+ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(error_imag(:)) max(error_imag(:))]); % Set the y-limits for convenience
-title('Error on the Imaginary Component of the Wavefunction') % Add a title
+title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
-    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the numerical wave packet
-    set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
+    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
+    set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n)))
 
-    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
-    set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
+    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
+    set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n)))
 
-    set(error_real_plot, 'YData', error_real(:, n)); % Update error on the real part of the numerical wave packet
-
-    set(error_imag_plot, 'YData', error_imag(:, n)); % Update the error on the imaginary part of the numerical wave packet
+    set(prob_density, 'YData', error_real(:, n)); % Update the probability density
+    set(flux_plot, 'YData', error_imag(:, n)); % Update the probability density
 
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
