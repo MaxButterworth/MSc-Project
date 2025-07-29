@@ -48,7 +48,7 @@ if rem(barrier_width, 2) == 0 % If the barrier width is even
     upper_index = (N_steps - barrier_width)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
-    V_vector = [zeros(lower_index, 1); repmat(barrier_height, barrier_width, 1); zeros(upper_index, 1)];
+    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
 
 else
 
@@ -56,7 +56,7 @@ else
     upper_index = (N_steps - barrier_width - 1)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
-    V_vector = [zeros(lower_index, 1); repmat(barrier_height, barrier_width, 1); zeros(upper_index, 1)];
+    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
 
 end
 
@@ -78,7 +78,7 @@ psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian 
 % ======================================================================================================================================
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps);
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx;
 
 psi = psi0_norm(1:N_steps).'; % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
