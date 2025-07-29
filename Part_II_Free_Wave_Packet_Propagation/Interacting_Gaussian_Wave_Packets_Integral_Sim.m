@@ -24,12 +24,12 @@ N_steps = 1000; % Number of discretisation points
 
 % Define variables for wave packet A
 x0_A = (3*L)/4; % Set the starting position of wave packet A on the x-axis
-k0_A = 10; % Set the expectation value for k for wave packet A
+k0_A = -20; % Set the expectation value for k for wave packet A
 sigma_A = L/50; % Set the initial width of wave packet A
 
 % Define variables for wave packet B
 x0_B = L/4; % Set the starting position of wave packet B on the x-axis
-k0_B = 5; % Set the expectation value for k for wave packet B
+k0_B = 20; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay from when wave packet B should be introduced into the system
 
@@ -178,7 +178,7 @@ prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability dens
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
+ylim('auto')
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
@@ -186,7 +186,7 @@ subplot(2, 2, 4) % Bottom right subfigure
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+ylim('auto')
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
