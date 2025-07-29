@@ -27,7 +27,7 @@ x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-set_PBC = false; % Determine whether periodic boundary conditions are activated or not
+set_PBC = true; % Determine whether periodic boundary conditions are activated or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
@@ -135,11 +135,43 @@ for t_analytical = 0:(N_t - 1)
 end
 
 % ======================================================================================================================================
-%%%%%%%%%% Calculate the error on the Crank-Nicolson propagation method %%%%%%%%%%
+%%%%%%%%%% Calculate the measures of error on the Crank-Nicolson propagation method %%%%%%%%%%
 % ======================================================================================================================================
 
-error_real = abs(real(psi_t) - real(psi_analytical_t)); % Absolute error on the value of the real part of the C-N propagated wave packet
-error_imag = abs(imag(psi_t) - imag(psi_analytical_t)); % Absolute error on the value of the imaginary part of the C-N propagated wave packet
+% Arrays to store errors over time
+norm_squared_error_t = zeros(N_steps, N_t); % Array to store the norm sqaured error over time
+x_avg_error_t = zeros(1, N_t); % Array to store the error on the average position over time
+overlap_squared_t = zeros(1, N_t); % Array to store the value of the overlap of the wave packet
+group_velocity_error = zeros(1, N_t); % Array to store difference in group velocity over time
+dispersion_error = zeros(1, N_t); % Array to store difference in dispersion over time
+
+for error_index = (1:N_t)
+    % Norm squared of the error on the values of the real and imaginary parts of the C-N propagated wave packet
+    norm_squared_error_t(:, N_steps) = abs(psi_t(:,error_index) - psi_analytical_t(:,error_index)).^2;
+    
+    % Error on the average position
+    x_avg_num = trapz(x, (x.' .* abs(psi_t(:, error_index)).^2)); % Average position for the numerical wave packet
+    x_avg_anal = trapz(x, (x.' .* abs(psi_analytical_t(:, error_index)).^2)); % Average position for the numerical wave packet
+
+    x_avg_error_t(1, error_index) = x_avg_num - x_avg_anal; % Error on the average position
+
+    % Calculate the overlap between the two wave packets
+    overlap_squared = abs(trapz(x, (conj(psi_t(:,error_index)) .* psi_analytical_t(:, error_index))))^2; % Calculate the squared overlap
+    overlap_squared_t(1, error_index) = overlap_squared; % Assign the squared overlap to the overlap_squared array
+
+    % Calculate the difference in group velocity over time
+    k_avg_num = trapz(k, (k .* abs(a_k).^2)); % Average k-value for the numerical wave packet
+    k_avg_anal = trapz(k, (k .* abs(a_k_t_analytical).^2)); % Average k-value for the analytical wave packet
+    group_velocity_error(1, error_index) = (hbar/m) * (k_avg_num - k_avg_anal); % Assign difference in group velocity to the group_velocity_error array
+
+    % Calculate the difference in dispersion over time
+    x_sq_avg_num = trapz(x, ((x.^2).' .* abs(psi_t(:, error_index)).^2)); % Average squared position for the numerical wave packet
+    x_sq_avg_anal = trapz(x, ((x.^2).' .* abs(psi_analytical_t(:, error_index)).^2)); % Average squared position for the analytical wave packet
+    
+    % Assign the difference in dispersion to the dispersion_error arrray
+    dispersion_error(1, error_index) = sqrt((x_sq_avg_num - (x_avg_num.^2))) - sqrt((x_sq_avg_anal - (x_avg_anal.^2)));
+
+end
 
 % ======================================================================================================================================
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
@@ -147,7 +179,9 @@ error_imag = abs(imag(psi_t) - imag(psi_analytical_t)); % Absolute error on the 
 
 figure; % Generate a figure
 
-subplot(2, 2, 1) % Top left subfigure
+t_array = dt * (0:N_t - 1); % Create a time array
+
+subplot(3, 2, 1) % Top left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
 hold on
 real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
@@ -156,11 +190,11 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction') % Add a title
+title('Real Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
-subplot(2, 2, 2) % Top right subfigure
+subplot(3, 2, 2) % Top middle subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 hold on
 imag_wavefunction_analytical = plot(x, imag(psi_analytical_t(:, 1)));
@@ -169,25 +203,37 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction') % Add a title
+title('Imaginary Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
-subplot(2, 2, 3) % Bottom left subfigure
-error_real_plot = plot(x, error_real(:, 1)); % Plot the error on the real component of the wavefunction
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\Delta_\mathrm{Re}$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(error_real(:)) max(error_real(:))]); % Set the y-limits for convenience
-title('Error on the Real Component of the Wavefunction') % Add a title
+subplot(3, 2, 3) % Top right subfigure
+norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wavefunction
+xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
+ylabel('$\Delta\langle x\rangle$', 'Interpreter','latex'); % Label the y-axis
+ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for convenience
+title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(2, 2, 4) % Bottom right subfigure
-error_imag_plot = plot(x, error_imag(:, 1)); % Plot the error on the imaginary component of the wavefunction
+subplot(3, 2, 4) % Bottom left subfigure
+overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wavefunction
+xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$\langle\psi_\mathrm{num}|\psi_\mathrm{anal}\rangle$', 'Interpreter', 'latex'); % Label the y-axis
+title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
+grid on; % Add a grid to the plot
+
+subplot(3, 2, 5) % Bottom middle subfigure
+grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wavefunction
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\Delta_\mathrm{Im}$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(error_imag(:)) max(error_imag(:))]); % Set the y-limits for convenience
-title('Error on the Imaginary Component of the Wavefunction') % Add a title
+ylabel('$\Delta v_g$', 'Interpreter', 'latex'); % Label the y-axis
+title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
+grid on; % Add a grid to the plot
+
+subplot(3, 2, 6) % Bottom right subfigure
+error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wavefunction
+xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$\Delta(\Delta x)$', 'Interpreter', 'latex'); % Label the y-axis
+title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
@@ -198,10 +244,6 @@ for n = 1:N_t % Loop over all timesteps
 
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
     set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
-
-    set(error_real_plot, 'YData', error_real(:, n)); % Update error on the real part of the numerical wave packet
-
-    set(error_imag_plot, 'YData', error_imag(:, n)); % Update the error on the imaginary part of the numerical wave packet
 
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
