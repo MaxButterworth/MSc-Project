@@ -112,7 +112,7 @@ for index_B = 1:length(phase_coeff_B)
 end
 
 a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
-psi0_B = fftshift(fft(a_k_B .* exp(-1i * k * x0_B))); % Initial Gaussian wave packet in real space
+psi0_ = fftshift(fft(a_k_A .* exp(-1i * k * x0_B))); % Initial Gaussian wave packet in real space
 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
 
