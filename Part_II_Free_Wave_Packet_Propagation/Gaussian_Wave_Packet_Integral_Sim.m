@@ -22,13 +22,14 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-k0 = -10; % Set the expectation value for k for the wave packet
+x0 = L/4; % Set the starting position of wave packet on the x-axis
+k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-set_PBC = true; % Determine whether periodic boundary conditions are activated or not
+set_PBC = false; % Determine whether periodic boundary conditions are activated or not
 
 % ======================================================================================================================================
-%%%%%%%%%% Discretise the spatial domain, x, and time domain, t; determine the k-space domain %%%%%%%%%%
+%%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
@@ -38,11 +39,11 @@ dk = (2 * pi)/L; % Define spacing in k-space
 
 if rem(N_steps, 2) == 0 % Define k-space grid if N_steps is even
     k = dk * (-(N_steps/2):((N_steps/2)-1)).';
-    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the FFT
+    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the inverse FFT
 
 else % Define k-space grid if N_steps is odd
     k = dk * (-((N_steps-1)/2):((N_steps-1)/2)).';
-    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the FFT
+    k = ifftshift(k); % Shift the position of zero to operate in k-space and make the calculation compatible with the inverse FFT
 
 end
 
@@ -85,7 +86,7 @@ for index = 1:length(phase_coeff)
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = fftshift(fft(a_k)); % Initial Gaussian wave packet in real space
+psi0 = ifft(a_k .* exp(-1i * k * x0)); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
