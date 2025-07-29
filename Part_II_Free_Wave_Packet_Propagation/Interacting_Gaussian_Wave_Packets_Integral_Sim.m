@@ -120,7 +120,7 @@ psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gau
 % ======================================================================================================================================
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps);
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx;
 
 if t_delay == 0
     psi = psi0_A_norm(1:N_steps) + psi0_B_norm(1:N_steps); % Set the initial value of the wavefunction
