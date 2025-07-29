@@ -24,12 +24,12 @@ N_steps = 1000; % Number of discretisation points
 
 % Define variables for wave packet A
 x0_A = (3*L)/4; % Set the starting position of wave packet A on the x-axis
-k0_A = -10; % Set the expectation value for k for wave packet A
+k0_A = 10; % Set the expectation value for k for wave packet A
 sigma_A = L/50; % Set the initial width of wave packet A
 
 % Define variables for wave packet B
 x0_B = L/4; % Set the starting position of wave packet B on the x-axis
-k0_B = -10; % Set the expectation value for k for wave packet B
+k0_B = 5; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay from when wave packet B should be introduced into the system
 
@@ -94,7 +94,7 @@ for index_A = 1:length(phase_coeff_A)
 end
 
 a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian distribution in k-space
-psi0_A = fftshift(fft(a_k_A .* exp(-1i * k * (x0_A - L/2)))); % Initial Gaussian wave packet in real space
+psi0_A = ifft(a_k_A .* exp(-1i * k * x0_A)); % Initial Gaussian wave packet in real space
 
 psi0_A_norm = psi0_A/sqrt(trapz(x, abs(psi0_A).^2)); % Normalise the initial Gaussian wave packet
 
@@ -112,7 +112,7 @@ for index_B = 1:length(phase_coeff_B)
 end
 
 a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
-psi0_B = fftshift(fft(a_k_B .* exp(-1i * k * x0_B))); % Initial Gaussian wave packet in real space
+psi0_B = ifft(a_k_B .* exp(-1i * k * x0_B)); % Initial Gaussian wave packet in real space
 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
 
