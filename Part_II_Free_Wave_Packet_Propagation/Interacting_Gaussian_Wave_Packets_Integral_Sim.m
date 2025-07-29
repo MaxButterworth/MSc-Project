@@ -24,12 +24,12 @@ N_steps = 1000; % Number of discretisation points
 
 % Define variables for wave packet A
 x0_A = (3*L)/4; % Set the starting position of wave packet A on the x-axis
-k0_A = -20; % Set the expectation value for k for wave packet A
+k0_A = -10; % Set the expectation value for k for wave packet A
 sigma_A = L/50; % Set the initial width of wave packet A
 
 % Define variables for wave packet B
 x0_B = L/4; % Set the starting position of wave packet B on the x-axis
-k0_B = 20; % Set the expectation value for k for wave packet B
+k0_B = 10; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay from when wave packet B should be introduced into the system
 
@@ -37,7 +37,7 @@ t_delay = 0; % Set the time delay from when wave packet B should be introduced i
 set_PBC = false;
 
 % ======================================================================================================================================
-%%%%%%%%%% Discretise the spatial domain, x, and time domain, t; determine the k-space domain %%%%%%%%%%
+%%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
