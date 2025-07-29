@@ -62,8 +62,7 @@ N_t = 1000; % Define the number of time steps to simulate
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
 % ======================================================================================================================================
 
-% Construct the Hamiltonian inside the infinite potential well
-
+% Construct the Hamiltonian
 if set_PBC == false
     laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
 
