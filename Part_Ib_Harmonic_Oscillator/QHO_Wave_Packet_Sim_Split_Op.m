@@ -30,7 +30,7 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 % ======================================================================================================================================
 
-x = linspace(-L, L, N_steps); % Define the domain of the QHO
+x = linspace(-L, L, N_steps); % Define the x-domain of the QHO
 dx = abs(x(2) - x(1)); % Calculate the spatial step size
 
 dt = 5e-2; % Define the time step size

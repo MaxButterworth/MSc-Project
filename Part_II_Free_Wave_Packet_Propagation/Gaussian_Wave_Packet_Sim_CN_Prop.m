@@ -32,7 +32,7 @@ set_PBC = true; % Determine whether periodic boundary conditions are activated o
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
 % ======================================================================================================================================
 
-x = linspace(0, L, N_steps); % Define the domain
+x = linspace(0, L, N_steps); % Define the x-domain
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dt = 1e-2; % Define the time step size
