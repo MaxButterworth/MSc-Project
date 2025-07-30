@@ -104,7 +104,7 @@ psi0_B = ifft(ifftshift(a_k_B .* exp(-1i * k * x0_B))); % Initial Gaussian wave 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
 
 % ======================================================================================================================================
-%%%%%%%%%% Implement the split operator method to evolve wave packet A and calculate its probability current %%%%%%%%%%
+%%%%%%%%%% Implement the split operator method to evolve the total wave packet and calculate its probability current %%%%%%%%%%
 % ======================================================================================================================================
 
 % Initialise arrays to store fluxes and a first derivative operator to calculate the fluxes
