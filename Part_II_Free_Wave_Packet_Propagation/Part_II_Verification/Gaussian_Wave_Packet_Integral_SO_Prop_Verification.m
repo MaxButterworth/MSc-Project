@@ -241,7 +241,7 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
     set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
 
-    sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time in the overall title for the figure
+    sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
 
     pause(0.01); % Pause to create an animation effect
     drawnow; % Update the relevant figures
