@@ -5,7 +5,7 @@
 % Part II Verification - Free Particle Gaussian Wave Packet Simulations
 % A single free particle Gaussian wave packet
 % The wave packet is constructed using an integral over free particle eigenfunctions
-% Time propagation is performed using the Crank-Nicolson method
+% Time propagation is performed using the split operator method
 % This script aims to verify numerical time-propagation using the analytical form of the time-propagated wave packet
 
 % Author: Max L Butterworth
