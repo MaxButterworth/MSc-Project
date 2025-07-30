@@ -5,7 +5,7 @@
 % Part II - Free Particle Gaussian Wave Packet Simulations
 % The interaction between two free particle Gaussian wave packets
 % Wave packets are constructed using an integral over free particle eigenfunctions
-% Time propagation is performed using the split operator method
+% Time propagation is performed using the Crank-Nicolson method
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -141,7 +141,6 @@ for t = 2:N_t
 
     psi_t(:, t) = psi; % Store the time-evolved wave packet in the time evolution array
     J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
-
 end
 
 % ======================================================================================================================================
