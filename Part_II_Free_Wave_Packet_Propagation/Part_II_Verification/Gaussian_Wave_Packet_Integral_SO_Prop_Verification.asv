@@ -53,11 +53,24 @@ N_t = 1000; % Define the number of time steps to simulate
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
 % ======================================================================================================================================
 
-% Construct the Hamiltonian for the free wave packet
+% Construct the Hamiltonian inside the infinite potential well
 
-laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
+if set_PBC == false
+    laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
+
+else
+    laplacian = spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
+    
+    % Impose the periodic boundary conditions
+    laplacian(1, N_steps) = 1;
+    laplacian(N_steps, 1) = 1;
+    
+    laplacian = (1/dx^2) * laplacian; % Divide by dx^2; define the Laplacian for periodic boundaries
+
+end
 
 V_vector = zeros(N_steps, 1); % Define the potential energy vector for a free wave packet
+V_vector(1, 1)
 V_matrix = zeros(N_steps, N_steps); % Define the potential energy matrix for a free wave packet
 
 H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operator
