@@ -29,7 +29,7 @@ sigma = L/50; % Set the initial width of the wave packet
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
-x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
+x = linspace(0, L, N_steps); % Define the domain
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dk = (2 * pi)/L; % Define spacing in k-space
