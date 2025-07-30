@@ -151,21 +151,21 @@ end
 figure; % Generate a figure
 
 subplot(2, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction') % Add a title
+title('Real Component of the Wave Packet') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction') % Add a title
+title('Imaginary Component of the Wave Packet') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 3) % Bottom left subfigure
@@ -188,10 +188,13 @@ grid on; % Add a grid to the plot
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
-    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
-    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
+    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wave packet
+    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wave packet
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the probability density
+
+    sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elapsed in the overall title for the figure
+
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
 end
