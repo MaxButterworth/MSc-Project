@@ -21,7 +21,7 @@ L = 50; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 1000; % Number of discretisation points
+N_steps = 1001; % Number of discretisation points
 
 x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
@@ -45,7 +45,7 @@ else % Define k-space grid if N_steps is odd
 end
 
 dt = 1e-2; % Define the time step size
-N_t = 1000; % Define the number of time steps to simulate
+N_t = 300; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
