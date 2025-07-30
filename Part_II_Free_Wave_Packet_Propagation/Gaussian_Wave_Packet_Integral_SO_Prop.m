@@ -3,8 +3,7 @@
 % ======================================================================================================================================
 
 % Part II - Free Particle Gaussian Wave Packet Simulations
-% A single free particle Gaussian wave packet
-% The wave packet is constructed using an integral over free particle eigenfunctions
+% A single free particle Gaussian wave packet constructed using an integral over free particle eigenfunctions
 % Time propagation is performed using the split operator method
 
 % Author: Max L Butterworth
