@@ -33,9 +33,6 @@ k0_B = 10; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay (in units of dt) to specify when wave packet B should be introduced into the system
 
-% Determine whether periodic boundary conditions are activated or not
-set_PBC = false;
-
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
