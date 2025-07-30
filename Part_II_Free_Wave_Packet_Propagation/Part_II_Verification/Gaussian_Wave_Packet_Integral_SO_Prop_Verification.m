@@ -27,8 +27,6 @@ x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-set_PBC = false; % Determine whether periodic boundary conditions are activated or not
-
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
@@ -52,8 +50,6 @@ N_t = 1000; % Define the number of time steps to simulate
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
 % ======================================================================================================================================
-
-% Construct the Hamiltonian for the free wave packet
 
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
 
@@ -81,7 +77,7 @@ psi0 = ifft(ifftshift(a_k .* exp(-1i * k * x0))); % Initial Gaussian wave packet
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
 % ======================================================================================================================================
-%%%%%%%%%% Implement the split operator method to evolve the wavefunction and calculate the probability current %%%%%%%%%%
+%%%%%%%%%% Implement the split operator method to evolve the wave packet and calculate the probability current %%%%%%%%%%
 % ======================================================================================================================================
 
 % Define kinetic and potential operators
@@ -95,21 +91,21 @@ J = zeros(N_steps, N_t); % Array to store probability currents
 first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % A matrix to calculte the first derivative using the finite difference method
 
 % Set up the wave packet for propagation
-psi = psi0_norm(1:N_steps); % Set the initial value of the wavefunction
-psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
-psi_t(:, 1) = psi; % Store the initial wavefunction in the time evolution array
+psi = psi0_norm(1:N_steps); % Set the initial value of the wave packet
+psi_t = zeros(N_steps, N_t); % Initialise an array to store the wave packet as it evolves in time
+psi_t(:, 1) = psi; % Store the initial wave packet in the time evolution array
 
 % Propagate the wave packet
 for t = 2:N_t
     psi = V_op .* psi; % Operate a half time step in real space
-    psi_k = fftshift(fft(psi)); % Fourier transform the wavefunction into k-space
+    psi_k = fftshift(fft(psi)); % Fourier transform the wave packet into k-space
     psi_k = T_op .* psi_k; % Operate a full time step in k-space
     psi = ifft(ifftshift(psi_k)); % Inverse Fourier transform into real space
     psi = V_op .* psi; % Operate a half time step in real space
 
-    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
+    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wave packet
 
-    psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
+    psi_t(:, t) = psi; % Store the time-evolved wave packet in the time evolution array
     J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
 
@@ -127,7 +123,7 @@ for t_analytical = 0:(N_t - 1)
 
     psi_analytical = ifft(ifftshift(a_k_t_analytical .* exp(-1i * k * x0))); % Generate the Gaussian wave packet in real space
     psi_analytical_norm = psi_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the wave packet
-    psi_analytical_t(:, t_analytical + 1) = psi_analytical_norm; % Store the analytical time-evolved wavefunction in the time evolution array
+    psi_analytical_t(:, t_analytical + 1) = psi_analytical_norm; % Store the analytical time-evolved wave packet in the time evolution array
 
     % Calculate probability current at each point along x
     J_analytical(:, t_analytical + 1) = -((1i * hbar)/(2 * m)) * ((conj(psi_analytical) .* (first_deriv * psi_analytical)) ...
@@ -182,7 +178,7 @@ figure; % Generate a figure
 t_array = dt * (0:N_t - 1); % Create a time array
 
 subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real component of the wave packet
 hold on
 real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
 hold off
@@ -190,12 +186,12 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
+title('Real Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(3, 2, 2) % Top middle subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary component of the wave packet
 hold on
 imag_wavefunction_analytical = plot(x, imag(psi_analytical_t(:, 1)));
 hold off
@@ -203,12 +199,12 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
+title('Imaginary Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(3, 2, 3) % Top right subfigure
-norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wavefunction
+norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wave packet
 xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\Delta\langle x\rangle$', 'Interpreter','latex'); % Label the y-axis
 ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for convenience
@@ -216,21 +212,21 @@ title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 4) % Bottom left subfigure
-overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wavefunction
+overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\langle\psi_\mathrm{num}|\psi_\mathrm{anal}\rangle$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 5) % Bottom middle subfigure
-grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wavefunction
+grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta v_g$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 6) % Bottom right subfigure
-error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wavefunction
+error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta(\Delta x)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
