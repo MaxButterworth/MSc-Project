@@ -128,6 +128,10 @@ psi_t(:, 1) = psi; % Store the initial wave packet in the time evolution array
 
 % Propagate the wave packet
 for t = 2:N_t
+    if t == (t_delay + 1)
+        psi = psi + psi0_B_norm;
+    end
+
     psi = V_op .* psi; % Operate a half time step in real space
     psi_k = fftshift(fft(psi)); % Fourier transform the wave packet into k-space
     psi_k = T_op .* psi_k; % Operate a full time step in k-space
