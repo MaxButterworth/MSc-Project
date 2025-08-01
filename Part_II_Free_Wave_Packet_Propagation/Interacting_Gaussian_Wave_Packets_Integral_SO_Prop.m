@@ -147,6 +147,8 @@ end
 
 figure; % Generate a figure
 
+t_array = dt * (0:N_t - 1); % Create a time array
+
 subplot(2, 2, 1) % Top left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
