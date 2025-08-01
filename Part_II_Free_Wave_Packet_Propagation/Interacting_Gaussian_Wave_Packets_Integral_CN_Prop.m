@@ -143,7 +143,7 @@ for t = 2:N_t % Loop over all time steps
     end
 
     psi = A \ (B * psi); % Evolve the wavefunction over time
-    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
+    %psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wavefunction
     psi_t(:, t) = psi; % Store the time-evolved wavefunction in the time evolution array
     J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
 end
