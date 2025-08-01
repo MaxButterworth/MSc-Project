@@ -200,4 +200,12 @@ for n = 1:N_t % Loop over all timesteps
 
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
+
+    if ismember(n, [1, 141, 241])
+        time = t_array(1, n);
+        filename = sprintf('Interacting_Gaussian_WP_SO_Prop_t_%.2fs.png', time);
+        exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300);  % use saveas if needed
+
+    end
+
 end

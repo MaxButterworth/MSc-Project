@@ -150,7 +150,7 @@ ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Probability Current', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
-% Animate the figures
+% Animate and save the figures
 
 for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
@@ -159,7 +159,15 @@ for n = 1:N_t % Loop over all timesteps
     set(flux_plot, 'YData', J(:, n)); % Update the probability density
 
     sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
-    
+
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
+    
+    if ismember(n, [1, 141, 241])
+        time = t_array(1, n);
+        filename = sprintf('Gaussian_WP_SO_Prop_t_%.2fs.png', time);
+        exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300);  % use saveas if needed
+
+    end
+
 end
