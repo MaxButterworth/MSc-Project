@@ -207,7 +207,7 @@ for n = 1:N_t % Loop over all timesteps
 
     if ismember(n, [1, 141, 241])
         time = t_array(1, n); % Assign the current time to a variable
-        filename = sprintf('Interacting_Gaussian_WP_SO_Prop_t_%.2fs.png', time); % Create the file name for the figure
+        filename = sprintf('Interacting_Gaussian_WP_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
         exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
 
     end
