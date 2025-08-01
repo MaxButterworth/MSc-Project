@@ -187,7 +187,7 @@ flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim('auto') % Set the y-limits for convenience
-title('Probability Current') % Add a title
+title('Flux') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures

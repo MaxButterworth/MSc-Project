@@ -25,7 +25,7 @@ x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-include_elapsed_time = true; % Define a variable to show elapsed time on figure or not
+include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
@@ -149,7 +149,7 @@ flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-title('Probability Current', 'Interpreter','latex') % Add a title
+title('Flux', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate and save the figures
