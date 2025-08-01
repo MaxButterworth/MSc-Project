@@ -25,6 +25,8 @@ x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
+include_elapsed_time = true; % Define a variable to show elapsed time on figure or not
+
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
@@ -157,16 +159,18 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the probability density
-
-    sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
+    
+    if include_elapsed_time == true
+        sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
+    end
 
     pause(0.1); % Pause to create an animation effect
     drawnow; % Update the relevant figures
     
     if ismember(n, [1, 141, 241])
-        time = t_array(1, n);
-        filename = sprintf('Gaussian_WP_SO_Prop_t_%.2fs.png', time);
-        exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300);  % use saveas if needed
+        time = t_array(1, n); % Assign the current time to a variable
+        filename = sprintf('Gaussian_WP_SO_Prop_t_%.2fs.png', time); % Create the file name for the figure
+        exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
 
     end
 
