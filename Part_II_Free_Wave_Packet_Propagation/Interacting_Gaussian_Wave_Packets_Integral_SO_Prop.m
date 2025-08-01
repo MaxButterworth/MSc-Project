@@ -138,7 +138,7 @@ for t = 2:N_t
     psi = ifft(ifftshift(psi_k)); % Inverse Fourier transform into real space
     psi = V_op .* psi; % Operate a half time step in real space
 
-    psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wave packet
+    %psi = psi/sqrt(trapz(x, abs(psi).^2)); % Normalise the time-evolved wave packet
 
     psi_t(:, t) = psi; % Store the time-evolved wave packet in the time evolution array
     J(:, t) = -((1i * hbar)/(2 * m)) * ((conj(psi) .* (first_deriv * psi)) - ((first_deriv * conj(psi)) .* psi)); % Calculate probability current at each point along x
