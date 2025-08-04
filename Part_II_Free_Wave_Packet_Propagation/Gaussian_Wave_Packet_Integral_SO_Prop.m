@@ -163,7 +163,7 @@ for n = 1:N_t % Loop over all timesteps
     set(flux_plot, 'YData', J(:, n)); % Update the probability density
     
     if include_elapsed_time == true
-        sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
+        sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
     end
 
     pause(0.1); % Pause to create an animation effect
