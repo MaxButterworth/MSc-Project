@@ -142,7 +142,7 @@ group_velocity_error = zeros(1, N_t); % Array to store difference in group veloc
 dispersion_error = zeros(1, N_t); % Array to store difference in dispersion over time
 
 for error_index = (1:N_t)
-    % Norm squared of the error on the values of the real and imaginary parts of the C-N propagated wave packet
+    % Norm squared of the error on the values of the real and imaginary parts of the SO propagated wave packet
     norm_squared_error_t(:, N_steps) = abs(psi_t(:,error_index) - psi_analytical_t(:,error_index)).^2;
     
     % Error on the average position
