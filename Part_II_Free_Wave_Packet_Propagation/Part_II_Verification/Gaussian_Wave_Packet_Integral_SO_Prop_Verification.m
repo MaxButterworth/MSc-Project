@@ -27,6 +27,8 @@ x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
+save_figure = true; % Define a variable to save figures at various points in the simulation or not
+
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
@@ -235,6 +237,16 @@ grid on; % Add a grid to the plot
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
+    
+    % Save the figure at a desired timestep
+    if save_figure == true
+        if n == N_t/2
+            filename = sprintf('Single_Gaussian_WP_SO_Prop_Verification_%.2f.png', (n*dt)); % Create the file name for the figure
+            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+        end
+
+    end
+
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the numerical wave packet
     set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
 
