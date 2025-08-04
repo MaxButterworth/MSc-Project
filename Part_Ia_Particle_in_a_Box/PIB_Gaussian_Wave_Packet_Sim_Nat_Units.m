@@ -4,6 +4,7 @@
 
 % Part Ia - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates to generate a wave packet
+% Coefficients of superposition follow a Gaussian distribution in k
 % Propagation of the wavefunction is performed using the Crank-Nicolson Method
 
 % Author: Max L Butterworth
@@ -28,6 +29,7 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 
 travelling_wavepacket = false; % Set whether the wavepacket should have the exp(1i * k * x) factor applied
 k = (50 * pi)/L; % Set the wavenumber if travelling_wavepacket is set to true
+k_0 = 1/12.5;
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -68,7 +70,11 @@ psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave 
 
 % Generate the superposition of PIB basis functions
 for l = 1:length(basis_funcs_indices)
-    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
+    % psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
+    
+    k_n = (basis_funcs_indices(l) * pi)/L
+    
+    psi0 = psi0 + (exp(-(1/(2 * sigma^2)) * (k_n - k_0)^2) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
 
 % % Determine whether a travelling modulated Gaussian is required or not
