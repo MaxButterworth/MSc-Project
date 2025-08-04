@@ -21,13 +21,13 @@ L = 50; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 1000; % Number of discretisation points
+N_steps = 1001; % Number of discretisation points
 
 x0 = L/4; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-set_PBC = true; % Determine whether periodic boundary conditions are activated or not
+set_PBC = false; % Determine whether periodic boundary conditions are activated or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
@@ -49,7 +49,7 @@ else % Define k-space grid if N_steps is odd
 end
 
 dt = 1e-2; % Define the time step size
-N_t = 1000; % Define the number of time steps to simulate
+N_t = 300; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
@@ -182,7 +182,7 @@ figure; % Generate a figure
 t_array = dt * (0:N_t - 1); % Create a time array
 
 subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real component of the wave packet
 hold on
 real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
 hold off
@@ -190,12 +190,12 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
+title('Real Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(3, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary component of the wave packet
 hold on
 imag_wavefunction_analytical = plot(x, imag(psi_analytical_t(:, 1)));
 hold off
@@ -203,36 +203,36 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction', 'Interpreter', 'latex') % Add a title
+title('Imaginary Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(3, 2, 3) % Middle left subfigure
-norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wavefunction
+norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wave packet
 xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\Delta\langle x\rangle$', 'Interpreter','latex'); % Label the y-axis
+ylabel('$\Delta\langle x\rangle_t$', 'Interpreter','latex'); % Label the y-axis
 ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for convenience
 title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 4) % Middle right subfigure
-overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wavefunction
+overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\langle\psi_\mathrm{num}|\psi_\mathrm{anal}\rangle$', 'Interpreter', 'latex'); % Label the y-axis
+ylabel('$\langle\psi_\mathrm{numerical}|\psi_\mathrm{analytical}\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 5) % Bottom left subfigure
-grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wavefunction
+grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\Delta v_g$', 'Interpreter', 'latex'); % Label the y-axis
+ylabel('$\Delta v_g (t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 6) % Bottom right subfigure
-error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wavefunction
+error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\Delta(\Delta x)$', 'Interpreter', 'latex'); % Label the y-axis
+ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
