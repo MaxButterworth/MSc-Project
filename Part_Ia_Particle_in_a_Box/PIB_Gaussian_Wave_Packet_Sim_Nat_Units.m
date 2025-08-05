@@ -16,20 +16,19 @@
 % ======================================================================================================================================
 
 % Natural units have been adopted throughout
-L = 1;% Length of the 1D box
+L = 50; % Length of the 1D box
 m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = (1:1000); % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
-travelling_wavepacket = false; % Set whether the wavepacket should have the exp(1i * k * x) factor applied
-k = (50 * pi)/L; % Set the wavenumber if travelling_wavepacket is set to true
-k_0 = 1/12.5;
+k_0 = (25 * pi)/50; % Set the centre of the wave packet in k-space
+sigma = 0.3; % Set the initial width of the wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -64,27 +63,15 @@ end
 % ======================================================================================================================================
 
 x0 = L/2; % Start evolving the wave packet from the centre of the box at t = 0
-sigma = L/20; % Set the initial width of the wave packet
 
 psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave packet
 
 % Generate the superposition of PIB basis functions
-for l = 1:length(basis_funcs_indices)
-    % psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
-    
-    k_n = (basis_funcs_indices(l) * pi)/L
+for l = 1:length(basis_funcs_indices)    
+    k_n = (basis_funcs_indices(l) * pi)/L;
     
     psi0 = psi0 + (exp(-(1/(2 * sigma^2)) * (k_n - k_0)^2) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
 end
-
-% % Determine whether a travelling modulated Gaussian is required or not
-% if travelling_wavepacket == true % Travelling Gaussian required
-%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
-% 
-% else % Travelling Gaussian not required
-%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
-% 
-% end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
