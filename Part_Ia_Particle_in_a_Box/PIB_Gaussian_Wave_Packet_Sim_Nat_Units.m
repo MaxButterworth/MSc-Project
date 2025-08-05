@@ -16,7 +16,7 @@
 % ======================================================================================================================================
 
 % Natural units have been adopted throughout
-L = 50; % Length of the 1D box
+L = 200; % Length of the 1D box
 m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
@@ -27,8 +27,8 @@ basis_funcs_indices = (1:1000); % Create an array of the indices of PIB_eigensta
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
-k_0 = (25 * pi)/50; % Set the centre of the wave packet in k-space
-sigma = 0.3; % Set the initial width of the wave packet
+k_0 =  pi/2; % Set the centre of the wave packet in k-space
+sigma = 0.03; % Set the initial width of the wave packet
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
