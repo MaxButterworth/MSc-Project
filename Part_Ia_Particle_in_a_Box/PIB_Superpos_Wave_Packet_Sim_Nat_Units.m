@@ -22,7 +22,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
@@ -124,36 +124,32 @@ end
 
 figure; % Generate a figure
 
-subplot(2, 2, 1) % Top Left subfigure
+subplot(3, 1, 1) % Top subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction') % Add a title
-grid on; % Add a grid to the plot
-
-subplot(2, 2, 2) % Top right subfigure
+hold on
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction') % Add a title
+ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
+%title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
+legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex')
 
-subplot(2, 2, 3) % Bottom Right subfigure
+subplot(3, 1, 2) % Middle subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
-title('Probability Density') % Add a title
+%title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(2, 2, 4) % Bottom left subfigure
+subplot(3, 1, 3) % Bottom
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-title('Probability Current') % Add a title
+%title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
