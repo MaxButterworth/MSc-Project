@@ -122,7 +122,7 @@ hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(real(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction') % Add a title
+%title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex', 'Location', 'northeastoutside')
 
@@ -150,8 +150,8 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     
-    if ismember(n, [1, 250, 750 1000])
-            filename = sprintf('PIB_2_State_WP_Re_Im_Parts_%.2f.png', n); % Create the file name for the figure
+    if ismember(n, [1, 250, 500, 750, 1000])
+            filename = sprintf('PIB_2_State_WP_Prob_Density_%.2f.png', n); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
     end
