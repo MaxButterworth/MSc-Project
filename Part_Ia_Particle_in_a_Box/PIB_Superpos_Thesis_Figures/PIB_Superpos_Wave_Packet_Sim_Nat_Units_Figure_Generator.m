@@ -115,9 +115,9 @@ end
 figure; % Generate a figure
 
 subplot(3, 1, 1) % Top subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
 hold on
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 3); % Plot the imaginary wavefunction
 hold off
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
@@ -127,7 +127,7 @@ grid on; % Add a grid to the plot
 legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex', 'Location', 'northeastoutside')
 
 subplot(3, 1, 2) % Middle subfigure
-prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
+prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
@@ -135,15 +135,15 @@ ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits fo
 grid on; % Add a grid to the plot
 
 subplot(3, 1, 3) % Bottom
-flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
+flux_plot = plot(x, J(:, 1), 'LineWidth', 3); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 %title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 26); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 26); % Set the font size for other text
 
 % Animate the figures
 
