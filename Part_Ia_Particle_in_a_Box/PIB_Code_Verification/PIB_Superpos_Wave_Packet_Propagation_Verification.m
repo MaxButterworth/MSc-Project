@@ -20,7 +20,7 @@ m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
 
-N_steps = 1000; % Number of discretisation points
+N_steps = 7500; % Number of discretisation points
 
 basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
