@@ -134,7 +134,7 @@ ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 %title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
-legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex')
+legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex', 'Location', 'northeastoutside')
 
 subplot(3, 1, 2) % Middle subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
