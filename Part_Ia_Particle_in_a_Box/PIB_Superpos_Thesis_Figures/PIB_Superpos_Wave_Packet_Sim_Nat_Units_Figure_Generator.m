@@ -114,19 +114,19 @@ end
 
 figure; % Generate a figure
 
-% subplot(3, 1, 1) % Top subfigure
-% real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
-% hold on
-% imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-% hold off
-% xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-% ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
-% ylim([min(real(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-% %title('Real Component of the Wavefunction') % Add a title
-% grid on; % Add a grid to the plot
-% legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex', 'Location', 'northeastoutside')
+subplot(3, 1, 1) % Top subfigure
+real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
+hold on
+imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
+hold off
+xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$(\psi(x, t))$', 'Interpreter', 'latex'); % Label the y-axis
+ylim([min(real(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
+title('Real Component of the Wavefunction') % Add a title
+grid on; % Add a grid to the plot
+legend ('$\mathrm{Re}(\psi(x,t))', '$\mathrm{Im}\psi((x,t))', 'Interpreter', 'latex', 'Location', 'northeastoutside')
 
-% subplot(3, 1, 2) % Middle subfigure
+subplot(3, 1, 2) % Middle subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter', 'latex'); % Label the y-axis
@@ -134,13 +134,13 @@ ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits fo
 %title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
-% subplot(3, 1, 3) % Bottom
-% flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
-% xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-% ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-% ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-% %title('Probability Current') % Add a title
-% grid on; % Add a grid to the plot
+subplot(3, 1, 3) % Bottom
+flux_plot = plot(x, J(:, 1)); % Plot the initial probability density
+xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
+ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+%title('Probability Current') % Add a title
+grid on; % Add a grid to the plot
 
 % Animate the figures
 
@@ -151,7 +151,7 @@ for n = 1:N_t % Loop over all timesteps
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     
     if ismember(n, [1, 250, 750 1000])
-            filename = sprintf('PIB_2_State_WP_Prob_Density_%.2f.png', n); % Create the file name for the figure
+            filename = sprintf('PIB_2_State_WP_Re_Im_Parts_%.2f.png', n); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
     end
