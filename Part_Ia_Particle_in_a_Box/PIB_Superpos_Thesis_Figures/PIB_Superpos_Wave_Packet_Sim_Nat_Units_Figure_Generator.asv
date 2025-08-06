@@ -142,8 +142,9 @@ ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 %title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 10);
+set(groot, 'DefaultTextFontSize', 10);
+set(groot, 'DefaultAxesFontSize', 50); 
 
 % Animate the figures
 
@@ -153,11 +154,11 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the flux plot
     
-    if ismember(n, [1, 250, 500, 750, 1000])
-            filename = sprintf('PIB_2_State_WP_Prob_Density_%.2f.png', n); % Create the file name for the figure
-            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
-
-    end
+    % if ismember(n, [1, 250, 500, 750, 1000])
+    %         filename = sprintf('PIB_2_State_WP_Prob_Density_%.2f.png', n); % Create the file name for the figure
+    %         exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+    % 
+    % end
 
     pause(0.005); % Pause to create an animation
     drawnow; % Update the figures and display immediately
