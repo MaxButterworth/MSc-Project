@@ -180,7 +180,7 @@ figure; % Generate a figure
 t_array = dt * (0:N_t - 1); % Create a time array
 
 subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, norm_squared_error_t(:, 1)); % Plot the real component of the wave packet
+real_wavefunction = plot(x, norm_squared_error_t(:, 1), 'LineWidth', 2); % Plot the real component of the wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\left|\Delta\psi(x, t)\right|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
@@ -189,7 +189,7 @@ title('Error on the Norm Squared of the Wave Packet Error', 'Interpreter', 'late
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 2) % Top right subfigure
-norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wave packet
+norm_squared_error_plot = plot(t_array, x_avg_error_t.', 'LineWidth', 2); % Plot the error on the real component of the wave packet
 xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\Delta\langle x\rangle_t$', 'Interpreter','latex'); % Label the y-axis
 ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for convenience
@@ -197,28 +197,28 @@ title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 3) % Middle left subfigure
-overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wave packet
+overlap_squared_plot = plot(t_array, overlap_squared_t.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\langle\psi_\mathrm{numerical}|\psi_\mathrm{analytical}\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 4) % Middle right subfigure
-grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wave packet
+grou_velocity_error_plot = plot(t_array, group_velocity_error.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta v_g (t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 5) % Bottom left subfigure
-error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wave packet
+error_imag_plot = plot(t_array, dispersion_error.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
 
 % Animate the figures
 
