@@ -145,7 +145,7 @@ dispersion_error = zeros(1, N_t); % Array to store difference in dispersion over
 
 for error_index = (1:N_t)
     % Norm squared of the error on the values of the real and imaginary parts of the SO propagated wave packet
-    norm_squared_error_t(:, N_steps) = abs(psi_t(:,error_index) - psi_analytical_t(:,error_index)).^2;
+    norm_squared_error_t(:, error_index) = abs(psi_t(:,error_index) - psi_analytical_t(:,error_index)).^2;
     
     % Error on the average position
     x_avg_num = trapz(x, (x.' .* abs(psi_t(:, error_index)).^2)); % Average position for the numerical wave packet
@@ -179,18 +179,30 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
+% subplot(3, 2, 1) % Top left subfigure
+% real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real component of the wave packet
+% hold on
+% real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
+% hold off
+% xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
+% ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+% xlim([min(x) max(x)]) % Set the y-limits for convenience
+% ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
+% title('Real Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
+% grid on; % Add a grid to the plot
+% legend('Numerical Wave Packet', 'Analytical Wave Packet')
+
 subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real component of the wave packet
-hold on
-real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
-hold off
+real_wavefunction = plot(x, norm_squared_error_t(:, N_steps)); % Plot the real component of the wave packet
+% hold on
+% real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
+% hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+ylabel('$\left|\Delta\psi(x, t)\right|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
+title('Error on the Norm Squared of the Wave Packet Difference', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
-legend('Numerical Wave Packet', 'Analytical Wave Packet')
 
 subplot(3, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary component of the wave packet
@@ -234,6 +246,9 @@ ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
+set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
+
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
@@ -247,11 +262,11 @@ for n = 1:N_t % Loop over all timesteps
 
     end
 
-    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the numerical wave packet
-    set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
-
-    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
-    set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
+    % set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the numerical wave packet
+    % set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
+    % 
+    % set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
+    % set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
 
     sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
 
