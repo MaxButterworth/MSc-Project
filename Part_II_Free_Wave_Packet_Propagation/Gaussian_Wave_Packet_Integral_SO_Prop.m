@@ -128,9 +128,9 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(imag(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wavefunction', 'Interpreter','latex') % Add a title
+% title('Real Component of the Wavefunction', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
+legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside')
 
 subplot(3, 1, 2) % Middle subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
@@ -146,11 +146,11 @@ flux_plot = plot(x, J(:, 1), 'LineWidth', 3); % Plot the initial probability cur
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-title('Flux', 'Interpreter','latex') % Add a title
+%title('Flux', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 26); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 26); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
 
 % Animate and save the figures
 
@@ -170,7 +170,7 @@ for n = 1:N_t % Loop over all timesteps
     if save_figures == true
         if ismember(n, [1, 126, 276])
             time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('Gaussian_WP_SO_Prop_Travelling_Prob_Density_t_%.2f.png', time); % Create the file name for the figure
+            filename = sprintf('Gaussian_WP_SO_Prop_Travelling_Flux_t_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
         end
