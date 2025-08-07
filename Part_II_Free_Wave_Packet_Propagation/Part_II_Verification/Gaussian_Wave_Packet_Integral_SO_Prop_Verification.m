@@ -179,45 +179,16 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
-% subplot(3, 2, 1) % Top left subfigure
-% real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real component of the wave packet
-% hold on
-% real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
-% hold off
-% xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-% ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-% xlim([min(x) max(x)]) % Set the y-limits for convenience
-% ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-% title('Real Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
-% grid on; % Add a grid to the plot
-% legend('Numerical Wave Packet', 'Analytical Wave Packet')
-
 subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, norm_squared_error_t(:, N_steps)); % Plot the real component of the wave packet
-% hold on
-% real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)));
-% hold off
+real_wavefunction = plot(x, norm_squared_error_t(:, 1)); % Plot the real component of the wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\left|\Delta\psi(x, t)\right|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Error on the Norm Squared of the Wave Packet Difference', 'Interpreter', 'latex') % Add a title
+ylim([min(norm_squared_error_t(:)) max(norm_squared_error_t(:))]); % Set the y-limits for convenience
+title('Error on the Norm Squared of the Wave Packet Error', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary component of the wave packet
-hold on
-imag_wavefunction_analytical = plot(x, imag(psi_analytical_t(:, 1)));
-hold off
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wave Packet', 'Interpreter', 'latex') % Add a title
-grid on; % Add a grid to the plot
-legend('Numerical Wave Packet', 'Analytical Wave Packet')
-
-subplot(3, 2, 3) % Middle left subfigure
+subplot(3, 2, 2) % Middle left subfigure
 norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wave packet
 xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\Delta\langle x\rangle_t$', 'Interpreter','latex'); % Label the y-axis
@@ -225,29 +196,29 @@ ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for conv
 title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 4) % Middle right subfigure
+subplot(3, 2, 3) % Middle right subfigure
 overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\langle\psi_\mathrm{numerical}|\psi_\mathrm{analytical}\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 5) % Bottom left subfigure
+subplot(3, 2, 4) % Bottom left subfigure
 grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta v_g (t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 6) % Bottom right subfigure
+subplot(3, 2, 5) % Bottom right subfigure
 error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
 
 % Animate the figures
 
@@ -262,11 +233,7 @@ for n = 1:N_t % Loop over all timesteps
 
     end
 
-    % set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the numerical wave packet
-    % set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
-    % 
-    % set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the numerical wave packet
-    % set(imag_wavefunction_analytical, 'YData', imag(psi_analytical_t(:, n))) % Update the real part of the analytical wave packet
+    set(real_wavefunction, 'YData', norm_squared_error_t(:, n)) % Update the real part of the numerical wave packet
 
     sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
 
