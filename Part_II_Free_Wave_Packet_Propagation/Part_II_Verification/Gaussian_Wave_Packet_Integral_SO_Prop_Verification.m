@@ -188,7 +188,7 @@ ylim([min(norm_squared_error_t(:)) max(norm_squared_error_t(:))]); % Set the y-l
 title('Error on the Norm Squared of the Wave Packet Error', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 2) % Middle left subfigure
+subplot(3, 2, 2) % Top right subfigure
 norm_squared_error_plot = plot(t_array, x_avg_error_t.'); % Plot the error on the real component of the wave packet
 xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\Delta\langle x\rangle_t$', 'Interpreter','latex'); % Label the y-axis
@@ -196,21 +196,21 @@ ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for conv
 title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 3) % Middle right subfigure
+subplot(3, 2, 3) % Middle left subfigure
 overlap_squared_plot = plot(t_array, overlap_squared_t.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\langle\psi_\mathrm{numerical}|\psi_\mathrm{analytical}\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 4) % Bottom left subfigure
+subplot(3, 2, 4) % Middle right subfigure
 grou_velocity_error_plot = plot(t_array, group_velocity_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta v_g (t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(3, 2, 5) % Bottom right subfigure
+subplot(3, 2, 5) % Bottom left subfigure
 error_imag_plot = plot(t_array, dispersion_error.'); % Plot the error on the imaginary component of the wave packet
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
@@ -230,7 +230,6 @@ for n = 1:N_t % Loop over all timesteps
             filename = sprintf('Single_Gaussian_WP_SO_Prop_Verification_%.2f.png', (n*dt)); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
         end
-
     end
 
     set(real_wavefunction, 'YData', norm_squared_error_t(:, n)) % Update the real part of the numerical wave packet
