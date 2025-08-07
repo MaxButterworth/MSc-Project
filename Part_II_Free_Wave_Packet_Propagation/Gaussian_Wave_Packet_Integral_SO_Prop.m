@@ -19,10 +19,10 @@ L = 50; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 2001; % Number of discretisation points
+N_steps = 1001; % Number of discretisation points
 
-x0 = L/2; % Set the starting position of wave packet on the x-axis
-k0 = 0; % Set the expectation value for k for the wave packet
+x0 = L/4; % Set the starting position of wave packet on the x-axis
+k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
@@ -46,7 +46,7 @@ else % Define k-space grid if N_steps is odd
 
 end
 
-dt = 1e-1; % Define the time step size
+dt = 1e-2; % Define the time step size
 N_t = 300; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
@@ -119,10 +119,10 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
-subplot(2, 1, 1) % Top subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
+subplot(3, 1, 1) % Top subfigure
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 2); % Plot the real wavefunction
 hold on
-imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 3); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imaginary wavefunction
 hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
@@ -141,13 +141,16 @@ ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits fo
 title('Probability Density', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(2, 1, 2) % Bottom subfigure
+subplot(3, 1, 3) % Bottom subfigure
 flux_plot = plot(x, J(:, 1), 'LineWidth', 3); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 title('Flux', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
+
+set(groot, 'DefaultAxesFontSize', 26); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 26); % Set the font size for other text
 
 % Animate and save the figures
 
@@ -165,9 +168,9 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the relevant figures
     
     if save_figures == true
-        if ismember(n, [1, 25, 75])
+        if ismember(n, [1, 126, 276])
             time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('Gaussian_WP_SO_Prop_Stationary_WF_t_%.2f.png', time); % Create the file name for the figure
+            filename = sprintf('Gaussian_WP_SO_Prop_Travelling_Prob_Density_t_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
         end
