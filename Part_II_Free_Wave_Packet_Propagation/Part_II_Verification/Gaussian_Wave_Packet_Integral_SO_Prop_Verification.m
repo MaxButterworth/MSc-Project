@@ -179,21 +179,13 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
-subplot(3, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, norm_squared_error_t(:, 1), 'LineWidth', 2); % Plot the real component of the wave packet
+subplot(2, 1, 1) % Top left subfigure
+norm_squared_error_plot = plot(x, norm_squared_error_t(:, 1), 'LineWidth', 2); % Plot the real component of the wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\left|\Delta\psi(x, t)\right|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(norm_squared_error_t(:)) max(norm_squared_error_t(:))]); % Set the y-limits for convenience
 title('Error on the Norm Squared of the Wave Packet Error', 'Interpreter', 'latex') % Add a title
-grid on; % Add a grid to the plot
-
-subplot(3, 2, 2) % Top right subfigure
-norm_squared_error_plot = plot(t_array, x_avg_error_t.', 'LineWidth', 2); % Plot the error on the real component of the wave packet
-xlabel('$t$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\Delta\langle x\rangle_t$', 'Interpreter','latex'); % Label the y-axis
-ylim([min(x_avg_error_t(:)) max(x_avg_error_t(:))]); % Set the y-limits for convenience
-title('Error on the Average Position', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 3) % Middle left subfigure
@@ -217,8 +209,8 @@ ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 26); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 26); % Set the font size for other text
 
 % Animate the figures
 
@@ -226,17 +218,17 @@ for n = 1:N_t % Loop over all timesteps
     
     % Save the figure at a desired timestep
     if save_figure == true
-        if n == N_t/2
-            filename = sprintf('Single_Gaussian_WP_SO_Prop_Verification_%.2f.png', (n*dt)); % Create the file name for the figure
+        if n == N_t
+            filename = sprintf('Single_Gaussian_WP_SO_Prop_Verification_Norm_Sq_t_%.2f.png', (n*dt)); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
         end
     end
 
-    set(real_wavefunction, 'YData', norm_squared_error_t(:, n)) % Update the real part of the numerical wave packet
+    set(norm_squared_error_plot, 'YData', norm_squared_error_t(:, n)) % Update the real part of the numerical wave packet
 
-    sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
+    %sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
 
-    pause(0.5); % Pause to create an animation effect
+    pause(0.05); % Pause to create an animation effect
     drawnow; % Update the relevant figures
 
 end
