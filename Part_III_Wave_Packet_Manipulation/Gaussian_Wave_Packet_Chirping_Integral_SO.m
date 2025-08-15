@@ -61,14 +61,14 @@ V_matrix = zeros(N_steps, N_steps); % Define the potential energy matrix for a f
 H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operator
 
 % ======================================================================================================================================
-%%%%%%%%%% Generate an initial wave packet by applying the inverse Fourier transform to a Gaussian %%%%%%%%%%
+%%%%%%%%%% Generate an initial chirped wave packet by applying the inverse Fourier transform to a chirped Gaussian %%%%%%%%%%
 % ======================================================================================================================================
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = 0; % Define the coefficients of the components of the phase term
+phase_coeff = [0, 0, 0]; % Define the coefficients of the components of the polynomial phase term
 
-% Construct the Gaussian phase term in k-space
+% Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
     phase = phase + (phase_coeff(index) * (k - k0).^(index - 1));
 end
@@ -149,8 +149,8 @@ ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
 %title('Flux', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
 
 % Animate and save the figures
 
