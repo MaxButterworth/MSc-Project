@@ -2,8 +2,8 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part II - Free Particle Gaussian Wave Packet Simulations
-% A single free particle Gaussian wave packet constructed using an integral over free particle eigenfunctions
+% Part III - Gaussian Wave Packet Chirping
+% Investingating manipulation of single free particle Gaussian wave packets via chirping
 % Time propagation is performed using the split operator method
 
 % Author: Max L Butterworth
