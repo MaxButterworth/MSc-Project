@@ -1,0 +1,104 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      3505,         96]
+NotebookOptionsPosition[      2903,         77]
+NotebookOutlinePosition[      3331,         94]
+CellTagsIndexPosition[      3288,         91]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"InverseFourierTransform", "[", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"-", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"k", "-", "k0"}], ")"}], "^", "2"}]}], ")"}], "+", " ", 
+     RowBox[{"(", 
+      RowBox[{"I", " ", "*", " ", "a", " ", "*", " ", "k"}], ")"}]}], "]"}], ",",
+    " ", "k", ",", " ", "x"}], "]"}]], "Input",
+ CellChangeTimes->{{3.964504243646276*^9, 3.964504318889895*^9}, {
+   3.964504359398839*^9, 3.964504398640926*^9}, {3.964504433532317*^9, 
+   3.964504508700705*^9}, {3.9645045970709467`*^9, 3.964504607848134*^9}, {
+   3.964504723201478*^9, 3.964504795543318*^9}, {3.9645048640756073`*^9, 
+   3.964504866125197*^9}, {3.964504905040794*^9, 3.964504908810196*^9}, {
+   3.9645069248608522`*^9, 3.964506929887397*^9}, {3.964507422465083*^9, 
+   3.9645074520441504`*^9}, {3.964507718651958*^9, 3.964507719909849*^9}, 
+   3.964508045592245*^9, {3.964508091596985*^9, 3.9645081289987993`*^9}, {
+   3.9645082824753017`*^9, 3.964508287346572*^9}, {3.964508358554902*^9, 
+   3.9645084036901617`*^9}, {3.9645085048969517`*^9, 3.964508505910096*^9}, {
+   3.964509213994526*^9, 3.964509214532153*^9}, {3.9645092585602217`*^9, 
+   3.9645092744831333`*^9}, {3.96451067322191*^9, 3.964510680809086*^9}, {
+   3.964510796095407*^9, 3.964510799023819*^9}, {3.9645110042148523`*^9, 
+   3.964511005081545*^9}, {3.964511104217173*^9, 3.9645111369818497`*^9}},
+ CellLabel->"In[75]:=",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
+
+Cell[BoxData[
+ FractionBox[
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{
+    FractionBox["1", "4"], " ", 
+    RowBox[{"(", 
+     RowBox[{"a", "-", "x"}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "a"}], "+", 
+      RowBox[{"4", " ", "\[ImaginaryI]", " ", "k0"}], "+", "x"}], ")"}]}]], 
+  SqrtBox["2"]]], "Output",
+ CellChangeTimes->{
+  3.964510800327404*^9, 3.964511008047412*^9, {3.964511121088928*^9, 
+   3.964511141133512*^9}},
+ CellLabel->"Out[75]=",ExpressionUUID->"4fc4613c-5bb9-4426-b731-60dd03995a3a"]
+}, Open  ]],
+
+Cell["\<\
+Multiply by the time-evolution operator, U = exp(-iEt/hbar), to get the \
+time-dependent wave packet.\
+\>", "Text",
+ CellChangeTimes->{{3.964509867971596*^9, 
+  3.964509894252453*^9}},ExpressionUUID->"85dbf647-c86d-46c9-b85e-\
+da874193820d"]
+},
+WindowSize->{745, 433},
+WindowMargins->{{Automatic, -1504}, {29, Automatic}},
+Magnification:>1.25 Inherited,
+FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"32a9e761-b44a-4b4f-8260-570083b533ce"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 1519, 27, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
+Cell[2098, 51, 535, 15, 72, "Output",ExpressionUUID->"4fc4613c-5bb9-4426-b731-60dd03995a3a"]
+}, Open  ]],
+Cell[2648, 69, 251, 6, 69, "Text",ExpressionUUID->"85dbf647-c86d-46c9-b85e-da874193820d"]
+}
+]
+*)
+

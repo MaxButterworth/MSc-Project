@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[      2711,         86]
-NotebookOptionsPosition[      2237,         69]
-NotebookOutlinePosition[      2629,         85]
-CellTagsIndexPosition[      2586,         82]
+NotebookDataLength[      2828,         89]
+NotebookOptionsPosition[      2331,         71]
+NotebookOutlinePosition[      2744,         88]
+CellTagsIndexPosition[      2701,         85]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -38,21 +38,22 @@ Cell[BoxData[
      RowBox[{"(", 
       RowBox[{
        RowBox[{"(", 
-        RowBox[{"i", "*", "E", "*", "t"}], ")"}], "/", "h"}], ")"}]}], "]"}], 
+        RowBox[{"I", "*", "E", "*", "t"}], ")"}], "/", "h"}], ")"}]}], "]"}], 
    ",", " ", "k", ",", " ", "x"}], "]"}]], "Input",
  CellChangeTimes->{{3.963291353444255*^9, 3.963291367397027*^9}, {
    3.963291398036622*^9, 3.963291541488019*^9}, {3.963291586661913*^9, 
    3.963291651173025*^9}, {3.9632916976511393`*^9, 3.963291711204924*^9}, {
    3.963291941676691*^9, 3.963291951994576*^9}, 3.9632919974165382`*^9, {
-   3.963292977954829*^9, 3.963292991660945*^9}},
- CellLabel->"In[6]:=",ExpressionUUID->"71fd1ab5-9271-473a-a749-5ba157d866c6"],
+   3.963292977954829*^9, 3.963292991660945*^9}, {3.9645069549955997`*^9, 
+   3.9645069559619007`*^9}},
+ CellLabel->"In[23]:=",ExpressionUUID->"71fd1ab5-9271-473a-a749-5ba157d866c6"],
 
 Cell[BoxData[
  FractionBox[
   SuperscriptBox["\[ExponentialE]", 
    RowBox[{
     FractionBox[
-     RowBox[{"\[ExponentialE]", " ", "i", " ", "t"}], "h"], "-", 
+     RowBox[{"\[ImaginaryI]", " ", "\[ExponentialE]", " ", "t"}], "h"], "-", 
     RowBox[{"\[ImaginaryI]", " ", "n", " ", "x"}], "-", 
     FractionBox[
      RowBox[{
@@ -63,12 +64,14 @@ Cell[BoxData[
     SuperscriptBox["s", "2"]]]]], "Output",
  CellChangeTimes->{
   3.963291682287506*^9, 3.963291714076027*^9, 3.963291956776181*^9, 
-   3.963291999475054*^9, {3.963292980767292*^9, 3.963292993275237*^9}},
- CellLabel->"Out[6]=",ExpressionUUID->"3671eb2c-f1af-4ef6-9807-cede466e9354"]
+   3.963291999475054*^9, {3.963292980767292*^9, 3.963292993275237*^9}, 
+   3.964506959737639*^9},
+ CellLabel->"Out[23]=",ExpressionUUID->"bec9cf3f-a462-4117-b02e-1ba05748884f"]
 }, Open  ]]
 },
-WindowSize->{808, 911},
+WindowSize->{931, 911},
 WindowMargins->{{4, Automatic}, {Automatic, 4}},
+Magnification->1.25,
 FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"83ee5778-f2e9-42e9-b120-68911a2f4cb7"
@@ -85,8 +88,8 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[576, 22, 998, 25, 29, "Input",ExpressionUUID->"71fd1ab5-9271-473a-a749-5ba157d866c6"],
-Cell[1577, 49, 644, 17, 95, "Output",ExpressionUUID->"3671eb2c-f1af-4ef6-9807-cede466e9354"]
+Cell[576, 22, 1053, 26, 36, "Input",ExpressionUUID->"71fd1ab5-9271-473a-a749-5ba157d866c6"],
+Cell[1632, 50, 683, 18, 107, "Output",ExpressionUUID->"bec9cf3f-a462-4117-b02e-1ba05748884f"]
 }, Open  ]]
 }
 ]
