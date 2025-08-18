@@ -33,7 +33,7 @@ save_figures = false; % Define a variable to save figures at various points in t
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
-x = linspace(0, L, N_steps); % Define the x-domain
+x = linspace(-L/2, L/2, N_steps); % Define the x-domain
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dk = (2 * pi)/L; % Define spacing in k-space
@@ -74,7 +74,7 @@ for index = 1:length(phase_coeff)
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = ifft(ifftshift(a_k)); % Initial Gaussian wave packet in real space
+psi0 = fftshift(ifft(ifftshift(a_k))); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
