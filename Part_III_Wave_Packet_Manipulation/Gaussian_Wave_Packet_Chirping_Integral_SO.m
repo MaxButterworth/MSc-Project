@@ -21,11 +21,11 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-x0 = L/2; % Set the starting position of wave packet on the x-axis
+x0 = 0; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
-include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
+include_elapsed_time = true; % Define a variable to show elapsed time on figure or not
 
 save_figures = false; % Define a variable to save figures at various points in the simulation or not
 
@@ -66,7 +66,7 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [L/4, 0]; % Define the coefficients of the components of the polynomial phase term
+phase_coeff = [0, 1]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
