@@ -47,7 +47,7 @@ else % Define k-space grid if N_steps is odd
 end
 
 dt = 1e-2; % Define the time step size
-N_t = 300; % Define the number of time steps to simulate
+N_t = 1001; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
@@ -70,11 +70,11 @@ phase_coeff = [0, 1]; % Define the coefficients of the components of the polynom
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * k.^index);
+    phase = phase + (phase_coeff(index) * (k - k0).^index);
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = fftshift(ifft(ifftshift(a_k))); % Initial Gaussian wave packet in real space
+psi0 = ifft(ifftshift(a_k)); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
