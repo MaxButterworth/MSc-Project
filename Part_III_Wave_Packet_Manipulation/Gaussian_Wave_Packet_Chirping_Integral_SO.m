@@ -70,7 +70,7 @@ phase_coeff = [L/4, 0]; % Define the coefficients of the components of the polyn
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * k.^(index));
+    phase = phase + (phase_coeff(index) * (k - k0).^index);
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
