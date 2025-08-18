@@ -21,7 +21,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-x0 = L/4; % Set the starting position of wave packet on the x-axis
+x0 = L/2; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
@@ -66,7 +66,7 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [0, 0, 0]; % Define the coefficients of the components of the polynomial phase term
+phase_coeff = [0, L/4]; % Define the coefficients of the components of the polynomial phase term
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
@@ -138,7 +138,7 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
-title('Probability Density', 'Interpreter','latex') % Add a title
+%title('Probability Density', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 1, 3) % Bottom subfigure
