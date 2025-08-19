@@ -70,11 +70,11 @@ phase_coeff = [0, 1]; % Define the coefficients of the components of the polynom
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * (k - k0).^index);
+    phase = phase + (phase_coeff(index) * (k).^index);
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = ifft(ifftshift(a_k)); % Initial Gaussian wave packet in real space
+psi0 = fftshift(ifft(ifftshift(a_k))); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
