@@ -15,7 +15,7 @@
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 1; % Length of the 1D box
+L = 100; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
@@ -33,7 +33,7 @@ save_figures = false; % Define a variable to save figures at various points in t
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
-x = linspace(0, L, N_steps); % Define the x-domain
+x = linspace(-L/2, L/2, N_steps); % Define the x-domain
 dx = x(2) - x(1); % Calculate the spatial step size
 
 dk = (2 * pi)/L; % Define spacing in k-space
@@ -47,7 +47,7 @@ else % Define k-space grid if N_steps is odd
 end
 
 dt = 1e-2; % Define the time step size
-N_t = 300; % Define the number of time steps to simulate
+N_t = 1001; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
@@ -66,15 +66,15 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [0, 1]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
+phase_coeff = [0, L/40]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * (k - k0).^index);
+    phase = phase + (phase_coeff(index) * (k).^index);
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
-psi0 = ifft(ifftshift(a_k)); % Initial Gaussian wave packet in real space
+psi0 = fftshift(ifft(ifftshift(a_k))); % Initial Gaussian wave packet in real space
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 
