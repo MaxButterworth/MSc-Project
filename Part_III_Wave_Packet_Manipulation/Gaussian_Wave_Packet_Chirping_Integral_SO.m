@@ -66,11 +66,11 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [0, 1]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
+phase_coeff = [0, L/100]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
-    phase = phase + (phase_coeff(index) * (k).^index);
+    phase = phase + (phase_coeff(index) * k.^index);
 end
 
 a_k = a_0 * exp((-(1/(2 * sigma^2)) * (k - k0).^2) + (1i * phase)); % Construct the whole Gaussian distribution in k-space
