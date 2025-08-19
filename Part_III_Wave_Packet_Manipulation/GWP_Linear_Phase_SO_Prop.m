@@ -168,8 +168,8 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the relevant figures
     
     if save_figures == true
-        if ismember(n, [1, 101, 201])
-            time = t_array(1, n); % Assign the current time to a variable
+        if ismember(n, [1, 100, 200])
+            time = t_array(1, n + 1); % Assign the current time to a variable
             filename = sprintf('GWP_Linear_Phase_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     

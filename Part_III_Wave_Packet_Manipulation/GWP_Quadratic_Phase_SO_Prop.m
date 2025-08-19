@@ -21,7 +21,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-time_delay = L/50; % Set the time delay for the chirp
+time_delay = L/25; % Set the time delay for the chirp
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
@@ -66,7 +66,7 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [0, time_delay]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
+phase_coeff = [0, time_delay/2]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
@@ -168,9 +168,9 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the relevant figures
     
     if save_figures == true
-        if ismember(n, [10, 101, 201])
-            time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('GWP_Linear_Phase_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
+        if ismember(n, [30, time_delay/dt, (time_delay/dt) + 150])
+            time = t_array(1, (n + 1)); % Assign the current time to a variable
+            filename = sprintf('GWP_Quadratic_Phase_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
         end
