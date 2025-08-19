@@ -1,0 +1,128 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      4520,        120]
+NotebookOptionsPosition[      4040,        104]
+NotebookOutlinePosition[      4470,        121]
+CellTagsIndexPosition[      4427,        118]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"InverseFourierTransform", "[", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"-", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"k", "-", "k0"}], ")"}], "^", "2"}]}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{"2", 
+         RowBox[{"s", "^", "2"}]}], ")"}]}], ")"}], "+", " ", 
+     RowBox[{"(", 
+      RowBox[{"I", " ", "*", " ", "a", " ", "*", " ", 
+       RowBox[{"k", "^", "2"}]}], ")"}]}], "]"}], ",", " ", "k", ",", " ", 
+   "x"}], "]"}]], "Input",
+ CellChangeTimes->{{3.964504243646276*^9, 3.964504318889895*^9}, {
+   3.964504359398839*^9, 3.964504398640926*^9}, {3.964504433532317*^9, 
+   3.964504508700705*^9}, {3.9645045970709467`*^9, 3.964504607848134*^9}, {
+   3.964504723201478*^9, 3.964504795543318*^9}, {3.9645048640756073`*^9, 
+   3.964504866125197*^9}, {3.964504905040794*^9, 3.964504911598826*^9}, {
+   3.9645068795631533`*^9, 3.96450691126291*^9}, {3.96450702314712*^9, 
+   3.964507034436378*^9}, 3.964508499331896*^9, {3.964509559191917*^9, 
+   3.964509563045245*^9}, {3.9645099373328648`*^9, 3.964509939909135*^9}, {
+   3.9645100622582083`*^9, 3.964510064232617*^9}, {3.964511160742112*^9, 
+   3.964511170949326*^9}, {3.9645270206658382`*^9, 3.964527031812302*^9}, {
+   3.964529617041271*^9, 3.964529639867013*^9}, {3.9645298361139297`*^9, 
+   3.9645298370792227`*^9}, {3.9645299455113983`*^9, 
+   3.9645299976390753`*^9}, {3.9645971085556297`*^9, 3.964597124021776*^9}, {
+   3.964597975544546*^9, 3.964598017224028*^9}, {3.964598051372786*^9, 
+   3.96459805539911*^9}, {3.964602102049358*^9, 3.964602102492279*^9}, {
+   3.964602228323661*^9, 3.964602243207127*^9}, {3.964602342860634*^9, 
+   3.964602345014283*^9}, {3.964603126910056*^9, 3.964603126985564*^9}, {
+   3.96460332175804*^9, 3.964603328263319*^9}, {3.964603375659676*^9, 
+   3.964603386747093*^9}, {3.9646043720479403`*^9, 3.964604373926243*^9}, {
+   3.964604405696295*^9, 3.964604408586382*^9}, 3.964606114107115*^9, {
+   3.96460619174876*^9, 
+   3.964606196987234*^9}},ExpressionUUID->"09aaad1c-1575-4fcf-a265-\
+32fe0bb96f88"],
+
+Cell[BoxData[{
+ RowBox[{
+  FractionBox[
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", 
+     FractionBox[
+      RowBox[{
+       RowBox[{"2", " ", "a", " ", 
+        SuperscriptBox["k0", "2"]}], "+", 
+       RowBox[{"2", " ", "k0", " ", "x"}], "+", 
+       RowBox[{"\[ImaginaryI]", " ", 
+        SuperscriptBox["s", "2"], " ", 
+        SuperscriptBox["x", "2"]}]}], 
+      RowBox[{
+       RowBox[{"2", " ", "\[ImaginaryI]"}], "+", 
+       RowBox[{"4", " ", "a", " ", 
+        SuperscriptBox["s", "2"]}]}]]}]], 
+   SqrtBox[
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "2"}], " ", "\[ImaginaryI]", " ", "a"}], "+", 
+     FractionBox["1", 
+      SuperscriptBox["s", "2"]]}]]], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Multiply", " ", "by", " ", "the", " ", "time"}], "-", 
+   RowBox[{"evolution", " ", "operator"}]}], ",", " ", 
+  RowBox[{"U", "=", 
+   RowBox[{"exp", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "iEt"}], "/", "hbar"}], ")"}]}]}], ",", 
+  RowBox[{
+   RowBox[{"to", " ", "get", " ", "the", " ", "time"}], "-", 
+   RowBox[{"dependent", " ", "wave", " ", 
+    RowBox[{"packet", "."}]}]}]}]}], "Text",
+ CellChangeTimes->{{3.964608872605114*^9, 3.964608893361287*^9}, {
+  3.9646089233692293`*^9, 
+  3.964608961659265*^9}},ExpressionUUID->"4396a8de-7219-4789-9718-\
+790c26861083"]
+},
+WindowSize->{1140, 432},
+WindowMargins->{{Automatic, -1386}, {Automatic, 212}},
+Magnification:>1.25 Inherited,
+FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"fd0b9d53-45fc-4f07-b898-aa13ddf45543"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 2134, 41, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
+Cell[2691, 63, 1345, 39, 186, "Text",ExpressionUUID->"4396a8de-7219-4789-9718-790c26861083"]
+}
+]
+*)
+
