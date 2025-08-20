@@ -10,14 +10,16 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[      4561,        120]
-NotebookOptionsPosition[      4081,        104]
-NotebookOutlinePosition[      4511,        121]
-CellTagsIndexPosition[      4468,        118]
+NotebookDataLength[      5109,        135]
+NotebookOptionsPosition[      4503,        116]
+NotebookOutlinePosition[      4933,        133]
+CellTagsIndexPosition[      4890,        130]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+
+Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"FourierTransform", "[", 
   RowBox[{
@@ -58,32 +60,42 @@ Cell[BoxData[
    3.964603386747093*^9}, {3.9646043720479403`*^9, 3.964604373926243*^9}, {
    3.964604405696295*^9, 3.964604408586382*^9}, 3.964606114107115*^9, {
    3.96460619174876*^9, 3.964606196987234*^9}, {3.9646785906592407`*^9, 
-   3.964678592318419*^9}},ExpressionUUID->"09aaad1c-1575-4fcf-a265-\
-32fe0bb96f88"],
+   3.964678592318419*^9}, {3.9646824025805264`*^9, 3.964682437154173*^9}, {
+   3.9646824877366123`*^9, 3.964682487975113*^9}, {3.964682772231061*^9, 
+   3.964682774056604*^9}},
+ CellLabel->
+  "In[174]:=",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
 
-Cell[BoxData[{
- RowBox[{
-  FractionBox[
-   SuperscriptBox["\[ExponentialE]", 
-    RowBox[{"-", 
-     FractionBox[
-      RowBox[{
-       RowBox[{"2", " ", "a", " ", 
-        SuperscriptBox["k0", "2"]}], "+", 
-       RowBox[{"2", " ", "k0", " ", "x"}], "+", 
-       RowBox[{"\[ImaginaryI]", " ", 
-        SuperscriptBox["s", "2"], " ", 
-        SuperscriptBox["x", "2"]}]}], 
-      RowBox[{
-       RowBox[{"2", " ", "\[ImaginaryI]"}], "+", 
-       RowBox[{"4", " ", "a", " ", 
-        SuperscriptBox["s", "2"]}]}]]}]], 
-   SqrtBox[
-    RowBox[{
+Cell[BoxData[
+ FractionBox[
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{"-", 
+    FractionBox[
      RowBox[{
-      RowBox[{"-", "2"}], " ", "\[ImaginaryI]", " ", "a"}], "+", 
-     FractionBox["1", 
-      SuperscriptBox["s", "2"]]}]]], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+      RowBox[{"2", " ", "a", " ", 
+       SuperscriptBox["k0", "2"]}], "+", 
+      RowBox[{"2", " ", "k0", " ", "x"}], "+", 
+      RowBox[{"\[ImaginaryI]", " ", 
+       SuperscriptBox["s", "2"], " ", 
+       SuperscriptBox["x", "2"]}]}], 
+     RowBox[{
+      RowBox[{"2", " ", "\[ImaginaryI]"}], "+", 
+      RowBox[{"4", " ", "a", " ", 
+       SuperscriptBox["s", "2"]}]}]]}]], 
+  SqrtBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "2"}], " ", "\[ImaginaryI]", " ", "a"}], "+", 
+    FractionBox["1", 
+     SuperscriptBox["s", "2"]]}]]]], "Output",
+ CellChangeTimes->{
+  3.964678629298718*^9, {3.964682423778143*^9, 3.964682439004159*^9}, 
+   3.96468253646273*^9, 3.964682775962747*^9},
+ CellLabel->
+  "Out[174]=",ExpressionUUID->"61c97267-bd64-42d7-9c10-c1169e4af11b"]
+}, Open  ]],
+
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"Multiply", " ", "by", " ", "the", " ", "time"}], "-", 
@@ -96,14 +108,14 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"to", " ", "get", " ", "the", " ", "time"}], "-", 
    RowBox[{"dependent", " ", "wave", " ", 
-    RowBox[{"packet", "."}]}]}]}]}], "Text",
+    RowBox[{"packet", "."}]}]}]}]], "Text",
  CellChangeTimes->{{3.964608872605114*^9, 3.964608893361287*^9}, {
-  3.9646089233692293`*^9, 
-  3.964608961659265*^9}},ExpressionUUID->"4396a8de-7219-4789-9718-\
+  3.9646089233692293`*^9, 3.964608961659265*^9}, {3.964678613194173*^9, 
+  3.964678620955909*^9}},ExpressionUUID->"4396a8de-7219-4789-9718-\
 790c26861083"]
 },
 WindowSize->{1140, 432},
-WindowMargins->{{Automatic, -1384}, {Automatic, 214}},
+WindowMargins->{{Automatic, -1356}, {Automatic, 200}},
 Magnification:>1.25 Inherited,
 FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
 StyleDefinitions->"Default.nb",
@@ -120,8 +132,11 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[554, 20, 2175, 41, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
-Cell[2732, 63, 1345, 39, 186, "Text",ExpressionUUID->"4396a8de-7219-4789-9718-790c26861083"]
+Cell[CellGroupData[{
+Cell[576, 22, 2351, 44, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
+Cell[2930, 68, 882, 26, 107, "Output",ExpressionUUID->"61c97267-bd64-42d7-9c10-c1169e4af11b"]
+}, Open  ]],
+Cell[3827, 97, 672, 17, 71, "Text",ExpressionUUID->"4396a8de-7219-4789-9718-790c26861083"]
 }
 ]
 *)
