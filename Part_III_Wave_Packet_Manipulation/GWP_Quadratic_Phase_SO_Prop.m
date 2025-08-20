@@ -21,7 +21,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-time_delay = L/25; % Set the time delay for the chirp
+time_delay = L/30; % Set the time delay for the chirp
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
