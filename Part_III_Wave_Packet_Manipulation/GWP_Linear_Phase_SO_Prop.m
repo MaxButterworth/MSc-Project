@@ -21,13 +21,12 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-x0 = 0; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
-save_figures = true; % Define a variable to save figures at various points in the simulation or not
+save_figures = false; % Define a variable to save figures at various points in the simulation or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
