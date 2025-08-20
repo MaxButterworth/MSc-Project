@@ -10,16 +10,16 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[      4520,        120]
-NotebookOptionsPosition[      4040,        104]
-NotebookOutlinePosition[      4470,        121]
-CellTagsIndexPosition[      4427,        118]
+NotebookDataLength[      4561,        120]
+NotebookOptionsPosition[      4081,        104]
+NotebookOutlinePosition[      4511,        121]
+CellTagsIndexPosition[      4468,        118]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 Cell[BoxData[
- RowBox[{"InverseFourierTransform", "[", 
+ RowBox[{"FourierTransform", "[", 
   RowBox[{
    RowBox[{"Exp", "[", 
     RowBox[{
@@ -57,8 +57,8 @@ Cell[BoxData[
    3.96460332175804*^9, 3.964603328263319*^9}, {3.964603375659676*^9, 
    3.964603386747093*^9}, {3.9646043720479403`*^9, 3.964604373926243*^9}, {
    3.964604405696295*^9, 3.964604408586382*^9}, 3.964606114107115*^9, {
-   3.96460619174876*^9, 
-   3.964606196987234*^9}},ExpressionUUID->"09aaad1c-1575-4fcf-a265-\
+   3.96460619174876*^9, 3.964606196987234*^9}, {3.9646785906592407`*^9, 
+   3.964678592318419*^9}},ExpressionUUID->"09aaad1c-1575-4fcf-a265-\
 32fe0bb96f88"],
 
 Cell[BoxData[{
@@ -103,7 +103,7 @@ Cell[BoxData[{
 790c26861083"]
 },
 WindowSize->{1140, 432},
-WindowMargins->{{Automatic, -1386}, {Automatic, 212}},
+WindowMargins->{{Automatic, -1384}, {Automatic, 214}},
 Magnification:>1.25 Inherited,
 FrontEndVersion->"14.2 for Mac OS X ARM (64-bit) (March 16, 2025)",
 StyleDefinitions->"Default.nb",
@@ -120,8 +120,8 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[554, 20, 2134, 41, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
-Cell[2691, 63, 1345, 39, 186, "Text",ExpressionUUID->"4396a8de-7219-4789-9718-790c26861083"]
+Cell[554, 20, 2175, 41, 36, "Input",ExpressionUUID->"09aaad1c-1575-4fcf-a265-32fe0bb96f88"],
+Cell[2732, 63, 1345, 39, 186, "Text",ExpressionUUID->"4396a8de-7219-4789-9718-790c26861083"]
 }
 ]
 *)
