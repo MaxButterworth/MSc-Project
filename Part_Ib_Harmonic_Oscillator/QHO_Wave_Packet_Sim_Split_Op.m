@@ -15,15 +15,13 @@
 % ======================================================================================================================================
 
 % Natural units have been adopted throughout
-L = 7; % Length of the 1D box
+L = 10; % Length of the 1D box
 m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
 omega = 1; % Define the angular frequency for the QHO
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
-
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
 
 N_steps = 10000; % Number of discretisation points on the x-axis
 
@@ -39,8 +37,7 @@ x = linspace(-L, L, N_steps); % Define the x-domain of the QHO
 dx = abs(x(2) - x(1)); % Calculate the spatial step size
 
 N_t = 1001; % Define the number of time steps to simulate
-%dt = 5e-2; % Define the time step size (dt = omega) when one wishes to
-dt = (2*pi)/(omega*N_t); % Define the time step size
+dt = 5e-2; % Define the time step size (dt = omega) when one wishes to
 
 % ======================================================================================================================================
 %%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
@@ -128,7 +125,7 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
-subplot(2, 2, 1) % Top Left subfigure
+subplot(2, 1, 1) % Top Left subfigure
 yyaxis('left')
 real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
 hold on
@@ -143,16 +140,16 @@ hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 grid on; % Add a grid to the plot
-%legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
+legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
 
-% subplot(2, 2, 3) % Bottom left subfigure
-% flux_plot = plot(x, J(:, 1), 'LineWidth', 2); % Plot the initial probability current
-% xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-% ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-% xticks(-L:1:L) % Set the x-ticks to increment in steps of one
-% ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-% %title('Probability Current') % Add a title
-% grid on; % Add a grid to the plot
+subplot(2, 1, 2) % Bottom left subfigure
+flux_plot = plot(x, J(:, 1), 'LineWidth', 2); % Plot the initial probability current
+xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
+xticks(-L:1:L) % Set the x-ticks to increment in steps of one
+ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+%title('Probability Current') % Add a title
+grid on; % Add a grid to the plot
 
 set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
 set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
@@ -162,7 +159,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    % set(flux_plot, 'YData', J(:, n)); % Update the flux plot
+    set(flux_plot, 'YData', J(:, n)); % Update the flux plot
 
     if include_elapsed_time == true
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
@@ -170,15 +167,5 @@ for n = 1:N_t % Loop over all timesteps
 
     pause(0.005); % Pause to create an animation effect
     drawnow; % Update the relevant figures
-    
-    if save_figures == true
-        if ismember(n, [1, 251, 501, 751, 1001])
-            time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('QHO_Superpos_n_0_1_t_%.2f.png', time); % Create the file name for the figure
-            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 200); % Save the figure
-    
-        end
-
-    end
 
 end
