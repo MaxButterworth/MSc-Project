@@ -15,10 +15,11 @@
 % ======================================================================================================================================
 
 % Natural units have been adopted throughout
-L = 5; % Length of the 1D box
+L = 7; % Length of the 1D box
 m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
+omega = 1; % Define the angular frequency for the QHO
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
@@ -26,9 +27,9 @@ save_figures = false; % Define a variable to save figures at various points in t
 
 N_steps = 10000; % Number of discretisation points on the x-axis
 
-basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
-basis_funcs_coeffs = [1/3, 1/3, 1/3]; % Weightings of PIB eigenstates in the superposition
-N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
+basis_funcs_indices = [0, 1]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_coeffs = [1/2, 1/2]; % Weightings of PIB eigenstates in the superposition
+N_PIB_eigenfuncs = max(basis_funcs_indices) + 1; % The number of basis functions in the wave packet superposition
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -37,8 +38,9 @@ N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in 
 x = linspace(-L, L, N_steps); % Define the x-domain of the QHO
 dx = abs(x(2) - x(1)); % Calculate the spatial step size
 
-dt = 5e-2; % Define the time step size
-N_t = 1000; % Define the number of time steps to simulate
+N_t = 1001; % Define the number of time steps to simulate
+%dt = 5e-2; % Define the time step size (dt = omega) when one wishes to
+dt = (2*pi)/(omega*N_t); % Define the time step size
 
 % ======================================================================================================================================
 %%%%%%%%% Solve the Schrödinger equation using the finite difference method %%%%%%%%%%
@@ -47,8 +49,7 @@ N_t = 1000; % Define the number of time steps to simulate
 % Construct the Hamiltonian inside the infinite potential well
 laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator
 
-force_const = 1; % Define the force constant for the QHO
-V_vector = 0.5 * force_const * (x.').^2; % Define the potential energy vector for a QHO
+V_vector = 0.5 * m * omega^2 * (x.').^2; % Define the potential energy vector for a QHO
 V_matrix = diag(V_vector); % Define the potential energy matrix for a QHO
 
 H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operator
@@ -71,7 +72,7 @@ psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave 
 
 % Generate the superposition of PIB basis functions
 for l = 1:length(basis_funcs_indices)
-    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l)));
+    psi0 = psi0 + (basis_funcs_coeffs(l) * PIB_eigenstates_norm(:, basis_funcs_indices(l) + 1));
 end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
@@ -125,15 +126,17 @@ end
 
 figure; % Generate a figure
 
+t_array = dt * (0:N_t - 1); % Create a time array
+
 subplot(2, 2, 1) % Top Left subfigure
 yyaxis('left')
-real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 2); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
 hold on
-imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 3); % Plot the imaginary wavefunction
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
-ylim([min(imag(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for wavefunction plot
+ylim([min(min(real(psi_t(:))), min(imag(psi_t(:)))) max(max(real(psi_t(:))), max(imag(psi_t(:))))]); % Set the y-limits for wavefunction plot
 yyaxis('right')
-prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 2); % Plot the initial probability density
+prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the prob density y-axis
 ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob density axis
 hold off
@@ -151,8 +154,8 @@ grid on; % Add a grid to the plot
 % %title('Probability Current') % Add a title
 % grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
 
 % Animate the figures
 for n = 1:N_t % Loop over all timesteps
@@ -165,14 +168,14 @@ for n = 1:N_t % Loop over all timesteps
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
     end
 
-    pause(0.05); % Pause to create an animation effect
+    pause(0.005); % Pause to create an animation effect
     drawnow; % Update the relevant figures
     
     if save_figures == true
-        if ismember(n, [1, 126, 276])
+        if ismember(n, [1, 251, 501, 751, 1001])
             time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('Gaussian_WP_SO_Prop_Travelling_Flux_t_%.2f.png', time); % Create the file name for the figure
-            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+            filename = sprintf('QHO_Superpos_n_0_1_t_%.2f.png', time); % Create the file name for the figure
+            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 200); % Save the figure
     
         end
 
