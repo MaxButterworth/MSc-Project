@@ -24,7 +24,7 @@ omega = 1; % Define the angular frequency for the QHO
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
+save_figures = true; % Define a variable to save figures at various points in the simulation or not
 
 N_steps = 10000; % Number of discretisation points on the x-axis
 
