@@ -20,6 +20,10 @@ m = 1; % Mass
 h = 1; % Planck's constant in J s
 hbar = 1; % Definition of h bar
 
+include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
+
+save_figures = false; % Define a variable to save figures at various points in the simulation or not
+
 N_steps = 10000; % Number of discretisation points on the x-axis
 
 basis_funcs_indices = [1, 2, 3]; % Create an array of the indices of PIB_eigenstates_norm that form the superposition
@@ -136,7 +140,7 @@ hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 xlim([min(x) max(x)]) % Set the y-limits for convenience
 grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
+%legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
 
 % subplot(2, 2, 3) % Bottom left subfigure
 % flux_plot = plot(x, J(:, 1), 'LineWidth', 2); % Plot the initial probability current
@@ -157,6 +161,21 @@ for n = 1:N_t % Loop over all timesteps
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     % set(flux_plot, 'YData', J(:, n)); % Update the flux plot
 
-    pause(0.05); % Pause to create an animation
-    drawnow; % Update the figures and display immediately
+    if include_elapsed_time == true
+        sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
+    end
+
+    pause(0.05); % Pause to create an animation effect
+    drawnow; % Update the relevant figures
+    
+    if save_figures == true
+        if ismember(n, [1, 126, 276])
+            time = t_array(1, n); % Assign the current time to a variable
+            filename = sprintf('Gaussian_WP_SO_Prop_Travelling_Flux_t_%.2f.png', time); % Create the file name for the figure
+            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+    
+        end
+
+    end
+
 end
