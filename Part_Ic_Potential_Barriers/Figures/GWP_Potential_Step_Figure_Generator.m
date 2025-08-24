@@ -3,6 +3,7 @@
 % ======================================================================================================================================
 
 % Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Step Simulation
+% Propagation using the split operator method
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
