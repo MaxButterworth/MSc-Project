@@ -173,7 +173,7 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wave Packet') % Add a title
+% title('Imaginary Component of the Wave Packet') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 2, 3) % Bottom left subfigure
@@ -182,15 +182,7 @@ xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim('auto') % Set the y-limits for convenience
-title('Probability Density') % Add a title
-grid on; % Add a grid to the plot
-
-subplot(2, 2, 4) % Bottom right subfigure
-flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim('auto') % Set the y-limits for convenience
-title('Flux') % Add a title
+% title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
 % Animate the figures
