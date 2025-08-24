@@ -3,6 +3,7 @@
 % ======================================================================================================================================
 
 % Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Barrier Simulation
+% Wave packet propagation is performed using the Crank-Nicolson method
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
