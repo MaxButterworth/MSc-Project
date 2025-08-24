@@ -20,8 +20,8 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-wp_energy = 100; % Set the wave packet energy
-barrier_height = 102; % Set the magnitude of the potential step height
+wp_energy = 50; % Set the wave packet energy
+barrier_height = 25; % Set the magnitude of the potential step height
 
 x0 = 20; % Set the starting position of wave packet on the x-axis
 k0 = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
@@ -169,6 +169,6 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     set(flux_plot, 'YData', J(:, n)); % Update the probability density
-    pause(0.1); % Pause to create an animation effect
+    pause(0.05); % Pause to create an animation effect
     drawnow; % Update the relevant figures
 end
