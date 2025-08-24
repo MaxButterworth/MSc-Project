@@ -17,7 +17,7 @@
 % ======================================================================================================================================
 
 % Natural units adopted throughout
-L = 50; % Length of the 1D box
+L = 40; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
@@ -25,18 +25,18 @@ N_steps = 1000; % Number of discretisation points
 
 % Define variables for wave packet A
 x0_A = (3*L)/4; % Set the starting position of wave packet A on the x-axis
-k0_A = -10; % Set the expectation value for k for wave packet A
+k0_A = -7.5; % Set the expectation value for k for wave packet A
 sigma_A = L/50; % Set the initial width of wave packet A
 
 % Define variables for wave packet B
 x0_B = L/4; % Set the starting position of wave packet B on the x-axis
-k0_B = 10; % Set the expectation value for k for wave packet B
+k0_B = 7.5; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay (in units of dt) to specify when wave packet B should be introduced into the system
 
-include_elapsed_time = true; % Define a variable to show elapsed time on figure or not
+include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
+save_figures = true; % Define a variable to save figures at various points in the simulation or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
@@ -159,39 +159,43 @@ figure; % Generate a figure
 t_array = dt * (0:N_t - 1); % Create a time array
 
 subplot(2, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wave packet
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 1); % Plot the real wave packet
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim([min(x) max(x)]) % Set the x-limits for convenience
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-title('Real Component of the Wave Packet') % Add a title
+ylim('auto')
+% title('Real Component of the Wave Packet') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(2, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wave packet
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the x-limits for convenience
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
+% subplot(2, 2, 2) % Top right subfigure
+% imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wave packet
+% xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
+% ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
+% xlim([min(x) max(x)]) % Set the x-limits for convenience
+% ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 % title('Imaginary Component of the Wave Packet') % Add a title
-grid on; % Add a grid to the plot
+% grid on; % Add a grid to the plot
 
-subplot(2, 2, 3) % Bottom left subfigure
-prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the x-limits for convenience
-ylim('auto') % Set the y-limits for convenience
-% title('Probability Density') % Add a title
-grid on; % Add a grid to the plot
+% subplot(2, 2, 2) % Bottom left subfigure
+% prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 1); % Plot the initial probability density
+% xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
+% ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
+% xlim([min(x) max(x)]) % Set the x-limits for convenience
+% % title('Probability Density') % Add a title
+% grid on; % Add a grid to the plot
+
+set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
 
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
+    %C = orderedcolors('gem'); % Set the colour of the plots (only uncomment for the probability density plot)
+    %colororder(C(2,:)) % As per the above instructions
+
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wave packet
-    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wave packet
-    set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    set(flux_plot, 'YData', J(:, n)); % Update the probability density
+    %set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wave packet
+    %set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
 
     if include_elapsed_time == true
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
@@ -201,10 +205,10 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the relevant figures
     
     if save_figures == true
-        if ismember(n, [1, 141, 241])
+        if ismember(n, [1, 136, 161, 261])
             time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('Interacting_Gaussian_WP_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
-            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+            filename = sprintf('Interacting_GWP_Re_Part_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
+            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 200); % Save the figure
     
         end
 
