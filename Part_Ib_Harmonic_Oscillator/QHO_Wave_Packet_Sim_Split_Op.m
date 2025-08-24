@@ -138,7 +138,7 @@ ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the prob density y-ax
 ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob density axis
 hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-xlim([min(x) max(x)]) % Set the x-limits for convenience
+xlim([min(x) max(x)]) % Set the xb-limits for convenience
 grid on; % Add a grid to the plot
 legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
 
