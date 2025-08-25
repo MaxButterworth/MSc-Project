@@ -22,7 +22,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-time_delay = 1.66; % Set the time delay for the chirp
+time_delay = 1.5; % Set the time delay for the chirp
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
@@ -116,7 +116,7 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-time_indices_plot = [1, time_delay/dt, 2 * (time_delay/dt)]; % Define the time indices which data are to be obtained for
+time_indices_plot = [1, time_delay/dt + 1, 2 * (time_delay/dt) + 1]; % Define the time indices which data are to be obtained for
 t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
 % Initialise arrays for plotting
