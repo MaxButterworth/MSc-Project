@@ -116,7 +116,7 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-time_indices_plot = [1, 141, 735]; % Define the time indices which data are to be obtained for
+time_indices_plot = [1, 141, 741]; % Define the time indices which data are to be obtained for
 t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
 % Initialise arrays for plotting
