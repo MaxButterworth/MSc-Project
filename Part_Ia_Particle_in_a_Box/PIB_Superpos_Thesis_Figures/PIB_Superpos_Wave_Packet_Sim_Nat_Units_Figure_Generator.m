@@ -134,9 +134,7 @@ ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob 
 hold off
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-%xlim([-4 4]) % Set the x-limits for convenience
 grid on; % Add a grid to the plot
-%legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
 
 set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
 set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
@@ -152,7 +150,7 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the figures and display immediately
     
     if save_figures == true
-        if ismember(n, [1, 251, 501, 751, 1001])
+        if ismember(n, [1, 250, 500, 750])
             time = t_array(1, n); % Assign the current time to a variable
             filename = sprintf('PIB_2_State_WP_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
