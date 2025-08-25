@@ -151,7 +151,6 @@ ax1 = nexttile([1 2]); % Top Subfigure
 
 hold on;
 for index_re_plot = 1:size(WP_re_part, 2)
-    C(index_re_plot, :)
     plot(ax1, x, WP_re_part(:, index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
 end
 hold off;
