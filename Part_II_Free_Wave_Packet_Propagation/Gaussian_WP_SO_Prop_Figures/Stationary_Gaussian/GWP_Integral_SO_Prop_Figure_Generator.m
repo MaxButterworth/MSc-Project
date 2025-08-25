@@ -22,7 +22,7 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-x0 = L/4; % Set the starting position of wave packet on the x-axis
+x0 = L/5; % Set the starting position of wave packet on the x-axis
 k0 = 10; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
@@ -48,7 +48,7 @@ else % Define k-space grid if N_steps is odd
 end
 
 dt = 1e-2; % Define the time step size
-N_t = 300; % Define the number of time steps to simulate
+N_t = 1000; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
@@ -116,7 +116,7 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-time_indices_plot = [1, 126, 276]; % Define the time indices which data are to be obtained for
+time_indices_plot = [1, 120, 290]; % Define the time indices which data are to be obtained for
 t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
 % Initialise arrays for plotting
@@ -139,21 +139,44 @@ for n = time_indices_plot
     counter = counter + 1; % Increment the counter by one
 end
 
+C = orderedcolors('gem'); % Set the colour of the plots
+%colororder(C(2,:)) % As per the above instructions
+
 t = tiledlayout(2, 2, 'Padding', 'compact', 'TileSpacing', 'compact'); % Generate a figure
 
 set(groot, 'DefaultAxesFontSize', 10); % Set the font size for axes
 set(groot, 'DefaultTextFontSize', 10); % Set the font size for other text
 
 ax1 = nexttile([1 2]); % Top Subfigure
-yyaxis('left')
-plot(ax1, x, WP_re_part, 'LineWidth', 2, 'LineStyle', '-'); % Plot the real wavefunction
+% yyaxis('left')
+
+x_cutoff_indices = [1 301;
+                    301 561;
+                    561 1001]; % Define indices where plots are cut off to avoid overlaping
+
+hold on;
+for index_re_plot = 1:size(WP_re_part, 2)
+    x_values_plot = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
+    plot(ax1, x_values_plot, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
+end
+hold off;
+
+%ax1.YColor = 'k'; % Set the colour of the first y-axis
+xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
 ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
 
-yyaxis('right')
-plot(ax1, x, WP_im_part, 'LineWidth', 2, 'LineStyle', '--'); % Plot the imaginary wavefunction
-ylabel(ax1, '$\mathrm{Im}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
-ylim(ax1, [min(WP_im_part(:)) max(WP_im_part(:))]); % Set the y-limits for wavefunction plot
+% yyaxis('right')
+% 
+% hold on;
+% for index_im_plot = 1:size(WP_re_part, 2)
+%     plot(ax1, x, WP_im_part(:, index_im_plot), 'LineWidth', 2, 'LineStyle', '--', 'Color', C(index_im_plot, :)); % Plot the imaginary wavefunction
+% end
+% hold off;
+% 
+% ax1.YColor = 'k'; % Set the colour of the second y-axis
+% ylabel(ax1, '$\mathrm{Im}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
+% ylim(ax1, [min(WP_im_part(:)) max(WP_im_part(:))]); % Set the y-limits for wavefunction plot
 
 xlabel(ax1, '$x$', 'Interpreter','latex'); % Label the x-axis
 grid on; % Add a grid to the plot
