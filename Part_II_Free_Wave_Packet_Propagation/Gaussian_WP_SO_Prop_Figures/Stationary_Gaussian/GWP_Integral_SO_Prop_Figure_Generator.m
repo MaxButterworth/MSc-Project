@@ -144,8 +144,8 @@ C = orderedcolors('gem'); % Set the colour of the plots
 
 t = tiledlayout(2, 2, 'Padding', 'compact', 'TileSpacing', 'compact'); % Generate a figure
 
-set(groot, 'DefaultAxesFontSize', 10); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 10); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 14); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 14); % Set the font size for other text
 
 ax1 = nexttile([1 2]); % Top Subfigure
 % yyaxis('left')
@@ -166,6 +166,7 @@ xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
 ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
 
+% Uncomment all the below when the imaginary part of the wave packet needs to be plotted
 % yyaxis('right')
 % 
 % hold on;
@@ -182,8 +183,8 @@ ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavef
 xlabel(ax1, '$x$', 'Interpreter','latex'); % Label the x-axis
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 16); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 16); % Set the font size for other text
 
 ax2 = nexttile; % Bottom Left Subfigure
 
