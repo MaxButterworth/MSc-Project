@@ -121,14 +121,14 @@ t_array = dt * (0:N_t - 1); % Create a time array
 subplot(2, 2, 1) % Top Left subfigure
 
 yyaxis('left')
-real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 2); % Plot the real wavefunction
 hold on
-imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 3); % Plot the imaginary wavefunction
+imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imaginary wavefunction
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim([min(min(real(psi_t(:))), min(imag(psi_t(:)))) max(max(real(psi_t(:))), max(imag(psi_t(:))))]); % Set the y-limits for wavefunction plot
 
 yyaxis('right')
-prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
+prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 2); % Plot the initial probability density
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the prob density y-axis
 ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob density axis
 hold off
@@ -136,8 +136,8 @@ hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
+set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
 
 % Animate the figures
 
