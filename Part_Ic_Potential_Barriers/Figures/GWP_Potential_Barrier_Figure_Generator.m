@@ -19,19 +19,17 @@ L = 100; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 10001; % Number of discretisation points
+N_steps = 30001; % Number of discretisation points
 
 wp_energy = 25; % Set the wave packet energy
-barrier_energy = 0.1*wp_energy; % Set the magnitude of the potential barrier height
+barrier_energy = 1.25 * wp_energy; % Set the magnitude of the potential barrier height
 barrier_width = 100; % Set the barrier width in units of dx
 
-x0 = 20; % Set the starting position of wave packet on the x-axis
+x0 = 45; % Set the starting position of wave packet on the x-axis
 k0 = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
-sigma = L/100; % Set the initial width of the wave packet
+sigma = L/50; % Set the initial width of the wave packet
 
-include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
-
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
+save_figures = true; % Define a variable to save figures at various points in the simulation or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
@@ -50,8 +48,8 @@ else % Define k-space grid if N_steps is odd
 
 end
 
-dt = 1e-2; % Define the time step size
-N_t = 1000; % Define the number of time steps to simulate
+dt = 1e-3; % Define the time step size
+N_t = 3500; % Define the number of time steps to simulate
 
 % ======================================================================================================================================
 %%%%%%%%%% Construct the Hamiltonian using the finite difference method %%%%%%%%%%
@@ -62,19 +60,19 @@ laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the
 
 if rem(barrier_width, 2) == 0 % If the barrier width is even
 
-    lower_index = (N_steps - barrier_width + 1)/2; % Lower x-index for which the potential barrier starts
-    upper_index = (N_steps - barrier_width - 1)/2; % Upper x-index for which the potential barrier ends
+    lower_index = (N_steps - barrier_width - 1)/2; % Lower x-index for which the potential barrier starts
+    upper_index = (N_steps + barrier_width - 1)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
-    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
+    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width + 1, 1); zeros(N_steps - upper_index - 1, 1)];
 
 else
 
     lower_index = (N_steps - barrier_width)/2; % Lower x-index for which the potential barrier starts
-    upper_index = (N_steps - barrier_width)/2; % Upper x-index for which the potential barrier ends
+    upper_index = (N_steps + barrier_width)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
-    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
+    V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(N_steps - upper_index, 1)];
 
 end
 
@@ -139,60 +137,48 @@ end
 
 figure; % Generate a figure
 
-subplot(2, 2, 1) % Top left subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
-rectangle('Position', [x(lower_index), min(real(psi_t(:))), (barrier_width * dx), ...
-         (abs(min(real(psi_t(:)))) + max(real(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
+t_array = dt * (0:N_t - 1); % Create a time array
 
+subplot(2, 1, 1) % Top left subfigure
+yyaxis('left')
+real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 2); % Plot the real wavefunction
+xline(x(lower_index), Color='red', LineWidth=2)
+xline(x(upper_index), Color='red', LineWidth=2)
+ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the wavefunction y-axis
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for wavefunction plot
+
+yyaxis('right')
+imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imaginary wavefunction
+xline(x(lower_index), Color='red', LineWidth=2)
+xline(x(upper_index), Color='red', LineWidth=2)
+ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the prob density y-axis
+ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for wavefunction plot
+hold off
+
+xlim([25, 75]) % Set x-limits
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
-title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
-subplot(2, 2, 2) % Top right subfigure
-imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
-rectangle('Position', [x(lower_index), min(imag(psi_t(:))), (barrier_width * dx), ...
-         (abs(min(imag(psi_t(:)))) + max(imag(psi_t(:))))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
-title('Imaginary Component of the Wavefunction') % Add a title
-grid on; % Add a grid to the plot
-
-subplot(2, 2, 3) % Bottom left subfigure
-prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
-rectangle('Position', [x(lower_index), min(abs(psi_t(:)).^2), (barrier_width * dx), ...
-         (abs(min(abs(psi_t(:)).^2)) + max(abs(psi_t(:)).^2))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits for convenience
-title('Probability Density') % Add a title
-grid on; % Add a grid to the plot
-
-subplot(2, 2, 4) % Bottom right subfigure
-flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
-rectangle('Position', [x(lower_index), min(J(:)), (barrier_width * dx), ...
-         (abs(min(J(:))) + max(J(:)))], EdgeColor='red', LineWidth=2) % Illustrate the barrier on the plot
-
-xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-title('Probability Current') % Add a title
-grid on; % Add a grid to the plot
+set(groot, 'DefaultAxesFontSize', 16); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 16); % Set the font size for other text
 
 % Animate the figures
 
 for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
-    set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    set(flux_plot, 'YData', J(:, n)); % Update the probability density
-    pause(0.05); % Pause to create an animation effect
+
+    pause(0.005); % Pause to create an animation effect
     drawnow; % Update the relevant figures
+
+    if save_figures == true
+        if ismember(n, [1, 750, 2000])
+            time = t_array(1, n); % Assign the current time to a variable
+            filename = sprintf('GWP_Potential_Barrier_WP_%.2f.png', time); % Create the file name for the figure
+            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
+    
+        end
+
+    end
+
 end
