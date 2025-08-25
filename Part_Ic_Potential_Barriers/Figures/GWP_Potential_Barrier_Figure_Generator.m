@@ -4,6 +4,7 @@
 
 % Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Barrier Simulation
 % Wave packet propagation is performed using the split operator method
+% Figure generator
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
@@ -18,11 +19,11 @@ L = 100; % Length of the 1D box
 m = 1; % Mass of electron
 h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
-N_steps = 1000; % Number of discretisation points
+N_steps = 10001; % Number of discretisation points
 
-wp_energy = 50; % Set the wave packet energy
-barrier_energy = 20; % Set the magnitude of the potential barrier height
-barrier_width = 25; % Set the barrier width in units of dx
+wp_energy = 25; % Set the wave packet energy
+barrier_energy = 0.1*wp_energy; % Set the magnitude of the potential barrier height
+barrier_width = 100; % Set the barrier width in units of dx
 
 x0 = 20; % Set the starting position of wave packet on the x-axis
 k0 = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
@@ -61,16 +62,16 @@ laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the
 
 if rem(barrier_width, 2) == 0 % If the barrier width is even
 
-    lower_index = (N_steps - barrier_width)/2; % Lower x-index for which the potential barrier starts
-    upper_index = (N_steps - barrier_width)/2; % Upper x-index for which the potential barrier ends
+    lower_index = (N_steps - barrier_width + 1)/2; % Lower x-index for which the potential barrier starts
+    upper_index = (N_steps - barrier_width - 1)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
     V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
 
 else
 
-    lower_index = (N_steps - barrier_width + 1)/2; % Lower x-index for which the potential barrier starts
-    upper_index = (N_steps - barrier_width - 1)/2; % Upper x-index for which the potential barrier ends
+    lower_index = (N_steps - barrier_width)/2; % Lower x-index for which the potential barrier starts
+    upper_index = (N_steps - barrier_width)/2; % Upper x-index for which the potential barrier ends
 
     % Define the potential energy accross the x-domain; potential step at halfway accross domain
     V_vector = [zeros(lower_index, 1); repmat(barrier_energy, barrier_width, 1); zeros(upper_index, 1)];
