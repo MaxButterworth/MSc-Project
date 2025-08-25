@@ -22,8 +22,8 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1001; % Number of discretisation points
 
-x0 = L/5; % Set the starting position of wave packet on the x-axis
-k0 = 10; % Set the expectation value for k for the wave packet
+x0 = L/2; % Set the starting position of wave packet on the x-axis
+k0 = 0; % Set the expectation value for k for the wave packet
 sigma = L/50; % Set the initial width of the wave packet
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
@@ -116,7 +116,7 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-time_indices_plot = [1, 121, 291]; % Define the time indices which data are to be obtained for
+time_indices_plot = [1, 141, 735]; % Define the time indices which data are to be obtained for
 t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
 % Initialise arrays for plotting
@@ -140,7 +140,6 @@ for n = time_indices_plot
 end
 
 C = orderedcolors('gem'); % Set the colour of the plots
-%colororder(C(2,:)) % As per the above instructions
 
 t = tiledlayout(2, 2, 'Padding', 'compact', 'TileSpacing', 'compact'); % Generate a figure
 
@@ -150,18 +149,14 @@ set(groot, 'DefaultTextFontSize', 14); % Set the font size for other text
 ax1 = nexttile([1 2]); % Top Subfigure
 % yyaxis('left')
 
-x_cutoff_indices = [1 301;
-                    301 561;
-                    561 1001]; % Define indices where plots are cut off to avoid overlaping
-
 hold on;
 for index_re_plot = 1:size(WP_re_part, 2)
-    x_values_plot_WP = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
-    plot(ax1, x_values_plot_WP, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
+    C(index_re_plot, :)
+    plot(ax1, x, WP_re_part(:, index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
 end
 hold off;
 
-ax1.YColor = 'k'; % Set the colour of the first y-axis
+% ax1.YColor = 'k'; % Set the colour of the first y-axis
 xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
 ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
@@ -171,8 +166,7 @@ ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavef
 % 
 % hold on;
 % for index_im_plot = 1:size(WP_im_part, 2)
-%     x_values_plot = x(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2)); % Extract x-values to plot
-%     plot(ax1, x_values_plot, WP_im_part(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2), index_im_plot), 'LineWidth', 2, 'LineStyle', '--', 'Color', C(index_im_plot, :)); % Plot the imaginary wavefunction
+%    plot(ax1, x, WP_im_part(:, index_im_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_im_plot, :)); % Plot the real wavefunction
 % end
 % hold off;
 % 
@@ -190,8 +184,7 @@ ax2 = nexttile; % Bottom Left Subfigure
 
 hold on;
 for index_prob_density_plot = 1:size(prob_density_plot, 2)
-    x_values_plot_prob_density = x(x_cutoff_indices(index_prob_density_plot, 1):x_cutoff_indices(index_prob_density_plot, 2)); % Extract x-values to plot
-    plot(ax2, x_values_plot_prob_density, prob_density_plot(x_cutoff_indices(index_prob_density_plot, 1):x_cutoff_indices(index_prob_density_plot, 2), index_prob_density_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_prob_density_plot, :)); % Plot the initial probability density
+    plot(ax2, x, prob_density_plot(:, index_prob_density_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_prob_density_plot, :)); % Plot the initial probability density
 end
 hold off;
 
@@ -205,8 +198,7 @@ ax3 = nexttile; % Bottom Left Subfigure
 
 hold on;
 for index_J_plot = 1:size(J_plot, 2)
-    x_values_plot_J = x(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2)); % Extract x-values to plot
-    plot(ax3, x_values_plot_J, J_plot(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2), index_J_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial probability current
+    plot(ax3, x, J_plot(:, index_J_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial probability current
 end
 hold off;
 
