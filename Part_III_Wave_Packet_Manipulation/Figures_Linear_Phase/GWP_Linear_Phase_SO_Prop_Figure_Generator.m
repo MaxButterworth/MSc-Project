@@ -27,8 +27,6 @@ sigma = L/50; % Set the initial width of the wave packet
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
-
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
@@ -66,7 +64,7 @@ H = (-((hbar^2)/(2*m)) * laplacian) + V_matrix; % Define the Hamiltonian operato
 
 a_0 = 1; % Prefactor for the Gaussian distribution
 phase = 0; % Define the phase term in the Gaussian distribution
-phase_coeff = [L/4, 0]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
+phase_coeff = [L/3, 0]; % Define the coefficients of the components of the polynomial phase term (no constant term included)
 
 % Construct the polynomial phase term in k-space
 for index = 1:length(phase_coeff)
@@ -115,66 +113,66 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-figure; % Generate a figure
+time_indices_plot = [1, 111, 291]; % Define the time indices which data are to be obtained for
+t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
-t_array = dt * (0:N_t - 1); % Create a time array
+% Initialise arrays for plotting
+WP_re_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store real parts of wave packet
+WP_im_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
+prob_density_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the wave packet probability density
+J_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the flux
+time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
 
-subplot(2, 1, 1) % Top subfigure
-real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 2); % Plot the real wavefunction
-hold on
-imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imaginary wavefunction
-hold off
-xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(imag(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
-% title('Real Component of the Wavefunction', 'Interpreter','latex') % Add a title
-grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside')
+counter = 1; % Initialise a counter to append data to arrays
 
-% subplot(3, 1, 2) % Middle subfigure
-% prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
-% xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-% ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-% xlim([min(x) max(x)]) % Set the y-limits for convenience
-% ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
-% %title('Probability Density', 'Interpreter','latex') % Add a title
-% grid on; % Add a grid to the plot
-% 
-% subplot(3, 1, 3) % Bottom subfigure
-% flux_plot = plot(x, J(:, 1), 'LineWidth', 3); % Plot the initial probability current
-% xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
-% ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-% ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-% %title('Flux', 'Interpreter','latex') % Add a title
-% grid on; % Add a grid to the plot
+% Search for the data required based on the time index of the simulation
+for n = time_indices_plot
+    time_plot(1, counter) = t_array(1, n); % Append time to the time array
+    WP_re_part(:, counter) = real(psi_t(:, n)); % Append real part of wave packet to the relevant array
+    WP_im_part(:, counter) = imag(psi_t(:, n)); % Append imaginary part of wave packet to the relevant array
+    prob_density_plot(:, counter) = abs(psi_t(:, n)).^2; % Append probability density to the relevant array
+    J_plot(:, counter) = J(:, n); % Append the flux to the relevant array
 
-set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
-
-% Animate and save the figures
-
-for n = 1:N_t % Loop over all timesteps
-    set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
-    set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
-    % set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    % set(flux_plot, 'YData', J(:, n)); % Update the probability density
-    
-    if include_elapsed_time == true
-        sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
-    end
-
-    pause(0.1); % Pause to create an animation effect
-    drawnow; % Update the relevant figures
-    
-    if save_figures == true
-        if ismember(n, [1, 100, 200])
-            time = t_array(1, n + 1); % Assign the current time to a variable
-            filename = sprintf('GWP_Linear_Phase_SO_Prop_t_%.2f.png', time); % Create the file name for the figure
-            exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
-    
-        end
-
-    end
-
+    counter = counter + 1; % Increment the counter by one
 end
+
+C = orderedcolors('gem'); % Set the colour of the plots
+
+t = tiledlayout(2, 1, 'Padding', 'compact', 'TileSpacing', 'compact'); % Generate a figure
+
+set(groot, 'DefaultAxesFontSize', 18); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 18); % Set the font size for other text
+
+ax1 = nexttile([1 1]); % Top Subfigure
+
+x_cutoff_indices = [1 260;
+                    260 520;
+                    520 1001]; % Define indices where plots are cut off to avoid overlaping
+
+hold on;
+for index_re_plot = 1:size(WP_re_part, 2)
+    x_values_plot_WP = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
+    plot(ax1, x_values_plot_WP, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
+end
+hold off;
+
+xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
+ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
+ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
+xlabel(ax1, '$x$', 'Interpreter','latex'); % Label the x-axis
+grid on; % Add a grid to the plot
+
+ax2 = nexttile; % Bottom Left Subfigure
+
+hold on;
+for index_im_plot = 1:size(WP_im_part, 2)
+    x_values_plot = x(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2)); % Extract x-values to plot
+    plot(ax2, x_values_plot, WP_im_part(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2), index_im_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_im_plot, :)); % Plot the imaginary wavefunction
+end
+hold off;
+
+xlabel(ax2, '$x$', 'Interpreter','latex'); % Label the x-axis
+ylabel(ax2, '$\mathrm{Im}\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
+xlim(ax2, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
+ylim(ax2, [min(WP_im_part(:)) max(WP_im_part(:))]); % Set the y-limits for convenience
+grid on; % Add a grid to the plot
