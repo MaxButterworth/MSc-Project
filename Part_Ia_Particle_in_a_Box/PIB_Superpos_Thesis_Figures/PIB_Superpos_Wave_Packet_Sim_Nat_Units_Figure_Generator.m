@@ -27,7 +27,7 @@ basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstate
 basis_funcs_coeffs = [sqrt(1/2), sqrt(1/2)]; % Equal Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
-save_figures = false; % Variable to determine whether figures are saved or not
+save_figures = true; % Variable to determine whether figures are saved or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
@@ -36,7 +36,7 @@ save_figures = false; % Variable to determine whether figures are saved or not
 x = linspace(0, L, N_steps); % Define the domain of the infinite potential well
 dx = x(2) - x(1); % Calculate the spatial step size
 
-N_t = 1000; % Define the number of time steps to simulate
+N_t = 1001; % Define the number of time steps to simulate
 
 dt = (4 * m * L^2)/(3 * pi * hbar * N_t); % Define the time step size
 
@@ -134,7 +134,7 @@ ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob 
 hold off
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-xlim([-4 4]) % Set the x-limits for convenience
+%xlim([-4 4]) % Set the x-limits for convenience
 grid on; % Add a grid to the plot
 %legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
 
@@ -148,13 +148,13 @@ for n = 1:N_t % Loop over all timesteps
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
     
-    pause(0.05); % Pause to create an animation
+    pause(0.005); % Pause to create an animation
     drawnow; % Update the figures and display immediately
     
     if save_figures == true
-        if ismember(n, [1, 250, 500, 750, 1000])
+        if ismember(n, [1, 251, 501, 751, 1001])
             time = t_array(1, n); % Assign the current time to a variable
-            filename = sprintf('PIB_2_State_WP_Prob_Density_%.2f.png', time); % Create the file name for the figure
+            filename = sprintf('PIB_2_State_WP_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
     
         end
