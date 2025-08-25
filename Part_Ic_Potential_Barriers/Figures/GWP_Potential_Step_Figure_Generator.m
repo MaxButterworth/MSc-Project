@@ -20,8 +20,8 @@ h = 1; % Planck's constant
 hbar = 1; % Definition of h bar
 N_steps = 1000; % Number of discretisation points
 
-wp_energy = 50; % Set the wave packet energy
-barrier_height = 25; % Set the magnitude of the potential step height
+wp_energy = 40; % Set the wave packet energy
+barrier_height = 50; % Set the magnitude of the potential step height
 
 x0 = 20; % Set the starting position of wave packet on the x-axis
 k0 = sqrt((wp_energy * 2 * m)/(hbar^2)); % Calculate the wavenumber from wp_energy; k = 0 gives a stationary Gaussian wave packet
