@@ -150,7 +150,7 @@ for n = 1:N_t % Loop over all timesteps
     drawnow; % Update the figures and display immediately
     
     if save_figures == true
-        if ismember(n, [1, 250, 500, 750])
+        if ismember(n, [1, 250, 500, 750, 1001])
             time = t_array(1, n); % Assign the current time to a variable
             filename = sprintf('PIB_2_State_WP_%.2f.png', time); % Create the file name for the figure
             exportgraphics(gcf, filename, 'ContentType', 'image', 'Resolution', 300); % Save the figure
