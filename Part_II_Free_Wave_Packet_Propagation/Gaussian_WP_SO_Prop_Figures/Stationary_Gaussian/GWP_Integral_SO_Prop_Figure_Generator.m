@@ -116,7 +116,7 @@ end
 %%%%%%%%%% Plot the time evolution of the wave packet probability density %%%%%%%%%%
 % ======================================================================================================================================
 
-time_indices_plot = [1, 120, 290]; % Define the time indices which data are to be obtained for
+time_indices_plot = [1, 121, 291]; % Define the time indices which data are to be obtained for
 t_array = dt * (0:N_t - 1); % Create a time array for the simulation
 
 % Initialise arrays for plotting
@@ -156,12 +156,12 @@ x_cutoff_indices = [1 301;
 
 hold on;
 for index_re_plot = 1:size(WP_re_part, 2)
-    x_values_plot = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
-    plot(ax1, x_values_plot, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
+    x_values_plot_WP = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
+    plot(ax1, x_values_plot_WP, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
 end
 hold off;
 
-%ax1.YColor = 'k'; % Set the colour of the first y-axis
+ax1.YColor = 'k'; % Set the colour of the first y-axis
 xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
 ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
@@ -169,8 +169,9 @@ ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavef
 % yyaxis('right')
 % 
 % hold on;
-% for index_im_plot = 1:size(WP_re_part, 2)
-%     plot(ax1, x, WP_im_part(:, index_im_plot), 'LineWidth', 2, 'LineStyle', '--', 'Color', C(index_im_plot, :)); % Plot the imaginary wavefunction
+% for index_im_plot = 1:size(WP_im_part, 2)
+%     x_values_plot = x(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2)); % Extract x-values to plot
+%     plot(ax1, x_values_plot, WP_im_part(x_cutoff_indices(index_im_plot, 1):x_cutoff_indices(index_im_plot, 2), index_im_plot), 'LineWidth', 2, 'LineStyle', '--', 'Color', C(index_im_plot, :)); % Plot the imaginary wavefunction
 % end
 % hold off;
 % 
@@ -185,7 +186,14 @@ set(groot, 'DefaultAxesFontSize', 12); % Set the font size for axes
 set(groot, 'DefaultTextFontSize', 12); % Set the font size for other text
 
 ax2 = nexttile; % Bottom Left Subfigure
-prob_density = plot(ax2, x, prob_density_plot, 'LineWidth', 3); % Plot the initial probability density
+
+hold on;
+for index_prob_density_plot = 1:size(prob_density_plot, 2)
+    x_values_plot_prob_density = x(x_cutoff_indices(index_prob_density_plot, 1):x_cutoff_indices(index_prob_density_plot, 2)); % Extract x-values to plot
+    plot(ax2, x_values_plot_prob_density, prob_density_plot(x_cutoff_indices(index_prob_density_plot, 1):x_cutoff_indices(index_prob_density_plot, 2), index_prob_density_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_prob_density_plot, :)); % Plot the initial probability density
+end
+hold off;
+
 xlabel(ax2, '$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel(ax2, '$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
 xlim(ax2, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
@@ -193,7 +201,14 @@ ylim(ax2, [min(prob_density_plot(:)) max(prob_density_plot(:))]); % Set the y-li
 grid on; % Add a grid to the plot
 
 ax3 = nexttile; % Bottom Left Subfigure
-flux_plot = plot(ax3, x, J_plot, 'LineWidth', 3); % Plot the initial probability current
+
+hold on;
+for index_J_plot = 1:size(J_plot, 2)
+    x_values_plot_J = x(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2)); % Extract x-values to plot
+    plot(ax3, x_values_plot_J, J_plot(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2), index_J_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial probability current
+end
+hold off;
+
 xlabel(ax3, '$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel(ax3, '$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 xlim(ax3, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
