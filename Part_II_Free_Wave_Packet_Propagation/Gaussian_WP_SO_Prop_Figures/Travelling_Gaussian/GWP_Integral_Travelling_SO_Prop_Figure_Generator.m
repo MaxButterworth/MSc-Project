@@ -140,7 +140,6 @@ for n = time_indices_plot
 end
 
 C = orderedcolors('gem'); % Set the colour of the plots
-%colororder(C(2,:)) % As per the above instructions
 
 t = tiledlayout(2, 2, 'Padding', 'compact', 'TileSpacing', 'compact'); % Generate a figure
 
