@@ -1,0 +1,12 @@
+n = 0
+x = linspace(-5, 5, 1000);
+
+y = sqrt(1/((2^n) * factorial(n))) * ((m * omega)/(pi * hbar))^0.25 * exp(-(m * omega * x.^2)/(2 * hbar)) * hermiteH(n, (sqrt((m * omega)/hbar)));
+
+figure;
+plot(x, y, 'k', 'LineWidth', 2); % 'k' = black line
+axis equal;
+axis off;
+
+% Save as EPS (vector format)
+print('-depsc2', 'sine_wave_PIB_n_3.eps');
