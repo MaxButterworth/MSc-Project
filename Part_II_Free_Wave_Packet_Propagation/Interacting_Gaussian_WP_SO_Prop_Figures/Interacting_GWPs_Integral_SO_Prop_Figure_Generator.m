@@ -36,7 +36,7 @@ t_delay = 0; % Set the time delay (in units of dt) to specify when wave packet B
 
 include_elapsed_time = false; % Define a variable to show elapsed time on figure or not
 
-save_figures = true; % Define a variable to save figures at various points in the simulation or not
+save_figures = false; % Define a variable to save figures at various points in the simulation or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%

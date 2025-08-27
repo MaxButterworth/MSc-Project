@@ -157,7 +157,7 @@ hold off;
 
 % ax1.YColor = 'k'; % Set the colour of the first y-axis
 xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
-ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
+ylabel(ax1, '$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
 
 % Uncomment all the below when the imaginary part of the wave packet needs to be plotted

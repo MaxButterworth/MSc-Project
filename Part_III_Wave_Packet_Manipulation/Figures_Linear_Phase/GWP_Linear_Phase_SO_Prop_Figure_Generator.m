@@ -157,7 +157,7 @@ end
 hold off;
 
 xlim(ax1, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
-ylabel(ax1, '$\mathrm{Re}\psi(x, t)$', 'Interpreter','latex'); % Label the wavefunction y-axis
+ylabel(ax1, '$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the wavefunction y-axis
 ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavefunction plot
 xlabel(ax1, '$x$', 'Interpreter','latex'); % Label the x-axis
 grid on; % Add a grid to the plot
@@ -172,7 +172,7 @@ end
 hold off;
 
 xlabel(ax2, '$x$', 'Interpreter','latex'); % Label the x-axis
-ylabel(ax2, '$\mathrm{Im}\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
+ylabel(ax2, '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
 xlim(ax2, [min(x(:)) max(x(:))]); % Set the x-limits for convenience
 ylim(ax2, [min(WP_im_part(:)) max(WP_im_part(:))]); % Set the y-limits for convenience
 grid on; % Add a grid to the plot

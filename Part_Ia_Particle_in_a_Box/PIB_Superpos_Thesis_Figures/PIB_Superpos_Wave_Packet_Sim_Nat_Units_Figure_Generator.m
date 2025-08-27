@@ -27,7 +27,7 @@ basis_funcs_indices = [1, 2]; % Create an array of the indices of PIB_eigenstate
 basis_funcs_coeffs = [sqrt(1/2), sqrt(1/2)]; % Equal Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 
-save_figures = true; % Variable to determine whether figures are saved or not
+save_figures = false; % Variable to determine whether figures are saved or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x, and time domain, t %%%%%%%%%%
