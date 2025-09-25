@@ -209,8 +209,15 @@ ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
-set(groot, 'DefaultAxesFontSize', 26); % Set the font size for axes
-set(groot, 'DefaultTextFontSize', 26); % Set the font size for other text
+subplot(2, 1, 2) % Bottom left subfigure
+error_avg_pos_plot = plot(t_array, x_avg_error_t.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
+xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
+ylabel('$\Delta\langle x\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
+%title('Error on the Average Position, $\Delta(\langle x\rangle_t$', 'Interpreter', 'latex') % Add a title
+grid on; % Add a grid to the plot
+
+set(groot, 'DefaultAxesFontSize', 20); % Set the font size for axes
+set(groot, 'DefaultTextFontSize', 20); % Set the font size for other text
 
 % Animate the figures
 
