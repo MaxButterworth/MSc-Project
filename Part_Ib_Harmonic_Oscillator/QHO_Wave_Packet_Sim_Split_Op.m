@@ -9,6 +9,7 @@
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
+% Summer 2025
 
 % ======================================================================================================================================
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
@@ -138,9 +139,9 @@ ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the prob density y-ax
 ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits of prob density axis
 hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
-xlim([min(x) max(x)]) % Set the xb-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex')
+legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex') % Add a legend to the plot
 
 subplot(2, 1, 2) % Bottom left subfigure
 flux_plot = plot(x, J(:, 1), 'LineWidth', 2); % Plot the initial probability current
@@ -148,7 +149,6 @@ xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 xticks(-L:1:L) % Set the x-ticks to increment in steps of one
 ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-%title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
 set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes

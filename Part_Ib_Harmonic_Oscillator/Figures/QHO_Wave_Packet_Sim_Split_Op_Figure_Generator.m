@@ -10,6 +10,7 @@
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
 % University of Oxford
+% Summer 2025
 
 % ======================================================================================================================================
 %%%%%%%%%% Define constants and variables %%%%%%%%%%
@@ -129,7 +130,7 @@ figure; % Generate a figure
 
 t_array = dt * (0:N_t - 1); % Create a time array
 
-subplot(2, 2, 1) % Top Left subfigure
+% subplot(2, 2, 1) % Top Left subfigure (uncomment if a smaller figrue is required when saving)
 
 yyaxis('left')
 real_wavefunction = plot(x, real(psi_t(:, 1)), 'LineWidth', 3); % Plot the real wavefunction
@@ -157,7 +158,6 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    % set(flux_plot, 'YData', J(:, n)); % Update the flux plot
 
     if include_elapsed_time == true
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
@@ -166,7 +166,7 @@ for n = 1:N_t % Loop over all timesteps
     pause(0.005); % Pause to create an animation effect
     drawnow; % Update the relevant figures
     
-    if save_figures == true
+    if save_figures == true % Save figures with assigned indices if save_figures == True
         if ismember(n, [1, 251, 501, 751, 1001])
             time = t_array(1, n); % Assign the current time to a variable
             filename = sprintf('QHO_Superpos_n_0_1_t_%.2f.png', time); % Create the file name for the figure
