@@ -4,7 +4,7 @@
 
 % Part Ic - Free Particle Gaussian Wave Packet Incident on a Potential Barrier Simulation
 % Wave packet propagation is performed using the split operator method
-% Figure generator
+% Figure generator for the thesis
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project

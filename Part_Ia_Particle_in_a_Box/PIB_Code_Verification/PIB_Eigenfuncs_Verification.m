@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part I - Particle in a Box Wave Packet Simulation
+% Part Ia - Particle in a Box Wave Packet Simulation
 % Verification of the numerical calculation of particle in a box eigenstates
 
 % Author: Max L Butterworth

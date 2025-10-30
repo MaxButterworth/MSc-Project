@@ -128,7 +128,7 @@ xline(x(N_steps/2), color='red', LineWidth=2) % Add a line to show the potential
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -138,7 +138,7 @@ imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunctio
 xline(x(N_steps/2), color='red', LineWidth=2) % Add a line to show the potential step location
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -148,7 +148,7 @@ prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability dens
 xline(x(N_steps/2), color='red', LineWidth=2) % Add a line to show the potential step location
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim('auto'); % Set the y-limits foe convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot

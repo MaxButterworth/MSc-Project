@@ -145,7 +145,7 @@ rectangle('Position', [x(lower_index), min(real(psi_t(:))), (barrier_width * dx)
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -157,7 +157,7 @@ rectangle('Position', [x(lower_index), min(imag(psi_t(:))), (barrier_width * dx)
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -169,7 +169,7 @@ rectangle('Position', [x(lower_index), min(abs(psi_t(:)).^2), (barrier_width * d
 
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(abs(psi_t(:)).^2) max(abs(psi_t(:)).^2)]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot

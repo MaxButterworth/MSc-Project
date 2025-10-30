@@ -2,7 +2,7 @@
 %%%%%%%%%% Preamble %%%%%%%%%%
 % ======================================================================================================================================
 
-% Part I - Particle in a Box Wave Packet Simulation
+% Part Ia - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates modulated by a Gaussian
 % Verification of the time propagation of PIB eigenstates using the Crank-Nicolson method
 
@@ -70,15 +70,6 @@ psi0 = zeros(N_steps, 1); % Initialise an empty array to store the initial wave 
 for j = 1:length(basis_funcs_indices)
     psi0 = psi0 + (basis_funcs_coeffs(j) * PIB_eigenstates_norm(:, basis_funcs_indices(j)));
 end
-
-% % Determine whether a travelling modulated Gaussian is required or not
-% if travelling_wavepacket == true % Travelling Gaussian required
-%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* exp(-1i * k * x).' .* psi0; % Modulate the superposition by a travelling Gaussian
-% 
-% else % Travelling Gaussian not required
-%     psi0 = exp(-(x - x0).^2/(2 * sigma^2)).' .* psi0; % Modulate the superposition by a Gaussian
-% 
-% end
 
 psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian wave packet
 

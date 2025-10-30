@@ -4,7 +4,10 @@
 
 % Part Ia - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates to generate a wave packet
-% Coefficients of superposition follow a Gaussian distribution in k
+
+% Coefficients of superposition follow a Gaussian distribution in k;
+% project deviated away from this approach to take a superposition of basis functions approach
+
 % Propagation of the wavefunction is performed using the Crank-Nicolson Method
 
 % Author: Max L Butterworth
@@ -23,7 +26,7 @@ hbar = 1; % Definition of h bar
 
 N_steps = 1000; % Number of discretisation points
 
-basis_funcs_indices = (1:1000); % Create an array of the indices of PIB_eigenstates_norm that form the superposition
+basis_funcs_indices = (1:100); % Create an array of the indices of PIB_eigenstates_norm that form the superposition
 basis_funcs_coeffs = rand(1, length(basis_funcs_indices)); % Weightings of PIB eigenstates in the superposition
 N_PIB_eigenfuncs = max(basis_funcs_indices); % The number of basis functions in the wave packet superposition
 

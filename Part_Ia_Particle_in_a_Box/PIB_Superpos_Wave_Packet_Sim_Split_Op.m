@@ -4,7 +4,9 @@
 
 % Part Ia - Particle in a Box Wave Packet Simulation
 % Superposition of particle in a box eigenstates to create a wave packet
-% Time Propagation conducted with the split operator method
+
+% Time Propagation conducted with the split operator method which proves
+% difficult when fixing boundary conditions
 
 % Author: Max L Butterworth
 % MSc in Theoretical and Computational Chemistry Project
