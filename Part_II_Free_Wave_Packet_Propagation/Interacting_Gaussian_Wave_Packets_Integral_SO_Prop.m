@@ -81,7 +81,7 @@ for index_A = 1:length(phase_coeff_A)
     phase_A = phase_A + (phase_coeff_A(index_A) * (k - k0_A).^(index_A - 1));
 end
 
-a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian distribution in k-space
+a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian wave packet in k-space
 psi0_A = ifft(ifftshift(a_k_A .* exp(-1i * k * x0_A))); % Constuct the initial Gaussian wave packet in real space
 
 psi0_A_norm = psi0_A/sqrt(trapz(x, abs(psi0_A).^2)); % Normalise the initial Gaussian wave packet
@@ -99,7 +99,7 @@ for index_B = 1:length(phase_coeff_B)
     phase_B = phase_B + (phase_coeff_B(index_B) * (k - k0_B).^(index_B - 1));
 end
 
-a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
+a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian wave packet in k-space
 psi0_B = ifft(ifftshift(a_k_B .* exp(-1i * k * x0_B))); % Construct the initial Gaussian wave packet in real space
 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
