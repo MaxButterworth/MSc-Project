@@ -44,17 +44,17 @@ N_t = 1000; % Define the number of time steps to simulate
 
 % Construct the Hamiltonian inside the infinite potential well
 
-if set_PBC == false
+if set_PBC == false % If periodic boundary conditions are not set
     laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
 
-else
+else % If periodic boundary conditions are set
     laplacian = spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
     
     % Impose the periodic boundary conditions
     laplacian(1, N_steps) = 1;
     laplacian(N_steps, 1) = 1;
     
-    laplacian = (1/dx^2) * laplacian; % Divide by dx^2; define the Laplacian for periodic boundaries
+    laplacian = (1/dx^2) * laplacian; % Divide by dx^2 to define the Laplacian for periodic boundaries
 
 end
 
@@ -72,7 +72,7 @@ psi0_norm = psi0/sqrt(trapz(x, abs(psi0).^2)); % Normalise the initial Gaussian 
 % ======================================================================================================================================
 
 J = zeros(N_steps, N_t); % Initialise an array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx;
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Define an array to calculate the first derivative
 
 psi = psi0_norm(1:N_steps).'; % Set the initial value of the wavefunction
 psi_t = zeros(N_steps, N_t); % Initialise an array to store the wavefunction as it evolves in time
@@ -99,8 +99,8 @@ subplot(2, 2, 1) % Top left subfigure
 real_wavefunction = plot(x, real(psi_t(:, 1))); % Plot the real wavefunction
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Re}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits foe convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
+ylim([min(real(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 title('Real Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
 
@@ -108,7 +108,7 @@ subplot(2, 2, 2) % Top right subfigure
 imag_wavefunction = plot(x, imag(psi_t(:, 1))); % Plot the imaginary wavefunction
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(imag(psi_t(:)))]); % Set the y-limits for convenience
 title('Imaginary Component of the Wavefunction') % Add a title
 grid on; % Add a grid to the plot
@@ -117,8 +117,8 @@ subplot(2, 2, 3) % Bottom left subfigure
 prob_density = plot(x, abs(psi_t(:, 1)).^2); % Plot the initial probability density
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
-ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits foe convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
+ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 title('Probability Density') % Add a title
 grid on; % Add a grid to the plot
 
@@ -126,7 +126,7 @@ subplot(2, 2, 4) % Bottom right subfigure
 flux_plot = plot(x, J(:, 1)); % Plot the initial probability current
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
-ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
+ylim([min(J(:)) max(J(:))]); % Set the x-limits for convenience
 title('Probability Current') % Add a title
 grid on; % Add a grid to the plot
 
@@ -136,7 +136,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    set(flux_plot, 'YData', J(:, n)); % Update the probability density
+    set(flux_plot, 'YData', J(:, n)); % Update the probability current
 
     sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
     
