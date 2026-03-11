@@ -63,17 +63,17 @@ N_t = 1000; % Define the number of time steps to simulate
 % ======================================================================================================================================
 
 % Construct the Hamiltonian
-if set_PBC == false
+if set_PBC == false % If periodic boundary conditions are not applied
     laplacian = (1/dx^2) * spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
 
-else
+else % If periodic boundary conditions are applied
     laplacian = spdiags([1, -2, 1], -1:1, N_steps, N_steps); % Define the Laplacian operator for infinitely high boundaries
     
     % Impose the periodic boundary conditions
     laplacian(1, N_steps) = 1;
     laplacian(N_steps, 1) = 1;
     
-    laplacian = (1/dx^2) * laplacian; % Divide by dx^2; define the Laplacian for periodic boundaries
+    laplacian = (1/dx^2) * laplacian; % Divide by dx^2 to define the Laplacian for periodic boundaries
 
 end
 
@@ -84,7 +84,7 @@ H = -((hbar^2)/(2*m)) * laplacian; % Define the Hamiltonian operator
 % ======================================================================================================================================
 
 a_0_A = 1; % Prefactor for the Gaussian distribution
-phase_A = 0; % Define the phase term in the Gaussian distribution
+phase_A = 0; % Define the phase term for the Gaussian distribution
 phase_coeff_A = 0; % Define the coefficients of the components of the phase term
 
 % Construct the Gaussian phase term in k-space
@@ -92,7 +92,7 @@ for index_A = 1:length(phase_coeff_A)
     phase_A = phase_A + (phase_coeff_A(index_A) * (k - k0_A).^(index_A - 1));
 end
 
-a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian distribution in k-space
+a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian wave packet in k-space
 psi0_A = ifft(a_k_A .* exp(-1i * k * x0_A)); % Initial Gaussian wave packet in real space
 
 psi0_A_norm = psi0_A/sqrt(trapz(x, abs(psi0_A).^2)); % Normalise the initial Gaussian wave packet
@@ -110,7 +110,7 @@ for index_B = 1:length(phase_coeff_B)
     phase_B = phase_B + (phase_coeff_B(index_B) * (k - k0_B).^(index_B - 1));
 end
 
-a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
+a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian wave packet in k-space
 psi0_B = ifft(a_k_B .* exp(-1i * k * x0_B)); % Initial Gaussian wave packet in real space
 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
@@ -195,7 +195,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    set(flux_plot, 'YData', J(:, n)); % Update the probability density
+    set(flux_plot, 'YData', J(:, n)); % Update the probability current
 
     sgtitle(sprintf('Time Elapsed: %.3f seconds', t_array(n))); % Update time elpased in the overall title for the figure
     
