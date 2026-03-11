@@ -33,16 +33,16 @@ k0_B = 10; % Set the expectation value for k for wave packet B
 sigma_B = L/50; % Set the initial width of wave packet B
 t_delay = 0; % Set the time delay (in units of dt) to specify when wave packet B should be introduced into the system
 
-include_elapsed_time = true; % Define a variable to show elapsed time on figure or not
+include_elapsed_time = true; % Define a variable to determine whether to show elapsed time on figure or not
 
-save_figures = false; % Define a variable to save figures at various points in the simulation or not
+save_figures = false; % Define a variable to determine whether to save figures at various points in the simulation or not
 
 % ======================================================================================================================================
 %%%%%%%%%% Discretise the spatial domain, x; time domain, t; and k-space domain, k %%%%%%%%%%
 % ======================================================================================================================================
 
 x = linspace(0, L, N_steps); % Define the x-domain
-dx = x(2) - x(1); % Calculate the spatial step size
+dx = x(2) - x(1); % Calculate the spatial step size in x
 
 dk = (2 * pi)/L; % Define spacing in k-space
 
@@ -82,7 +82,7 @@ for index_A = 1:length(phase_coeff_A)
 end
 
 a_k_A = a_0_A * exp((-(1/(2 * sigma_A^2)) * (k - k0_A).^2) + (1i * phase_A)); % Construct the whole Gaussian distribution in k-space
-psi0_A = ifft(ifftshift(a_k_A .* exp(-1i * k * x0_A))); % Initial Gaussian wave packet in real space
+psi0_A = ifft(ifftshift(a_k_A .* exp(-1i * k * x0_A))); % Constuct the initial Gaussian wave packet in real space
 
 psi0_A_norm = psi0_A/sqrt(trapz(x, abs(psi0_A).^2)); % Normalise the initial Gaussian wave packet
 
@@ -100,17 +100,17 @@ for index_B = 1:length(phase_coeff_B)
 end
 
 a_k_B = a_0_B * exp((-(1/(2 * sigma_B^2)) * (k - k0_B).^2) + (1i * phase_B)); % Construct the whole Gaussian distribution in k-space
-psi0_B = ifft(ifftshift(a_k_B .* exp(-1i * k * x0_B))); % Initial Gaussian wave packet in real space
+psi0_B = ifft(ifftshift(a_k_B .* exp(-1i * k * x0_B))); % Construct the initial Gaussian wave packet in real space
 
 psi0_B_norm = psi0_B/sqrt(trapz(x, abs(psi0_B).^2)); % Normalise the initial Gaussian wave packet
 
 % ======================================================================================================================================
-%%%%%%%%%% Implement the split operator method to evolve the total wave packet and calculate its probability current %%%%%%%%%%
+%%%%%%%%%% Implement the split operator method to evolve the total wave packet, and calculate its probability current %%%%%%%%%%
 % ======================================================================================================================================
 
 % Initialise arrays to store fluxes and a first derivative operator to calculate the fluxes
 J = zeros(N_steps, N_t); % Array to store probability currents
-first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % A matrix to calculte the first derivative using the finite difference method
+first_deriv = spdiags([-1, 1], 0:1, N_steps, N_steps)/dx; % Matrix to calculte the first derivative using the finite difference method
 
 % Define kinetic and potential operators
 p = hbar * k; % Calcualte the momentum at each point in k-space
@@ -198,7 +198,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wave packet
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wave packet
     set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    set(flux_plot, 'YData', J(:, n)); % Update the probability density
+    set(flux_plot, 'YData', J(:, n)); % Update the probability current
 
     if include_elapsed_time == true
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
