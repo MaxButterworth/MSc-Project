@@ -139,7 +139,7 @@ end
 % Arrays to store errors over time
 norm_squared_error_t = zeros(N_steps, N_t); % Array to store the norm sqaured error over time
 x_avg_error_t = zeros(1, N_t); % Array to store the error on the average position over time
-overlap_squared_t = zeros(1, N_t); % Array to store the value of the overlap of the wave packet
+overlap_squared_t = zeros(1, N_t); % Array to store the value of the overlap of the wave packets
 group_velocity_error = zeros(1, N_t); % Array to store difference in group velocity over time
 dispersion_error = zeros(1, N_t); % Array to store difference in dispersion over time
 
@@ -149,7 +149,7 @@ for error_index = (1:N_t)
     
     % Error on the average position
     x_avg_num = trapz(x, (x.' .* abs(psi_t(:, error_index)).^2)); % Average position for the numerical wave packet
-    x_avg_anal = trapz(x, (x.' .* abs(psi_analytical_t(:, error_index)).^2)); % Average position for the numerical wave packet
+    x_avg_anal = trapz(x, (x.' .* abs(psi_analytical_t(:, error_index)).^2)); % Average position for the analytical wave packet
 
     x_avg_error_t(1, error_index) = x_avg_num - x_avg_anal; % Error on the average position
 
@@ -180,37 +180,37 @@ figure; % Generate a figure
 t_array = dt * (0:N_t - 1); % Create a time array
 
 subplot(2, 1, 1) % Top left subfigure
-norm_squared_error_plot = plot(x, norm_squared_error_t(:, 1), 'LineWidth', 2); % Plot the real component of the wave packet
+norm_squared_error_plot = plot(x, norm_squared_error_t(:, 1), 'LineWidth', 2); % Plot the square norm error
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\left|\Delta\psi(x, t)\right|^2$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(norm_squared_error_t(:)) max(norm_squared_error_t(:))]); % Set the y-limits for convenience
 title('Error on the Norm Squared of the Wave Packet Error', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 3) % Middle left subfigure
-overlap_squared_plot = plot(t_array, overlap_squared_t.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
+overlap_squared_plot = plot(t_array, overlap_squared_t.', 'LineWidth', 2); % Plot the square overalp of the wave packets
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\langle\psi_\mathrm{numerical}|\psi_\mathrm{analytical}\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 title('Square Overlap of the Wave Packets', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 4) % Middle right subfigure
-grou_velocity_error_plot = plot(t_array, group_velocity_error.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
+grou_velocity_error_plot = plot(t_array, group_velocity_error.', 'LineWidth', 2); % Plot the group velocity error
 xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta v_g (t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Group Velocity', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(3, 2, 5) % Bottom left subfigure
-error_imag_plot = plot(t_array, dispersion_error.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
+error_imag_plot = plot(t_array, dispersion_error.', 'LineWidth', 2); % Plot the dispersion error
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta(\Delta x)(t)$', 'Interpreter', 'latex'); % Label the y-axis
 title('Error on the Dispersion, $\Delta x$', 'Interpreter', 'latex') % Add a title
 grid on; % Add a grid to the plot
 
 subplot(2, 1, 2) % Bottom left subfigure
-error_avg_pos_plot = plot(t_array, x_avg_error_t.', 'LineWidth', 2); % Plot the error on the imaginary component of the wave packet
+error_avg_pos_plot = plot(t_array, x_avg_error_t.', 'LineWidth', 2); % Plot the error on the average position in x
 xlabel('$t$', 'Interpreter', 'latex'); % Label the x-axis
 ylabel('$\Delta\langle x\rangle_t$', 'Interpreter', 'latex'); % Label the y-axis
 %title('Error on the Average Position, $\Delta(\langle x\rangle_t$', 'Interpreter', 'latex') % Add a title
@@ -231,7 +231,7 @@ for n = 1:N_t % Loop over all timesteps
         end
     end
 
-    set(norm_squared_error_plot, 'YData', norm_squared_error_t(:, n)) % Update the real part of the numerical wave packet
+    set(norm_squared_error_plot, 'YData', norm_squared_error_t(:, n)) % Update the square norm error
 
     %sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
 
