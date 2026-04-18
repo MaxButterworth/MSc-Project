@@ -124,7 +124,7 @@ WP_re_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an arra
 WP_im_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
 prob_density_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the wave packet probability density
 J_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the flux
-time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
+time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store time values for plotting
 
 counter = 1; % Initialise a counter to append data to arrays
 
@@ -165,8 +165,9 @@ ylim(ax1, [min(WP_re_part(:)) max(WP_re_part(:))]); % Set the y-limits for wavef
 % 
 % hold on;
 % for index_im_plot = 1:size(WP_im_part, 2)
-%    plot(ax1, x, WP_im_part(:, index_im_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_im_plot, :)); % Plot the real wavefunction
+%    plot(ax1, x, WP_im_part(:, index_im_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_im_plot, :)); % Plot the imaginary part of the  wavefunction
 % end
+%
 % hold off;
 % 
 % ax1.YColor = 'k'; % Set the colour of the second y-axis
@@ -185,6 +186,7 @@ hold on;
 for index_prob_density_plot = 1:size(prob_density_plot, 2)
     plot(ax2, x, prob_density_plot(:, index_prob_density_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_prob_density_plot, :)); % Plot the initial probability density
 end
+
 hold off;
 
 xlabel(ax2, '$x$', 'Interpreter','latex'); % Label the x-axis
@@ -199,6 +201,7 @@ hold on;
 for index_J_plot = 1:size(J_plot, 2)
     plot(ax3, x, J_plot(:, index_J_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial probability current
 end
+
 hold off;
 
 xlabel(ax3, '$x$', 'Interpreter', 'latex'); % Label the x-axis
