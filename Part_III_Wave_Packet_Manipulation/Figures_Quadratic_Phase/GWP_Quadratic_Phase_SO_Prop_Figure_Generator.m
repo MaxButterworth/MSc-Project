@@ -124,7 +124,7 @@ WP_re_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an arra
 WP_im_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
 prob_density_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the wave packet probability density
 J_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the flux
-time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
+time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store time values for plotting
 
 counter = 1; % Initialise a counter to append data to arrays
 
