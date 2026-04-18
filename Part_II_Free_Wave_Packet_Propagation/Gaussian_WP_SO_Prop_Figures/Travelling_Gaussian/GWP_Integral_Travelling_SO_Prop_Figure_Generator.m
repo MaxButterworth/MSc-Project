@@ -124,7 +124,7 @@ WP_re_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an arra
 WP_im_part = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
 prob_density_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the wave packet probability density
 J_plot = zeros(size(x, 2), size(time_indices_plot, 2)); % Initialise an array to store the flux
-time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store imaginary parts of wave packet
+time_plot = zeros(1, size(time_indices_plot, 2)); % Initialise an array to store time values for plotting
 
 counter = 1; % Initialise a counter to append data to arrays
 
@@ -158,6 +158,7 @@ for index_re_plot = 1:size(WP_re_part, 2)
     x_values_plot_WP = x(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2)); % Extract x-values to plot
     plot(ax1, x_values_plot_WP, WP_re_part(x_cutoff_indices(index_re_plot, 1):x_cutoff_indices(index_re_plot, 2), index_re_plot), 'LineWidth', 2, 'LineStyle', '-', 'Color', C(index_re_plot, :)); % Plot the real wavefunction
 end
+
 hold off;
 
 ax1.YColor = 'k'; % Set the colour of the first y-axis
@@ -205,7 +206,7 @@ ax3 = nexttile; % Bottom Left Subfigure
 hold on;
 for index_J_plot = 1:size(J_plot, 2)
     x_values_plot_J = x(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2)); % Extract x-values to plot
-    plot(ax3, x_values_plot_J, J_plot(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2), index_J_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial probability current
+    plot(ax3, x_values_plot_J, J_plot(x_cutoff_indices(index_J_plot, 1):x_cutoff_indices(index_J_plot, 2), index_J_plot), 'LineWidth', 3, 'LineStyle', '-', 'Color', C(index_J_plot, :)); % Plot the initial flux
 end
 hold off;
 
