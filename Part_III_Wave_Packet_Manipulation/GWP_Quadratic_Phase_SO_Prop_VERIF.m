@@ -115,18 +115,18 @@ end
 %%%%%%%%%% Generate the analytical time-propagated Gaussian wave packet %%%%%%%%%%
 % ======================================================================================================================================
 
-psi_analytical_t = zeros(N_steps, 1);
-J_analytical = zeros(N_steps, N_t); % Initialise an array to store probability currents
+psi_analytical_t = zeros(N_steps, 1); % Initialise an array to store analytical wave packet
+J_analytical = zeros(N_steps, N_t); % Initialise an array to store probability currents for the analytical wave packet
 
 for t_analytical = 0:(N_t - 1)
 
     % Construct the whole Gaussian distribution in real space
     psi_analytical = sqrt(1/(sigma^(-2) - (1i*time_delay))) * exp(-(((time_delay*k0^2) + (2*k0*transpose(x)) + (1i*sigma^2*transpose(x).^2))/((2*time_delay*sigma^2) + (2*1i))));% - (1i * t_analytical * dt * ((hbar * k0^2)/(2 * m))));
 
-    psi_analytical_norm = psi_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the wave packet
+    psi_analytical_norm = psi_analytical/sqrt(trapz(x, abs(psi_analytical).^2)); % Normalise the analytical wave packet
     psi_analytical_t(:, t_analytical + 1) = psi_analytical_norm; % Store the analytical time-evolved wave packet in the time evolution array
 
-    % Calculate probability current at each point along x
+    % Calculate probability current at each point along x for the analytical wave packet
     J_analytical(:, t_analytical + 1) = -((1i * hbar)/(2 * m)) * ((conj(psi_analytical) .* (first_deriv * psi_analytical)) ...
                                         - ((first_deriv * conj(psi_analytical)) .* psi_analytical));
 end
@@ -146,17 +146,17 @@ real_wavefunction_analytical = plot(x, real(psi_analytical_t(:, 1)), 'LineWidth'
 hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 % title('Real Component of the Wavefunction', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside')
+legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside') % Add a legend to the plot
 
 % subplot(3, 1, 2) % Middle subfigure
 % prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
 % xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 % ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-% xlim([min(x) max(x)]) % Set the y-limits for convenience
+% xlim([min(x) max(x)]) % Set the x-limits for convenience
 % ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
 % %title('Probability Density', 'Interpreter','latex') % Add a title
 % grid on; % Add a grid to the plot
@@ -166,7 +166,7 @@ legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','
 % xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 % ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 % ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-% %title('Flux', 'Interpreter','latex') % Add a title
+% title('Flux', 'Interpreter','latex') % Add a title
 % grid on; % Add a grid to the plot
 
 set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
@@ -176,9 +176,9 @@ set(groot, 'DefaultTextFontSize', 24); % Set the font size for other text
 
 % for n = 1:N_t % Loop over all timesteps
 %     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
-%     set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the imaginary part of the wavefunction
+%     set(real_wavefunction_analytical, 'YData', real(psi_analytical_t(:, n))) % Update the analytical wavefunction
 %     % set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-%     % set(flux_plot, 'YData', J(:, n)); % Update the probability density
+%     % set(flux_plot, 'YData', J(:, n)); % Update the flux
 % 
 %     if include_elapsed_time == true
 %         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
