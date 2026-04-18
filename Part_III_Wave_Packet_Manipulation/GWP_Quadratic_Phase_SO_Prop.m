@@ -126,19 +126,19 @@ imag_wavefunction = plot(x, imag(psi_t(:, 1)), 'LineWidth', 2); % Plot the imagi
 hold off
 xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 ylabel('$\psi(x, t)$', 'Interpreter','latex'); % Label the y-axis
-xlim([min(x) max(x)]) % Set the y-limits for convenience
+xlim([min(x) max(x)]) % Set the x-limits for convenience
 ylim([min(imag(psi_t(:))) max(real(psi_t(:)))]); % Set the y-limits for convenience
 % title('Real Component of the Wavefunction', 'Interpreter','latex') % Add a title
 grid on; % Add a grid to the plot
-legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside')
+legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','latex', 'Location', 'northeastoutside') % Add a legend to the plot
 
 % subplot(3, 1, 2) % Middle subfigure
 % prob_density = plot(x, abs(psi_t(:, 1)).^2, 'LineWidth', 3); % Plot the initial probability density
 % xlabel('$x$', 'Interpreter','latex'); % Label the x-axis
 % ylabel('$|\psi(x, t)|^2$', 'Interpreter','latex'); % Label the y-axis
-% xlim([min(x) max(x)]) % Set the y-limits for convenience
+% xlim([min(x) max(x)]) % Set the x-limits for convenience
 % ylim([min(abs(psi_t(:)).^2) max(real(abs(psi_t(:)).^2))]); % Set the y-limits for convenience
-% %title('Probability Density', 'Interpreter','latex') % Add a title
+% title('Probability Density', 'Interpreter','latex') % Add a title
 % grid on; % Add a grid to the plot
 % 
 % subplot(3, 1, 3) % Bottom subfigure
@@ -146,7 +146,7 @@ legend('$\mathrm{Re}(\psi(x, t))$', '$\mathrm{Im}(\psi(x, t))$', 'Interpreter','
 % xlabel('$x$', 'Interpreter', 'latex'); % Label the x-axis
 % ylabel('$J(x, t)$', 'Interpreter', 'latex'); % Label the y-axis
 % ylim([min(J(:)) max(J(:))]); % Set the y-limits for convenience
-% %title('Flux', 'Interpreter','latex') % Add a title
+% title('Flux', 'Interpreter','latex') % Add a title
 % grid on; % Add a grid to the plot
 
 set(groot, 'DefaultAxesFontSize', 24); % Set the font size for axes
@@ -158,7 +158,7 @@ for n = 1:N_t % Loop over all timesteps
     set(real_wavefunction, 'YData', real(psi_t(:, n))) % Update the real part of the wavefunction
     set(imag_wavefunction, 'YData', imag(psi_t(:, n))) % Update the imaginary part of the wavefunction
     % set(prob_density, 'YData', abs(psi_t(:, n)).^2); % Update the probability density
-    % set(flux_plot, 'YData', J(:, n)); % Update the probability density
+    % set(flux_plot, 'YData', J(:, n)); % Update the flux
     
     if include_elapsed_time == true
         sgtitle(sprintf('Time Elapsed: %.3f', t_array(n))); % Update time elpased in the overall title for the figure
